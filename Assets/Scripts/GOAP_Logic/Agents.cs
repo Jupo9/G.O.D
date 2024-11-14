@@ -30,7 +30,11 @@ public class Agents : MonoBehaviour
     public float needChill = 100f;
     public float needEvil = 100f;
 
+    public float needShower = 100f;
+
     public float lostOverTime = 1f;
+
+    public new ParticleSystem particleSystem;
 
     private static List<Agents> calmingAgents = new List<Agents>();
 
@@ -53,6 +57,11 @@ public class Agents : MonoBehaviour
         {
             isInChillingZone = true; 
         }
+
+        if (other.CompareTag("Shower"))
+        {
+            particleSystem.Play();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -61,25 +70,30 @@ public class Agents : MonoBehaviour
         {
             isInChillingZone = false;
         }
+
+        if (other.CompareTag("Shower"))
+        {
+            particleSystem.Stop();
+        }
     }
 
     private IEnumerator NeedDecay()
     {
-        while (needChill > 0)
+        while (needChill > 0f || needEvil > 0f || needShower > 0f)
         {
             needChill -= lostOverTime;
+            needEvil -= lostOverTime;
+            needShower -= lostOverTime;
+
             yield return new WaitForSeconds(1f);
 
-            // Überprüfen, ob das Bedürfnis-Level unter einen Schwellenwert gefallen ist
-            if (needChill <= 20f && currentGoal == null)
+            if (needShower <= 20f && currentGoal == null)
             {
-                // Setze das Goal "isUncalmed" zur Wiederherstellung des Bedürfnis-Levels
                 SubGoal s1 = new SubGoal("Survive", 1, true);
-                goals[s1] = 3; // Priorität bleibt hoch, da wichtig für Überleben
+                goals[s1] = 3; 
             }
 
-            // Falls das Bedürfnis-Level auf 0 sinkt, zerstören wir das Objekt
-            if (needChill <= 0)
+            if (needChill <= 0 || needEvil <= 0f || needShower <= 0f)
             {
                 Destroy(this.gameObject);
                 yield break;
@@ -111,24 +125,9 @@ public class Agents : MonoBehaviour
         {
             if (currentAction != null && currentAction.running)
             {
-                // Wenn das Ziel noch bewegt wird, setze das Ziel neu
-                if (currentAction is BullyAngel)
+                if (currentAction is AA_Shower)
                 {
-                    currentAction.agent.SetDestination(currentAction.target.transform.position);  // Update Ziel, falls es sich bewegt
-                }
-
-                if (currentAction != null && currentAction.running)
-                {
-                    float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-                    if (currentAction.agent.hasPath && distanceToTarget < 2f) //currentAction.agent.remainingDistance < 1f
-                    {
-                        if (!invoked)
-                        {
-                            Invoke("CompleteAction", currentAction.duration);
-                            invoked = true;
-                        }
-                    }
-                    return;
+                    /// Implement Shower function
                 }
             }
 
@@ -255,8 +254,6 @@ public class Agents : MonoBehaviour
             else
             {
                 Debug.Log("No actions in queue!");
-                //Destroy(this.gameObject);
-                //return;
             }
 
         }

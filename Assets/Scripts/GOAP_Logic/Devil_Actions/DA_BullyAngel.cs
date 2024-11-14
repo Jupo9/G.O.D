@@ -6,11 +6,11 @@ public class DA_BullyAngel : Actions
 {
     public override bool PrePerform()
     {
-        // Find Angels in World
+        // Suche nach allen Engeln in der Szene
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
         if (angels.Length == 0) return false;
 
-        // Find closest Angel and mark it as target
+        // Finde den nächstgelegenen Engel
         GameObject closestAngel = null;
         float closestDistance = Mathf.Infinity;
 
@@ -24,6 +24,10 @@ public class DA_BullyAngel : Actions
             }
         }
 
+        // Wenn kein Engel gefunden wurde, beende die Aktion
+        if (closestAngel == null) return false;
+
+        // Setze das Ziel für den Agenten auf den nächstgelegenen Engel
         target = closestAngel;
         agent.SetDestination(target.transform.position);
 
