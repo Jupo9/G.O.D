@@ -34,8 +34,6 @@ public class Agents : MonoBehaviour
 
     public float lostOverTime = 1f;
 
-    public new ParticleSystem particleSystem;
-
     private static List<Agents> calmingAgents = new List<Agents>();
 
     private bool isInChillingZone = false;
@@ -51,16 +49,17 @@ public class Agents : MonoBehaviour
         StartCoroutine(NeedDecay());
     }
 
+    /// <summary>
+    /// This funktions (OnTrigggerEnter and OnTriggerExit) was for testings and need to be implementet in the action DA_Chilling!!
+    /// </summary>
+    /// <param name="other"></param>
+    /// 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Chilling"))
         {
             isInChillingZone = true; 
-        }
-
-        if (other.CompareTag("Shower"))
-        {
-            particleSystem.Play();
         }
     }
 
@@ -69,11 +68,6 @@ public class Agents : MonoBehaviour
         if (other.CompareTag("Chilling"))
         {
             isInChillingZone = false;
-        }
-
-        if (other.CompareTag("Shower"))
-        {
-            particleSystem.Stop();
         }
     }
 
