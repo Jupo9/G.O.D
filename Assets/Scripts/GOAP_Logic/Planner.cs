@@ -39,7 +39,7 @@ public class Planner
 
         if(!success)
         {
-            Debug.Log("NO PLAN");
+           /// Debug.Log("NO PLAN");
             return null;
         }
 
@@ -76,10 +76,10 @@ public class Planner
             queue.Enqueue(a);
         }
 
-        Debug.Log("The Plan is: ");
+        ///Debug.Log("The Plan is: ");
         foreach(Actions a in queue)
         {
-            Debug.Log("Q: " + a.actionName);
+            ///Debug.Log("Q: " + a.actionName);
         }
 
         return queue;
