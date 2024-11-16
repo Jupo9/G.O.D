@@ -123,6 +123,20 @@ public class Agents : MonoBehaviour
                 {
                     /// Implement Shower function
                 }
+
+                if (currentAction != null && currentAction.running)
+                {
+                    float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
+                    if (currentAction.agent.hasPath && distanceToTarget < 2f) //currentAction.agent.remainingDistance < 1f
+                    {
+                        if (!invoked)
+                        {
+                            Invoke("CompleteAction", currentAction.duration);
+                            invoked = true;
+                        }
+                    }
+                    return;
+                }
             }
 
 
@@ -166,9 +180,8 @@ public class Agents : MonoBehaviour
             else
             {
                 Debug.Log("No actions in queue!");
-                Destroy(this.gameObject);
-                return;
             }
+
 
         }
 
