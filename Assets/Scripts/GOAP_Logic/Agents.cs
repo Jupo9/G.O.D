@@ -156,13 +156,13 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-               /// Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
+               Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
             }
 
             if (actionQueue != null && actionQueue.Count > 0)
             {
                 currentAction = actionQueue.Dequeue();
-               /// Debug.Log("Assigned Action: " + currentAction.actionName);
+               Debug.Log("Assigned Action: " + currentAction.actionName);
                 if (currentAction.PrePerform())
                 {
                     if (currentAction.target == null && currentAction.targetTag != "")
@@ -179,7 +179,7 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                //Debug.Log("No actions in queue!");
+                Debug.Log("No actions in queue!");
             }
 
 
@@ -237,13 +237,13 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-               /// Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
+               Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
             }
 
             if (actionQueue != null && actionQueue.Count > 0)
             {
                 currentAction = actionQueue.Dequeue();
-                ///Debug.Log("Assigned Action: " + currentAction.actionName);
+                Debug.Log("Assigned Action: " + currentAction.actionName);
                 if (currentAction.PrePerform())
                 {
                     if (currentAction.target == null && currentAction.targetTag != "")
@@ -260,7 +260,7 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                 //Debug.Log("No actions in queue!");
+                 Debug.Log("No actions in queue!");
             }
 
         }
