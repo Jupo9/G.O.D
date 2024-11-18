@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsData:
   - <Name>k__BackingField: Block
-    <ID>k__BackingField: 0
+    <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5430015692612266632, guid: ed3450c44019eaa4aa5abeaa6dd84c0e, type: 3}
   - <Name>k__BackingField: Block_02
-    <ID>k__BackingField: 1
+    <ID>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5430015692612266632, guid: cf8e17a799726fe4f9c1df83f56e47a4, type: 3}
