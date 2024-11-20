@@ -127,7 +127,7 @@ public class Agents : MonoBehaviour
                 if (currentAction != null && currentAction.running)
                 {
                     float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-                    if (currentAction.agent.hasPath && distanceToTarget < 2f) //currentAction.agent.remainingDistance < 1f
+                    if (currentAction.agent.hasPath && distanceToTarget < 2f) ///currentAction.agent.remainingDistance < 1f
                     {
                         if (!invoked)
                         {
@@ -208,7 +208,7 @@ public class Agents : MonoBehaviour
                 if (currentAction != null && currentAction.running)
                 {
                     float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-                    if (currentAction.agent.hasPath && distanceToTarget < 2f) //currentAction.agent.remainingDistance < 1f
+                    if (currentAction.agent.hasPath && distanceToTarget < 2f) ///currentAction.agent.remainingDistance < 1f
                     {
                         if (!invoked)
                         {

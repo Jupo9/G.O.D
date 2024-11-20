@@ -30,14 +30,12 @@ public abstract class Actions : MonoBehaviour
 
     public void Awake()
     {
-        // Überprüfe, ob bereits ein NavMeshAgent existiert
         agent = this.GetComponent<NavMeshAgent>();
         if (agent == null)
         {
             agent = this.gameObject.AddComponent<NavMeshAgent>();
         }
 
-        // Füge die vorgegebenen Bedingungen und Effekte hinzu, wenn sie definiert sind
         if (preconditions != null)
         {
             foreach (WorldState w in preConditions)
