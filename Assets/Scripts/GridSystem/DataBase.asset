@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DataBase
   m_EditorClassIdentifier: 
   objectsData:
-  - <Name>k__BackingField: Block
+  - <Name>k__BackingField: Shower_ver0.1
     <ID>k__BackingField: 1
-    <Size>k__BackingField: {x: 1, y: 1}
-    <Prefab>k__BackingField: {fileID: 5430015692612266632, guid: ed3450c44019eaa4aa5abeaa6dd84c0e, type: 3}
+    <Size>k__BackingField: {x: 2, y: 2}
+    <Prefab>k__BackingField: {fileID: 5468502704688439952, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}
   - <Name>k__BackingField: Block_02
     <ID>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
