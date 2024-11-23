@@ -4,6 +4,36 @@ using UnityEngine;
 
 public class DA_BullyAngel : Actions
 {
+    private Agents agentsScript;
+
+    private void Start()
+    {
+        agentsScript = GetComponent<Agents>();
+
+        if (agentsScript == null)
+        {
+            Debug.Log("Missing Agents Script!");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Angel"))
+        {
+            Debug.Log("found Angel");
+            agentsScript.FillEvil();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Angel"))
+        {
+            Debug.Log("leave Angel");
+            agentsScript.StopFillEvil();
+        }
+    }
+
     public override bool PrePerform()
     {
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");

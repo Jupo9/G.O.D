@@ -30,7 +30,6 @@ public class DA_MoveAround : Actions
         }
     }
 
-
     void SetNewRandomDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * moveRadius;

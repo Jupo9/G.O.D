@@ -5,7 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class WorldState
 {
-    //logic for dictonary, key could be a bed and value is 5 beds exist for example
+    /// <summary>
+    /// "key" represents the state that the Object get or have when it execute an action
+    /// for example hungy as key state before the npc get some food, and after the npc ate something the state changed to saturated
+    /// "value" is the number of keys that exist in the scene
+    /// for example 2 foodstands that are available
+    /// </summary>
     public string key;
     public int value;
 }

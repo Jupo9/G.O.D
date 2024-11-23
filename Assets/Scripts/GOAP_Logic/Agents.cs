@@ -38,6 +38,8 @@ public class Agents : MonoBehaviour
 
     private bool isInChillingZone = false;
 
+    private bool isEvil = false;
+
     protected virtual void Start()
     {
         Actions[] acts = this.GetComponents<Actions>();
@@ -49,12 +51,23 @@ public class Agents : MonoBehaviour
         StartCoroutine(NeedDecay());
     }
 
+    private void Update()
+    {
+        if(isEvil)
+        {
+            needEvil += lostOverTime;
+        }
+        if(needEvil > 100f)
+        {
+            needEvil = 100f;
+        }
+    }
+
     /// <summary>
     /// This funktions (OnTrigggerEnter and OnTriggerExit) was for testings and need to be implementet in the action DA_Chilling!!
     /// </summary>
     /// <param name="other"></param>
     /// 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Chilling"))
@@ -81,7 +94,7 @@ public class Agents : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
 
-            if (needShower <= 20f && currentGoal == null)
+            /*if (needShower <= 20f && currentGoal == null)
             {
                 SubGoal s1 = new SubGoal("Survive", 1, true);
                 goals[s1] = 3; 
@@ -91,10 +104,19 @@ public class Agents : MonoBehaviour
             {
                 Destroy(this.gameObject);
                 yield break;
-            }
+            }*/
         }
     }
 
+    public void FillEvil()
+    {
+        isEvil = true;
+    }
+
+    public void StopFillEvil()
+    {
+        isEvil = false;
+    }
 
     bool invoked = false;
     void CompleteAction()
@@ -179,7 +201,7 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                Debug.Log("No actions in queue!");
+                //Debug.Log("No actions in queue!");
             }
 
 
@@ -260,10 +282,33 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                 Debug.Log("No actions in queue!");
+                if (needEvil < 80)
+                {
+                    //Debug.Log("No actions in queue!");
+                    ResetPlanner();
+                }
             }
 
         }
+    }
+
+    private void ResetPlanner()
+    {
+        Debug.Log("Resetting planner and actions...");
+        foreach (Actions action in actions)
+        {
+            // Setze die Aktionen zurück, indem du ihre Zustände zurücksetzt oder andere Parameter initialisierst
+            action.running = false; // Beispiel: Stoppe alle laufenden Aktionen
+            action.target = null; // Setze das Ziel der Aktionen zurück
+        }
+
+        // Lösche den aktuellen Plan und die Aktion
+        planner = null;
+        actionQueue = null;
+        currentAction = null;
+        currentGoal = null;
+
+        Debug.Log("Planner reset complete. Actions will loop.");
     }
 
 }
