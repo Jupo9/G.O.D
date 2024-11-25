@@ -37,8 +37,8 @@ public class Agents : MonoBehaviour
     private static List<Agents> calmingAgents = new List<Agents>();
 
     private bool isInChillingZone = false;
-
     private bool isEvil = false;
+    private bool isCheckingProbability = false;
 
     protected virtual void Start()
     {
@@ -219,7 +219,38 @@ public class Agents : MonoBehaviour
 
                 if (currentAction is DA_BullyAngel)
                 {
-                    currentAction.agent.SetDestination(currentAction.target.transform.position); 
+                    GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
+
+                    List<GameObject> availableAngels = new List<GameObject>();
+                    foreach (GameObject angel in angels) 
+                    {
+                        Angel angelScript = angel.GetComponent<Angel>();
+                        if(angelScript != null &&  angelScript.available)
+                        {
+                            availableAngels.Add(angel);
+                        }
+                    }
+
+                    if (availableAngels.Count > 0)
+                    {
+                        GameObject nearestAngel = availableAngels
+                            .OrderBy(angel => Vector3.Distance(transform.position, angel.transform.position))
+                            .First();
+
+                        currentAction.target = nearestAngel;
+
+                        currentAction.agent.SetDestination(currentAction.target.transform.position);
+                    }
+
+                    else
+                    {
+                        Debug.Log("No available Angels to bully!");
+                    }
+                }
+
+                if (currentAction is DA_PunshAngel)
+                {
+                    currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
                 if(currentAction is DA_MoveAround) 
@@ -282,14 +313,48 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                if (needEvil < 80)
+                //Debug.Log("No Action in Queue");
+                if (!isCheckingProbability)
                 {
-                    //Debug.Log("No actions in queue!");
-                    ResetPlanner();
+                    StartCoroutine(CheckProbabilityRoutine());
                 }
             }
 
         }
+    }
+
+  
+    private IEnumerator CheckProbabilityRoutine()
+    {
+        isCheckingProbability = true;
+        while(isCheckingProbability)
+        {
+            ExecuteWithProbability();
+            yield return new WaitForSeconds(5f);
+        }
+    }
+
+    public void ExecuteWithProbability()
+    {
+        float randomChance = Random.Range(15f, 70f);
+
+        if (randomChance > needEvil)
+        {
+            Debug.Log($" hit {100 - needEvil} and number was {randomChance}");
+            ResetPlanner();
+            StopProbabilityCheck();
+
+        }
+        else
+        {
+            Debug.Log($" failed {100 - needEvil} and number was {randomChance}");
+        }
+    }
+
+    private void StopProbabilityCheck()
+    {
+        StopCoroutine(CheckProbabilityRoutine());
+        isCheckingProbability = false;
     }
 
     private void ResetPlanner()

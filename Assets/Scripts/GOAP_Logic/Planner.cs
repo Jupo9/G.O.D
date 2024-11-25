@@ -100,7 +100,7 @@ public class Planner
                         currentState.Add(eff.Key, eff.Value);
                     }
                 }
-                Node node = new Node(parent, parent.cost + action.cost, currentState, action);
+                Node node = new Node(parent, parent.cost + action.wayCosts, currentState, action);
 
                 if(GoalAchieved(goal, currentState))
                 {

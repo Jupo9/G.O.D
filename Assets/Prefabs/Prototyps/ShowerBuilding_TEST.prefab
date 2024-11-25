@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1259606297831886261}
   m_Layer: 0
-  m_Name: ShowerBuilding
+  m_Name: ShowerBuilding_TEST
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

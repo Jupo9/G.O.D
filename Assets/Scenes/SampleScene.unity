@@ -915,6 +915,11 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: ba3e6d0bb873bd24ab55e3ff051674e9, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1 &342567616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3196859058690804335, guid: 427ee0b23653d574abb3d141542630cb, type: 3}
+  m_PrefabInstance: {fileID: 1909510391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &346286301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1221,6 +1226,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &438687312 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8306173766004532095, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+  m_PrefabInstance: {fileID: 6253485854341803822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &438687320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438687312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd869a5ae9f91434698cc3c246f86016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Punshed
+  wayCosts: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Angel
+  duration: 10
+  preConditions:
+  - key: Bully
+    value: 0
+  afterEffects:
+  - key: Evil
+    value: 0
+  agent: {fileID: 0}
+  running: 0
 --- !u!1 &678840318
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,6 +1900,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+--- !u!1001 &1016653731
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5099993
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104814744284811401, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2648118792853232727, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
+      propertyPath: m_Name
+      value: Angel (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
 --- !u!1 &1032904890 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7680536119853827130, guid: 427ee0b23653d574abb3d141542630cb, type: 3}
@@ -2132,6 +2225,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242573514}
   m_CullTransparentMesh: 1
+--- !u!1 &1280545137 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+  m_PrefabInstance: {fileID: 979183346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1296069845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,11 +2471,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1348881478}
   m_CullTransparentMesh: 1
---- !u!1 &1587369530 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5512204494250433602, guid: 427ee0b23653d574abb3d141542630cb, type: 3}
-  m_PrefabInstance: {fileID: 8124545453733009973}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1587369531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8309901598935695267, guid: 427ee0b23653d574abb3d141542630cb, type: 3}
@@ -2823,9 +2916,10 @@ GameObject:
   - component: {fileID: 1985202491}
   - component: {fileID: 1985202490}
   - component: {fileID: 1985202489}
-  - component: {fileID: 1985202488}
-  - component: {fileID: 1985202487}
-  - component: {fileID: 1985202486}
+  - component: {fileID: 1985202497}
+  - component: {fileID: 1985202496}
+  - component: {fileID: 1985202495}
+  - component: {fileID: 1985202493}
   - component: {fileID: 1985202492}
   - component: {fileID: 1985202485}
   - component: {fileID: 1985202484}
@@ -2835,7 +2929,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1985202484
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2884,83 +2978,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1985202486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985202483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20d9cae7329d07646bfa7eef74b03c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: Action
-  cost: 1
-  costB: 2
-  target: {fileID: 1032904890}
-  targetTag: 
-  duration: 10
-  preConditions:
-  - key: inShower
-    value: 0
-  afterEffects:
-  - key: afterShower
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &1985202487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985202483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f23edb64b7c18df428d48d7128e0dba0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: Action
-  cost: 1
-  costB: 2
-  target: {fileID: 1587369530}
-  targetTag: 
-  duration: 20
-  preConditions:
-  - key: beforeShower
-    value: 0
-  afterEffects:
-  - key: inShower
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  particleSystem: {fileID: 79611928}
---- !u!114 &1985202488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985202483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20d9cae7329d07646bfa7eef74b03c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: Action
-  cost: 1
-  costB: 2
-  target: {fileID: 1032904890}
-  targetTag: 
-  duration: 10
-  preConditions: []
-  afterEffects:
-  - key: beforeShower
-    value: 0
-  agent: {fileID: 0}
-  running: 0
 --- !u!114 &1985202489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2978,7 +2995,8 @@ MonoBehaviour:
   needChill: 100
   needEvil: 100
   needShower: 100
-  lostOverTime: 1
+  lostOverTime: 0.2
+  available: 1
 --- !u!195 &1985202490
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3029,14 +3047,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f082a6658019afa4394a28fffa5e32f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: Action
-  cost: 1
-  costB: 2
+  actionName: Finish
+  wayCosts: 1
+  timeCosts: 2
   target: {fileID: 0}
   targetTag: 
-  duration: 100
+  duration: 2000
   preConditions:
-  - key: afterShower
+  - key: AfterClean
+    value: 0
+  - key: Evil
     value: 0
   afterEffects:
   - key: Survive
@@ -3046,6 +3066,107 @@ MonoBehaviour:
   moveRadius: 10
   minMovementTime: 1
   maxMovementTime: 10
+--- !u!114 &1985202493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985202483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d9cae7329d07646bfa7eef74b03c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: After Shower
+  wayCosts: 1
+  timeCosts: 2
+  target: {fileID: 1032904890}
+  targetTag: 
+  duration: 5
+  preConditions:
+  - key: AfterClean
+    value: 0
+  afterEffects:
+  - key: AfterShower
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &1985202495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985202483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23edb64b7c18df428d48d7128e0dba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Shower
+  wayCosts: 1
+  timeCosts: 2
+  target: {fileID: 1280545137}
+  targetTag: 
+  duration: 10
+  preConditions:
+  - key: Clean
+    value: 0
+  afterEffects:
+  - key: AfterClean
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  particleSystem: {fileID: 79611928}
+--- !u!114 &1985202496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985202483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d9cae7329d07646bfa7eef74b03c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Go to Shower
+  wayCosts: 4
+  timeCosts: 2
+  target: {fileID: 1032904890}
+  targetTag: 
+  duration: 5
+  preConditions: []
+  afterEffects:
+  - key: Clean
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &1985202497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985202483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d9cae7329d07646bfa7eef74b03c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Bully
+  wayCosts: 1
+  timeCosts: 2
+  target: {fileID: 342567616}
+  targetTag: 
+  duration: 5
+  preConditions: []
+  afterEffects:
+  - key: Evil
+    value: 0
+  agent: {fileID: 0}
+  running: 0
 --- !u!1 &1999528550
 GameObject:
   m_ObjectHideFlags: 0
@@ -3309,9 +3430,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 516633097993969822, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+      propertyPath: duration
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3261932469527932053, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.42
+      value: -15.58
       objectReference: {fileID: 0}
     - target: {fileID: 3261932469527932053, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3353,14 +3478,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Devil
       objectReference: {fileID: 0}
+    - target: {fileID: 8306173766004532095, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9102091691224167929, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
       propertyPath: duration
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 9102091691224167929, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+      propertyPath: preConditions.Array.data[0].key
+      value: Evil
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8306173766004532095, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 438687320}
   m_SourcePrefab: {fileID: 100100000, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
 --- !u!1001 &8124545453733009973
 PrefabInstance:
@@ -3445,3 +3581,4 @@ SceneRoots:
   - {fileID: 1690391262}
   - {fileID: 403202737}
   - {fileID: 769091880}
+  - {fileID: 1016653731}

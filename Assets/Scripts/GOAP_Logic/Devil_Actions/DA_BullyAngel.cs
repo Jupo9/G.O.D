@@ -18,19 +18,25 @@ public class DA_BullyAngel : Actions
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Angel"))
+        Angel angelScript = other.GetComponent<Angel>();
+
+        if (angelScript != null && angelScript.available)
         {
-            Debug.Log("found Angel");
             agentsScript.FillEvil();
         }
     }
 
+
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Angel"))
+        if (other.CompareTag("Angel"))
         {
-            Debug.Log("leave Angel");
-            agentsScript.StopFillEvil();
+            Angel angelScript = other.GetComponent<Angel>();
+
+            if (angelScript != null && angelScript.available)
+            {
+                 agentsScript.StopFillEvil();
+            }
         }
     }
 
