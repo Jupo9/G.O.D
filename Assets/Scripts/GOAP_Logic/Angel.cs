@@ -26,7 +26,6 @@ public class Angel : Agents
         if (other.CompareTag("Devil"))
         {
             available = true;
-
         }
 
     }
@@ -46,7 +45,8 @@ public class Angel : Agents
                 currentAction.agent.isStopped = true;
             }
 
-            yield return null; 
+            yield return new WaitForSeconds(10f);
+            available = true;
         }
 
         if (currentAction != null)

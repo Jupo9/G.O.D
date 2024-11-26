@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.AI;
+using Unity.VisualScripting;
 
 public class SubGoal
 {
@@ -43,14 +44,14 @@ public class Agents : MonoBehaviour
     protected virtual void Start()
     {
         Actions[] acts = this.GetComponents<Actions>();
-        foreach(Actions a in acts)
+        foreach (Actions a in acts)
         {
             actions.Add(a);
         }
 
         StartCoroutine(NeedDecay());
     }
-
+        
     private void Update()
     {
         if(isEvil)
@@ -60,27 +61,6 @@ public class Agents : MonoBehaviour
         if(needEvil > 100f)
         {
             needEvil = 100f;
-        }
-    }
-
-    /// <summary>
-    /// This funktions (OnTrigggerEnter and OnTriggerExit) was for testings and need to be implementet in the action DA_Chilling!!
-    /// </summary>
-    /// <param name="other"></param>
-    /// 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Chilling"))
-        {
-            isInChillingZone = true; 
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Chilling"))
-        {
-            isInChillingZone = false;
         }
     }
 

@@ -33,7 +33,7 @@ public class DA_BullyAngel : Actions
         {
             Angel angelScript = other.GetComponent<Angel>();
 
-            if (angelScript != null && angelScript.available)
+            if (angelScript != null)
             {
                  agentsScript.StopFillEvil();
             }

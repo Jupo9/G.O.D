@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DA_PunshAngel : Actions
 {
-
     public override bool PrePerform()
     {
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");

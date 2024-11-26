@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class DA_MoveAround : Actions
 {
-    private NavMeshAgent agents;
+    //private NavMeshAgent agents;
 
     [SerializeField] public float moveRadius = 10f;
     [SerializeField] public float minMovementTime = 1f;
