@@ -8,6 +8,8 @@ TagManager:
   - Devil
   - NavMesh
   - Chilling
+  - Steam
+  - Shower
   layers:
   - Default
   - TransparentFX

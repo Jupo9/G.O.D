@@ -233,7 +233,7 @@ public class Agents : MonoBehaviour
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if(currentAction is DA_MoveAround) 
+                if(currentAction is GA_MoveAround) 
                 {
                     ///Überprüfen von Werten um neuen Plan aufzustellen
                 }

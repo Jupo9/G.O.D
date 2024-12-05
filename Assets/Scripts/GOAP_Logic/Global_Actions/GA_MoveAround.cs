@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DA_MoveAround : Actions
+public class GA_MoveAround : Actions
 {
     //private NavMeshAgent agents;
 
