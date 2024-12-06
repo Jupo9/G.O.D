@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DA_Chilling : Actions
+public class DA_CleanAction : Actions
 {
     public Animator openDoors;
 
@@ -21,13 +21,9 @@ public class DA_Chilling : Actions
 
     public override bool PrePerform()
     {
-        Invoke("CloseDoor", 2f);
-        return true;
-    }
-
-    private void CloseDoor()
-    {
-        openDoors.Play("DoubleDoors");
+        openDoors.Play("DoubleDoorsBackwards");
+        StartCoroutine(WaitBeforeAction());
+        return false;
     }
 
     public override bool PostPerform()
@@ -35,4 +31,11 @@ public class DA_Chilling : Actions
         return true;
     }
 
+    private IEnumerator WaitBeforeAction()
+    {
+        yield return new WaitForSeconds(4);
+
+        agent.isStopped = false;
+        agent.SetDestination(target.transform.position);
+    }
 }

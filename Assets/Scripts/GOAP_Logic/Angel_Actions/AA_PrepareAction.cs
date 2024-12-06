@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class GA_PrepareAction : Actions
+public class AA_PrepareAction : Actions
 {
     public Animator openDoor;
 
     private bool wantShower = false;
+
+    private Angel angelScript;
 
 
     private void Start()
@@ -20,6 +21,13 @@ public class GA_PrepareAction : Actions
             {
                 openDoor = childTransform.GetComponent<Animator>();
             }
+        }
+
+        angelScript = GetComponent<Angel>();
+
+        if (angelScript == null)
+        {
+            Debug.LogWarning("Angel script not found on this GameObject.");
         }
     }
 
@@ -37,9 +45,16 @@ public class GA_PrepareAction : Actions
         openDoor.Play("Shower Door Prototyp");
     }
 
+
     public override bool PrePerform()
     {
         wantShower = true;
+
+        if (angelScript != null)
+        {
+            angelScript.available = false;
+        }
+
         return true;
     }
 

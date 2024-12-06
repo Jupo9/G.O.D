@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GA_CleanAction : Actions
+public class DA_PrepareAction : Actions
 {
     public override bool PrePerform()
     {
