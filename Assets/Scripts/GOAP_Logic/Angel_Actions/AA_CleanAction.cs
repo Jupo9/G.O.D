@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class AA_CleanAction : Actions
 {
-    public Animator openDoor;
-
     private Angel angelScript;
+    private Building_Shower buildingShower;
 
     private void Start()
     {
-        if (openDoor == null)
-        {
-            Transform childTransform = transform.Find("ShowerDoor");
-
-            if (childTransform != null)
-            {
-                openDoor = childTransform.GetComponent<Animator>();
-            }
-        }
-
         angelScript = GetComponent<Angel>();
 
         if (angelScript == null)
         {
             Debug.LogWarning("Angel script not found on this GameObject.");
         }
+
+        GameObject showerBuilding = GameObject.FindWithTag("Shower");
+
+        if (showerBuilding != null)
+        {
+            buildingShower = showerBuilding.GetComponent<Building_Shower>();
+        }
+
+        if (buildingShower == null)
+        {
+            Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
+        }
     }
 
     public override bool PrePerform()
     {
-        openDoor.Play("Shower Door Prototyp");
+        buildingShower.OpenDoorAnimation();
         StartCoroutine(WaitBeforeAction());
         return false;
     }
@@ -49,6 +50,6 @@ public class AA_CleanAction : Actions
 
         yield return new WaitForSeconds(2);
 
-        openDoor.Play("Shower Door Close Prototyp");
+        buildingShower.CloseDoorAnimation();
     }
 }

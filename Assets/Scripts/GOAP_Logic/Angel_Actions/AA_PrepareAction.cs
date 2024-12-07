@@ -4,30 +4,31 @@ using UnityEngine;
 
 public class AA_PrepareAction : Actions
 {
-    public Animator openDoor;
-
     private bool wantShower = false;
 
     private Angel angelScript;
+    private Building_Shower buildingShower;
 
 
     private void Start()
     {
-        if (openDoor == null)
-        {
-            Transform childTransform = transform.Find("ShowerDoor"); 
-
-            if (childTransform != null)
-            {
-                openDoor = childTransform.GetComponent<Animator>();
-            }
-        }
-
         angelScript = GetComponent<Angel>();
 
         if (angelScript == null)
         {
             Debug.LogWarning("Angel script not found on this GameObject.");
+        }
+
+        GameObject showerBuilding = GameObject.FindWithTag("Shower"); 
+
+        if (showerBuilding != null)
+        {
+            buildingShower = showerBuilding.GetComponent<Building_Shower>();
+        }
+
+        if (buildingShower == null)
+        {
+            Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
         }
     }
 
@@ -42,7 +43,7 @@ public class AA_PrepareAction : Actions
 
     private void OpenShowerDoor()
     {
-        openDoor.Play("Shower Door Prototyp");
+        buildingShower.OpenDoorAnimation();
     }
 
 
@@ -53,6 +54,11 @@ public class AA_PrepareAction : Actions
         if (angelScript != null)
         {
             angelScript.available = false;
+        }
+
+        if (buildingShower != null && wantShower)
+        {
+            buildingShower.isAvailable = false;
         }
 
         return true;

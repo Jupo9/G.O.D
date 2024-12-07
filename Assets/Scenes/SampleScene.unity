@@ -899,7 +899,6 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  openDoor: {fileID: 1384795617}
 --- !u!114 &172731384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,8 +925,6 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  particleSystem: {fileID: 6512394624405998927}
-  openDoor: {fileID: 1384795617}
 --- !u!114 &172731385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,7 +951,6 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  openDoor: {fileID: 1384795617}
 --- !u!1 &179132755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,7 +1583,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 558253942700263995, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1608832694}
   m_SourcePrefab: {fileID: 100100000, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}
 --- !u!1 &618378185
 GameObject:
@@ -2935,6 +2934,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.5444853, y: 8.300363, z: 0.43398765}
   m_Center: {x: 0.772245, y: 1.1501814, z: -0.026570592}
+--- !u!1 &1608832692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 558253942700263995, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}
+  m_PrefabInstance: {fileID: 491764522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1608832694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608832692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abe8eec4af65b044bcf3820710bfa71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAvailable: 1
+  particleSystem: {fileID: 6512394624405998927}
+  openDoor: {fileID: 1384795617}
 --- !u!1 &1664599535 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8468711415221155749, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}
@@ -3495,8 +3514,6 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  particleSystem: {fileID: 0}
-  openDoor: {fileID: 0}
 --- !u!114 &1985202496
 MonoBehaviour:
   m_ObjectHideFlags: 0

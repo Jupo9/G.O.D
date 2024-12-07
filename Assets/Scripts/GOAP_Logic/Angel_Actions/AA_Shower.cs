@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class AA_Shower : Actions
 {
-
-    public new ParticleSystem particleSystem;
-
-    public Animator openDoor;
+    private Building_Shower buildingShower;
 
     private void Start()
     {
-        if (openDoor == null)
-        {
-            Transform childTransform = transform.Find("ShowerDoor");
+        GameObject showerBuilding = GameObject.FindWithTag("Shower");
 
-            if (childTransform != null)
-            {
-                openDoor = childTransform.GetComponent<Animator>();
-            }
+        if (showerBuilding != null)
+        {
+            buildingShower = showerBuilding.GetComponent<Building_Shower>();
+        }
+
+        if (buildingShower == null)
+        {
+            Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
         }
     }
 
@@ -30,13 +29,13 @@ public class AA_Shower : Actions
 
     private void CloseDoor()
     {
-        openDoor.Play("Shower Door Close Prototyp");
-        particleSystem.Play();
+        buildingShower.CloseDoorAnimation();
+        buildingShower.StartSteam();
     }
 
     public override bool PostPerform()
     {
-        particleSystem.Stop();
+        buildingShower.StopSteam();
         return true;
     }
 
