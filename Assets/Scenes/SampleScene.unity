@@ -2954,6 +2954,8 @@ MonoBehaviour:
   isAvailable: 1
   particleSystem: {fileID: 6512394624405998927}
   openDoor: {fileID: 1384795617}
+  waypointOutside: {fileID: 1664599535}
+  waypointInside: {fileID: 1242766171}
 --- !u!1 &1664599535 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8468711415221155749, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}

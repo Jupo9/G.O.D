@@ -19,11 +19,11 @@ public class AA_PrepareAction : Actions
             Debug.LogWarning("Angel script not found on this GameObject.");
         }
 
-        GameObject showerBuilding = GameObject.FindWithTag("Shower"); 
+        GameObject showerParent = GameObject.FindWithTag("Shower");
 
-        if (showerBuilding != null)
+        if (showerParent != null)
         {
-            buildingShower = showerBuilding.GetComponent<Building_Shower>();
+            buildingShower = showerParent.GetComponentInChildren<Building_Shower>();
         }
 
         if (buildingShower == null)

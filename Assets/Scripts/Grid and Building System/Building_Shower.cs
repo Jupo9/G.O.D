@@ -10,6 +10,9 @@ public class Building_Shower : MonoBehaviour
 
     public Animator openDoor;
 
+    public GameObject waypointOutside;
+    public GameObject waypointInside;
+
     private void Start()
     {
         if (openDoor == null)

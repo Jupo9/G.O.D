@@ -8,11 +8,11 @@ public class AA_Shower : Actions
 
     private void Start()
     {
-        GameObject showerBuilding = GameObject.FindWithTag("Shower");
+        GameObject showerParent = GameObject.FindWithTag("Shower");
 
-        if (showerBuilding != null)
+        if (showerParent != null)
         {
-            buildingShower = showerBuilding.GetComponent<Building_Shower>();
+            buildingShower = showerParent.GetComponentInChildren<Building_Shower>();
         }
 
         if (buildingShower == null)
