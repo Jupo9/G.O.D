@@ -56,9 +56,45 @@ public class AA_PrepareAction : Actions
             angelScript.available = false;
         }
 
-        if (buildingShower != null && wantShower)
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
+        if (buildings.Length == 0)
+        {
+            return false;
+        }
+
+        GameObject closestBuilding = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject build in buildings)
+        {
+            Building_Shower buildingShowerScript = build.GetComponentInParent<Building_Shower>();
+            if (buildingShowerScript != null && buildingShowerScript.isAvailable)
+            {
+                float distance = Vector3.Distance(this.transform.position, build.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBuilding = build;
+                }
+            }
+
+        }
+
+        if (closestBuilding == null)
+        {
+            return false;
+        }
+
+        target = closestBuilding;
+        agent.SetDestination(target.transform.position);
+
+
+        buildingShower = closestBuilding.GetComponentInParent<Building_Shower>();
+        if (buildingShower == null)
         {
             buildingShower.isAvailable = false;
+            Debug.LogWarning("Building_Shower script not found on the closest building.");
+            return false;
         }
 
         return true;
@@ -67,6 +103,7 @@ public class AA_PrepareAction : Actions
     public override bool PostPerform()
     {
         wantShower = false;
+        angelScript.isStunned = true;
         return true;
     }
 }

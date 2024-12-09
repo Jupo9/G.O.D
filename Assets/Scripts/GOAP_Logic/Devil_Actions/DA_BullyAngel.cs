@@ -58,7 +58,10 @@ public class DA_BullyAngel : Actions
             }
         }
 
-        if (closestAngel == null) return false;
+        if (closestAngel == null)
+        {
+            return false;
+        }
 
         target = closestAngel;
         agent.SetDestination(target.transform.position);

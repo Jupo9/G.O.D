@@ -5,7 +5,7 @@ using UnityEngine;
 public class Angel : Agents
 {
     public bool available = true;
-    public bool isPunshable = false;
+    public bool isStunned = false;
 
     protected override void Start()
     {
@@ -16,7 +16,7 @@ public class Angel : Agents
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Devil") && isPunshable)
+        if (other.CompareTag("Devil") && isStunned)
         {
             Invoke("PrepareStun", 2f);
         }
@@ -34,7 +34,7 @@ public class Angel : Agents
     private void PrepareStun()
     {
         available = false;
-        isPunshable = false;
+        isStunned = false;
         StartCoroutine("StunAngel");
     }
 

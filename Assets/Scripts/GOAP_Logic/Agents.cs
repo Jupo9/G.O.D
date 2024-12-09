@@ -121,9 +121,9 @@ public class Agents : MonoBehaviour
         {
             if (currentAction != null && currentAction.running)
             {
-                if (currentAction is AA_Shower)
+                if (currentAction is AA_PrepareAction)
                 {
-                    /// Implement Shower function
+                    ///Implentieren von Methoden
                 }
 
                 if (currentAction != null && currentAction.running)

@@ -31,25 +31,67 @@ public class AA_CleanAction : Actions
 
     public override bool PrePerform()
     {
-        buildingShower.OpenDoorAnimation();
+        agent.isStopped = true;
         StartCoroutine(WaitBeforeAction());
         return false;
     }
 
     public override bool PostPerform()
     {
+        if (angelScript != null)
+        {
+            angelScript.available = true;
+            angelScript.isStunned = false;
+        }
+
         return true;
     }
 
     private IEnumerator WaitBeforeAction() 
     {
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
+        if (buildings.Length == 0)
+        {
+            yield return false;
+        }
+
+        GameObject closestBuilding = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject build in buildings)
+        {
+            float distance = Vector3.Distance(this.transform.position, build.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestBuilding = build;
+            }
+        }
+
+        if (closestBuilding == null)
+        {
+            yield return false;
+        }
+
+        target = closestBuilding;
+        agent.SetDestination(target.transform.position);
+
+        buildingShower = closestBuilding.GetComponentInParent<Building_Shower>();
+        if (buildingShower == null)
+        {
+            Debug.LogWarning("Building_Shower script not found on the closest building.");
+            yield return false;
+        }
+
+        buildingShower.OpenDoorAnimation();
+
         yield return new WaitForSeconds(4);
 
         agent.isStopped = false;
-        agent.SetDestination(target.transform.position);
-
         yield return new WaitForSeconds(2);
 
         buildingShower.CloseDoorAnimation();
+        buildingShower.isAvailable = true;
+
     }
 }

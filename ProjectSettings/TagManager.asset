@@ -7,10 +7,12 @@ TagManager:
   - Angel
   - Devil
   - NavMesh
-  - Chilling
-  - Steam
   - Shower
   - Iron
+  - WO_Shower
+  - WI_Shower
+  - WO_Iron
+  - WI_Iron
   layers:
   - Default
   - TransparentFX

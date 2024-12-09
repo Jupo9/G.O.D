@@ -265,8 +265,6 @@ Transform:
   - {fileID: 933513599977787521}
   - {fileID: 3934614252000965613}
   - {fileID: 5422073438252116188}
-  - {fileID: 7116053386096538881}
-  - {fileID: 1712194448693308008}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6776721237002352407
@@ -314,7 +312,7 @@ GameObject:
   - component: {fileID: 1712194448693308008}
   m_Layer: 0
   m_Name: Waypoint_Inside
-  m_TagString: Untagged
+  m_TagString: WI_Shower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -327,12 +325,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6916836039928550523}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.5, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: -0.00012195113, y: 0.00007035384, z: -0.010060977}
+  m_LocalScale: {x: 0.012195116, y: 0.0060975603, z: 0.01219512}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1259606297831886261}
+  m_Father: {fileID: 933513599977787521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7922151266981640712
 GameObject:
@@ -470,7 +468,7 @@ GameObject:
   - component: {fileID: 7116053386096538881}
   m_Layer: 0
   m_Name: Waypoint_Outside
-  m_TagString: Untagged
+  m_TagString: WO_Shower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -483,12 +481,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8468711415221155749}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0.5, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: 0.0242683, y: 0.00007035384, z: -0.010060977}
+  m_LocalScale: {x: 0.012195116, y: 0.0060975603, z: 0.01219512}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1259606297831886261}
+  m_Father: {fileID: 933513599977787521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8995843350765704012
 GameObject:
@@ -631,17 +629,33 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3249190833553948243, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.019
+      value: 1.0189991
       objectReference: {fileID: 0}
     - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.379
+      value: 3.3790002
       objectReference: {fileID: 0}
     - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.009
+      value: 1.0089998
       objectReference: {fileID: 0}
     - target: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
       propertyPath: m_LocalRotation.w
@@ -679,6 +693,11 @@ PrefabInstance:
 --- !u!4 &3934614252000965613 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6189059522783341165, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
+  m_PrefabInstance: {fileID: 7167894459391875456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4055977048694973881 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6570966993310252089, guid: c7190dccc424bef47bef45e3f8c00a01, type: 3}
   m_PrefabInstance: {fileID: 7167894459391875456}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8538404944909855364
@@ -754,11 +773,20 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7116053386096538881}
+    - targetCorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1712194448693308008}
+    - targetCorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 5632757772617344777}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2811472574514097038}
+    - targetCorrespondingSourceObject: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 791416703526018704}
   m_SourcePrefab: {fileID: 100100000, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
 --- !u!1 &558253942700263995 stripped
 GameObject:
@@ -786,6 +814,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03772991, y: 0.0033758197, z: 0.020000007}
   m_Center: {x: 0.008865054, y: -0.00018221249, z: 3.0490105e-19}
+--- !u!114 &791416703526018704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558253942700263995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abe8eec4af65b044bcf3820710bfa71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAvailable: 1
+  particleSystem: {fileID: 4055977048694973881}
+  openDoor: {fileID: 4579197052335604178}
+  waypointOutside: {fileID: 8468711415221155749}
+  waypointInside: {fileID: 6916836039928550523}
 --- !u!4 &933513599977787521 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}

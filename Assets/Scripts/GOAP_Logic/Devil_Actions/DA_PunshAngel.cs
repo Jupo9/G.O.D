@@ -9,7 +9,7 @@ public class DA_PunshAngel : Actions
         Angel angelScript = other.GetComponent<Angel>();
         if (angelScript != null)
         {
-            angelScript.isPunshable = true; 
+            angelScript.isStunned = true; 
             Debug.Log($"{angelScript.name} is now punshable by {this.name}.");
         }
     }
@@ -27,7 +27,7 @@ public class DA_PunshAngel : Actions
             float distance = Vector3.Distance(this.transform.position, angel.transform.position);
             Angel angelScript = angel.GetComponent<Angel>();
 
-            if (distance < closestDistance && angelScript != null && !angelScript.isPunshable)
+            if (distance < closestDistance && angelScript != null && !angelScript.isStunned)
             {
                 closestDistance = distance;
                 closestAngel = angel;

@@ -24,6 +24,43 @@ public class AA_Shower : Actions
     public override bool PrePerform()
     {
         Invoke("CloseDoor", 2f);
+
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
+        if (buildings.Length == 0)
+        {
+            return false;
+        }
+
+        GameObject closestBuilding = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject build in buildings)
+        {
+            float distance = Vector3.Distance(this.transform.position, build.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestBuilding = build;
+            }
+        }
+
+        if (closestBuilding == null)
+        {
+            return false;
+        }
+
+        target = closestBuilding;
+        agent.SetDestination(target.transform.position);
+
+        buildingShower = closestBuilding.GetComponentInParent<Building_Shower>();
+        if (buildingShower == null)
+        {
+            Debug.LogWarning("Building_Shower script not found on the closest building.");
+            return false;
+        }
+
+        buildingShower.isAvailable = false;
+
         return true;
     }
 
