@@ -58,10 +58,11 @@ public class DA_PrepareAction : Actions
         buildingIronMaiden = closestBuilding.GetComponentInParent<Building_IronMaiden>();
         if (buildingIronMaiden == null)
         {
-            buildingIronMaiden.isAvailable = false;
             Debug.LogWarning("Building_IronMaiden script not found on the closest building.");
             return false;
         }
+
+        buildingIronMaiden.isAvailable = false;
 
         return true;
     }

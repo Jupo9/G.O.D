@@ -6,6 +6,7 @@ public class AA_CleanAction : Actions
 {
     private Angel angelScript;
     private Building_Shower buildingShower;
+    private Building_Light buildingLight;
 
     private void Start()
     {
@@ -16,23 +17,52 @@ public class AA_CleanAction : Actions
             Debug.LogWarning("Angel script not found on this GameObject.");
         }
 
-        GameObject showerParent = GameObject.FindWithTag("Shower");
-
-        if (showerParent != null)
+        if (targetTag == "WO_Shower")
         {
-            buildingShower = showerParent.GetComponentInChildren<Building_Shower>();
+            GameObject showerParent = GameObject.FindWithTag("Shower");
+
+            if (showerParent != null)
+            {
+                buildingShower = showerParent.GetComponentInChildren<Building_Shower>();
+            }
+
+            if (buildingShower == null)
+            {
+                Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
+            }
         }
 
-        if (buildingShower == null)
+        if (targetTag == "WO_Light")
         {
-            Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
+            GameObject lightParent = GameObject.FindWithTag("LIGHT");
+
+            if (lightParent != null)
+            {
+                buildingLight = lightParent.GetComponentInChildren<Building_Light>();
+            }
+
+            if (buildingLight == null)
+            {
+                Debug.LogWarning("Building_Light script not found on LightBuilding.");
+            }
         }
     }
 
     public override bool PrePerform()
     {
         agent.isStopped = true;
-        StartCoroutine(WaitBeforeAction());
+
+        if (targetTag == "WO_Shower")
+        {
+            StartCoroutine(WaitBeforeActionShower());
+
+        }
+
+        if (targetTag == "WO_Light")
+        {
+            StartCoroutine(WaitBeforeActionLight());
+        }
+
         return false;
     }
 
@@ -47,7 +77,7 @@ public class AA_CleanAction : Actions
         return true;
     }
 
-    private IEnumerator WaitBeforeAction() 
+    private IEnumerator WaitBeforeActionShower() 
     {
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
@@ -93,5 +123,50 @@ public class AA_CleanAction : Actions
         buildingShower.CloseDoorAnimation();
         buildingShower.isAvailable = true;
 
+    }
+
+    private IEnumerator WaitBeforeActionLight()
+    {
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
+        if (buildings.Length == 0)
+        {
+            yield return false;
+        }
+
+        GameObject closestBuilding = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject build in buildings)
+        {
+            float distance = Vector3.Distance(this.transform.position, build.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestBuilding = build;
+            }
+        }
+
+        if (closestBuilding == null)
+        {
+            yield return false;
+        }
+
+        target = closestBuilding;
+        agent.SetDestination(target.transform.position);
+
+        buildingLight = closestBuilding.GetComponentInParent<Building_Light>();
+        if (buildingLight == null)
+        {
+            Debug.LogWarning("Building_Light script not found on the closest building.");
+            yield return false;
+        }
+
+        yield return new WaitForSeconds(4);
+
+        agent.isStopped = false;
+
+        yield return new WaitForSeconds(2);
+
+        buildingLight.isAvailable = true;
     }
 }

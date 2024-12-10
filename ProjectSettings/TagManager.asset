@@ -13,6 +13,11 @@ TagManager:
   - WI_Shower
   - WO_Iron
   - WI_Iron
+  - Steam
+  - FIRE
+  - LIGHT
+  - WO_Light
+  - WI_Light
   layers:
   - Default
   - TransparentFX
