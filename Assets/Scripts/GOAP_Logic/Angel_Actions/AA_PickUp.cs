@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AA_Transport : Actions
+public class AA_PickUp : Actions
 {
-    private Building_Storage storage;
+    private Building_Light lightBuilding;
 
     private GameObject lightResource;
 
@@ -37,12 +37,12 @@ public class AA_Transport : Actions
         GameObject closestBuilding = null;
         float closestDistance = Mathf.Infinity;
 
-        foreach(GameObject build in buildings)
+        foreach (GameObject build in buildings)
         {
-            Building_Storage storageScript = build.GetComponentInParent<Building_Storage>();
+            Building_Light lightScript = build.GetComponentInParent<Building_Light>();
             float distance = Vector3.Distance(this.transform.position, build.transform.position);
-            
-            if (distance < closestDistance) 
+
+            if (distance < closestDistance)
             {
                 closestDistance = distance;
                 closestBuilding = build;
@@ -60,8 +60,8 @@ public class AA_Transport : Actions
         target = closestBuilding;
         agent.SetDestination(target.transform.position);
 
-        storage = closestBuilding.GetComponentInParent<Building_Storage>();
-        if (storage == null) 
+        lightBuilding = closestBuilding.GetComponentInParent<Building_Light>();
+        if (lightBuilding == null)
         {
             Debug.LogWarning("Building_Storage script missing on the closest building.");
             return false;
@@ -73,20 +73,15 @@ public class AA_Transport : Actions
 
     public override bool PostPerform()
     {
-        if (lightResource != null)
-        {
-            lightResource.SetActive(false);
-        }
+        lightResource.SetActive(true);
 
-        // Erhöhen des Light Counters im Speicher
-        if (storage != null)
+
+        if (lightBuilding != null)
         {
-            storage.IncreaseLightCounter();
+            lightBuilding.DecreaseLightAmount();
         }
 
         return true;
     }
 
 }
-
-

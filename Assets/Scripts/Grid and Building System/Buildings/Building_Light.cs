@@ -47,6 +47,11 @@ public class Building_Light : MonoBehaviour
         lightAmount += 1f;
     }
 
+    public void DecreaseLightAmount()
+    {
+        lightAmount -= 1f;
+    }
+
     public void TestStandby()
     {
         if (isAvailable)

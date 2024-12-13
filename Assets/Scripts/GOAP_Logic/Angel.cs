@@ -7,6 +7,8 @@ public class Angel : Agents
     public bool available = true;
     public bool isStunned = false;
 
+    public GameObject lightResource;
+
     protected override void Start()
     {
         base.Start();

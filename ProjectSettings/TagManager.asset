@@ -20,6 +20,7 @@ TagManager:
   - WI_Light
   - Store
   - Storage
+  - LightStore
   layers:
   - Default
   - TransparentFX
