@@ -161,12 +161,14 @@ public class AA_CleanAction : Actions
             yield return false;
         }
 
+        buildingLight.IncreaseLightAmount();
+
         yield return new WaitForSeconds(4);
 
         agent.isStopped = false;
 
         yield return new WaitForSeconds(2);
 
-        buildingLight.isAvailable = true;
+        buildingLight.angelInside = false;
     }
 }

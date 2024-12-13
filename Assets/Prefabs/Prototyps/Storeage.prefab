@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4197674726856843870}
   m_Layer: 0
   m_Name: LightBuilding
-  m_TagString: Untagged
+  m_TagString: Store
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -569,7 +569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1259606297831886261}
   m_Layer: 0
-  m_Name: LightFarm
+  m_Name: Storeage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 2448057355718456091}
   m_Layer: 0
   m_Name: LightBuildingManager
-  m_TagString: LIGHT
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

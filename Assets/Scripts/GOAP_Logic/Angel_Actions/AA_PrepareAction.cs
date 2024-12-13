@@ -151,6 +151,7 @@ public class AA_PrepareAction : Actions
                 return false;
             }
 
+            buildingLight.angelInside = true;
             buildingLight.isAvailable = false;
         }
 

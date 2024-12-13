@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_FlameShader
-  m_Shader: {fileID: -6465566751694194690, guid: fee5fe5388c4ae64a84b69f0913a895a, type: 3}
+  m_Name: Shader Graphs_FlameShaderSphere
+  m_Shader: {fileID: -6465566751694194690, guid: f48645e907c96c345aabf1a2f48a5fa2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,24 +24,24 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: a193eee333ed70b41b395cbc681e8da4, type: 3}
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _DissolveAmount: 1.5
-    - _DissolveScale: 2
-    - _DistortionScale: 8
+    - _DissolveAmount: 1.2
+    - _DissolveScale: 5
+    - _DistortionScale: 5
     - _DsitortionAmount: 0.1
     m_Colors:
-    - _Color: {r: 279.48013, g: 17.70915, b: 843.2941, a: 0}
-    - _DissolveSpeed: {r: -0.1, g: -0.6, b: 0, a: 0}
-    - _DistortionSpeed: {r: 0, g: -0.2, b: 0, a: 0}
+    - _Color: {r: 766.9961, g: 108.423515, b: 179.18433, a: 0}
+    - _DissolveSpeed: {r: -0.1, g: -0.5, b: 0, a: 0}
+    - _DistortionSpeed: {r: 0, g: -0.3, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6727177151806359288
+--- !u!114 &4838139791961570047
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
