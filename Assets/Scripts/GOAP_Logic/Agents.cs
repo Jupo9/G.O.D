@@ -28,7 +28,7 @@ public class Agents : MonoBehaviour
     public Actions currentAction;
     SubGoal currentGoal;
 
-    public float needChill = 100f;
+    /*public float needChill = 100f;
     public float needEvil = 100f;
 
     public float needShower = 100f;
@@ -39,7 +39,7 @@ public class Agents : MonoBehaviour
 
     private bool isInChillingZone = false;
     private bool isEvil = false;
-    private bool isCheckingProbability = false;
+    private bool isCheckingProbability = false;*/
 
     protected virtual void Start()
     {
@@ -49,10 +49,10 @@ public class Agents : MonoBehaviour
             actions.Add(a);
         }
 
-        StartCoroutine(NeedDecay());
+        //StartCoroutine(NeedDecay());
     }
         
-    private void Update()
+    /*private void Update()
     {
         if(isEvil)
         {
@@ -84,7 +84,7 @@ public class Agents : MonoBehaviour
             {
                 Destroy(this.gameObject);
                 yield break;
-            }*/
+            }
         }
     }
 
@@ -96,7 +96,7 @@ public class Agents : MonoBehaviour
     public void StopFillEvil()
     {
         isEvil = false;
-    }
+    }*/
 
     bool invoked = false;
     void CompleteAction()
@@ -191,11 +191,11 @@ public class Agents : MonoBehaviour
         {
             if (currentAction != null && currentAction.running)
             {
-                if (currentAction is DA_Chilling && isInChillingZone)
+                /*if (currentAction is DA_Chilling && isInChillingZone)
                 {
                     needChill = Mathf.Min(100f, needChill + Time.deltaTime * 10f);
                     if (needChill > 100f) needChill = 100f;
-                }
+                }*/
 
                 if (currentAction is DA_BullyAngel)
                 {
@@ -294,17 +294,17 @@ public class Agents : MonoBehaviour
             else
             {
                 //Debug.Log("No Action in Queue");
-                if (!isCheckingProbability)
+               /* if (!isCheckingProbability)
                 {
                     StartCoroutine(CheckProbabilityRoutine());
-                }
+                }*/
             }
 
         }
     }
 
   
-    private IEnumerator CheckProbabilityRoutine()
+   /* private IEnumerator CheckProbabilityRoutine()
     {
         isCheckingProbability = true;
         while(isCheckingProbability)
@@ -342,18 +342,16 @@ public class Agents : MonoBehaviour
         Debug.Log("Resetting planner and actions...");
         foreach (Actions action in actions)
         {
-            // Setze die Aktionen zurück, indem du ihre Zustände zurücksetzt oder andere Parameter initialisierst
             action.running = false; // Beispiel: Stoppe alle laufenden Aktionen
             action.target = null; // Setze das Ziel der Aktionen zurück
         }
 
-        // Lösche den aktuellen Plan und die Aktion
         planner = null;
         actionQueue = null;
         currentAction = null;
         currentGoal = null;
 
         Debug.Log("Planner reset complete. Actions will loop.");
-    }
+    }*/
 
 }

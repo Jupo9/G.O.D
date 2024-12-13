@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Devil : Agents
 {
+    public float needEvil = 100f;
+    public float needChill = 100f;
+    public float needJoy = 100f;
+    public float needPower = 100f;
 
     protected override void Start()
     {

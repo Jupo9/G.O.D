@@ -78,7 +78,6 @@ public class AA_Transport : Actions
             lightResource.SetActive(false);
         }
 
-        // Erhöhen des Light Counters im Speicher
         if (storage != null)
         {
             storage.IncreaseLightCounter();

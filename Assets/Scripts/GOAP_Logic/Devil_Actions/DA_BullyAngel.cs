@@ -22,7 +22,8 @@ public class DA_BullyAngel : Actions
 
         if (angelScript != null && angelScript.available)
         {
-            agentsScript.FillEvil();
+            Debug.Log("FillEvil");
+            //agentsScript.FillEvil();
         }
     }
 
@@ -35,7 +36,8 @@ public class DA_BullyAngel : Actions
 
             if (angelScript != null)
             {
-                 agentsScript.StopFillEvil();
+                Debug.Log("StipFillEvil");
+                //agentsScript.StopFillEvil();
             }
         }
     }
