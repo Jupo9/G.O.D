@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class Angel : Agents
 {
+    [Header("Believes")]
+    public float needEnjoy = 100f;
+    public float needBelieve = 100f;
+    public float needPower = 100f;
+    public float needPurity = 100f;
+
+    public float decayEnjoy = 1.0f;
+    public float decayBelieve = 1.0f;
+    public float decayPower = 1.0f;
+    public float decayPurity = 1.0f;
+
+    [Header("Status")]
     public bool available = true;
     public bool isStunned = false;
 
@@ -14,6 +26,8 @@ public class Angel : Agents
         base.Start();
         SubGoal s1 = new SubGoal("Survive", 1, true);
         goals.Add(s1, 3);
+
+        StartCoroutine("LostOverTime");
     }
 
     private void OnTriggerStay(Collider other)
@@ -33,6 +47,19 @@ public class Angel : Agents
 
     }
     
+    IEnumerator LostOverTime()
+    {
+        while (true) 
+        {
+            needEnjoy -= decayEnjoy;
+            needBelieve -= decayBelieve;
+            needPower -= decayPower;
+            needPurity -= decayPurity;
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
     private void PrepareStun()
     {
         available = false;

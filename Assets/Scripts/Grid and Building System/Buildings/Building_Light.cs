@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class Building_Light : MonoBehaviour
 {
+    [Header("Conditions")]
     public bool isAvailable = true;
     public bool angelInside = false;
+    public bool calculate = false;
 
+    [Header("Light Inputs")]
     public float maxAmount = 4f;
     public float lightAmount = 0f;
 
+    public GameObject lightResource;
+
+    [Header("Waypoints")]
     public GameObject waypointOutside;
     public GameObject waypointInside;
 
-    public GameObject lightResource;
 
     private void Update()
     {

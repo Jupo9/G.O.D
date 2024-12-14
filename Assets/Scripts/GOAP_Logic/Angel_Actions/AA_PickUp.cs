@@ -40,12 +40,18 @@ public class AA_PickUp : Actions
         foreach (GameObject build in buildings)
         {
             Building_Light lightScript = build.GetComponentInParent<Building_Light>();
-            float distance = Vector3.Distance(this.transform.position, build.transform.position);
 
-            if (distance < closestDistance)
+            if (lightScript != null && lightScript.lightAmount > 0 && !lightScript.calculate)
             {
-                closestDistance = distance;
-                closestBuilding = build;
+                float distance = Vector3.Distance(this.transform.position, build.transform.position);
+
+                lightScript.calculate = true;
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBuilding = build;
+                }
             }
 
         }
@@ -79,6 +85,7 @@ public class AA_PickUp : Actions
         if (lightBuilding != null)
         {
             lightBuilding.DecreaseLightAmount();
+            lightBuilding.calculate = false;
         }
 
         return true;
