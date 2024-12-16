@@ -4,44 +4,34 @@ using UnityEngine;
 
 public class DA_Transport : Actions
 {
-    private Building_Light buildingLight;
     private Building_Storage storage;
+    private GOD god;
 
-    private bool wantTransport = false;
+    private GameObject devilResource;
 
-    private void Start()
-    {
-        GameObject lightParent = GameObject.FindWithTag("LIGHT");
-
-        if (lightParent != null)
-        {
-            buildingLight = lightParent.GetComponentInChildren<Building_Light>();
-        }
-
-        if (buildingLight == null)
-        {
-            Debug.LogWarning("Building_Light script not found on LightBuilding.");
-        }
-
-        storage = GetComponentInChildren<Building_Storage>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Store") && wantTransport)
-        {
-            Debug.Log("hitStore");
-            storage.DecreaseFireCounter();
-        }
-    }
+    private Devil devilScript;
 
     public override bool PrePerform()
     {
-        wantTransport = true;
+        devilScript = GetComponent<Devil>();
+
+        if (devilScript == null)
+        {
+            Debug.LogWarning("Angel script not found on this GameObject.");
+        }
+
+        devilResource = devilScript.fireObject;
+
+        if (devilResource == null)
+        {
+            Debug.LogWarning("No LIGHT resource found to transport.");
+            return false;
+        }
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
         {
+            Debug.LogWarning("No building found with target Tag Store");
             return false;
         }
 
@@ -50,29 +40,59 @@ public class DA_Transport : Actions
 
         foreach (GameObject build in buildings)
         {
-            Building_Light buildingLightScript = build.GetComponentInParent<Building_Light>();
-            float distance = Vector3.Distance(this.transform.position, build.transform.position);
-            if (distance < closestDistance)
+            if (targetTag == "Store")
             {
-                closestDistance = distance;
-                closestBuilding = build;
+                Building_Storage storageScript = build.GetComponentInParent<Building_Storage>();
+                float distance = Vector3.Distance(this.transform.position, build.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBuilding = build;
+                }
             }
 
+            if (targetTag == "GOD_WO")
+            {
+                GOD GODScript = build.GetComponentInParent<GOD>();
+                float distance = Vector3.Distance(this.transform.position, build.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBuilding = build;
+                }
+            }
         }
 
         if (closestBuilding == null)
         {
+            Debug.LogWarning("No valid building found for transport.");
             return false;
         }
+
 
         target = closestBuilding;
         agent.SetDestination(target.transform.position);
 
-        buildingLight = closestBuilding.GetComponentInParent<Building_Light>();
-        if (buildingLight == null)
+        if (targetTag == "Store")
         {
-            Debug.LogWarning("Building_Light script not found on the closest building.");
-            return false;
+            storage = closestBuilding.GetComponentInParent<Building_Storage>();
+            if (storage == null)
+            {
+                Debug.LogWarning("Building_Storage script missing on the closest building.");
+                return false;
+            }
+        }
+
+        if (targetTag == "GOD_WO")
+        {
+            god = closestBuilding.GetComponentInParent<GOD>();
+            if (god == null)
+            {
+                Debug.LogWarning("GOD script missing on the closest building.");
+                return false;
+            }
         }
 
         return true;
@@ -80,7 +100,27 @@ public class DA_Transport : Actions
 
     public override bool PostPerform()
     {
-        wantTransport = false;
+        if (devilResource != null)
+        {
+            devilResource.SetActive(false);
+        }
+
+        if (targetTag == "Store")
+        {
+            if (storage != null)
+            {
+                storage.IncreaseFireCounter();
+            }
+        }
+
+        if (targetTag == "GOD_WO")
+        {
+            god.IncreaseFireRessource();
+        }
+
+
         return true;
     }
+
 }
+

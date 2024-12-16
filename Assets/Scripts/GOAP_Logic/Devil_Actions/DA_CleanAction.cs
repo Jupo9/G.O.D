@@ -6,25 +6,56 @@ public class DA_CleanAction : Actions
 {
     private Building_IronMaiden buildingIronMaiden;
 
+    private Building_Fire buildingFire;
+
     private void Start()
     {
-        GameObject ironParent = GameObject.FindWithTag("Iron");
-
-        if (ironParent != null)
+        if (targetTag == "WO_Iron")
         {
-            buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
+            GameObject ironParent = GameObject.FindWithTag("Iron");
+
+            if (ironParent != null)
+            {
+                buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
+            }
+
+            if (buildingIronMaiden == null)
+            {
+                Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
+            }
         }
 
-        if (buildingIronMaiden == null)
+        if (targetTag == "WO_Fire")
         {
-            Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
+            GameObject fireParent = GameObject.FindWithTag("Iron");
+
+            if (fireParent != null)
+            {
+                buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
+            }
+
+            if (buildingFire == null)
+            {
+                Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
+            }
         }
+
     }
 
     public override bool PrePerform()
     {
         agent.isStopped = true;
-        StartCoroutine(WaitBeforeAction());
+
+        if (targetTag == "WO_Iron")
+        {
+            StartCoroutine(WaitBeforeActionLight());
+        }
+
+        if (targetTag == "WO_Fire")
+        {
+            StartCoroutine(WaitBeforeActionFire());
+        }
+
         return false;
     }
 
@@ -33,7 +64,7 @@ public class DA_CleanAction : Actions
         return true;
     }
 
-    private IEnumerator WaitBeforeAction()
+    private IEnumerator WaitBeforeActionLight()
     {
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
@@ -78,5 +109,53 @@ public class DA_CleanAction : Actions
         yield return new WaitForSeconds(2);
 
         buildingIronMaiden.isAvailable = true;
+    }
+
+    private IEnumerator WaitBeforeActionFire()
+    {
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
+        if (buildings.Length == 0)
+        {
+            yield return false;
+        }
+
+        GameObject closestBuilding = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject build in buildings)
+        {
+            float distance = Vector3.Distance(this.transform.position, build.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestBuilding = build;
+            }
+        }
+
+        if (closestBuilding == null)
+        {
+            yield return false;
+        }
+
+        target = closestBuilding;
+        agent.SetDestination(target.transform.position);
+
+        buildingFire = closestBuilding.GetComponentInParent<Building_Fire>();
+        if (buildingFire == null)
+        {
+            Debug.LogWarning("Building_Fire script not found on the closest building.");
+            yield return false;
+        }
+
+        buildingFire.IncreaseFireAmount();
+
+        yield return new WaitForSeconds(4);
+
+        agent.isStopped = false;
+
+        yield return new WaitForSeconds(2);
+
+        buildingFire.isAvailable = true;
+        buildingFire.devilInside = false;
     }
 }

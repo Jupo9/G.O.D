@@ -5,19 +5,38 @@ using UnityEngine;
 public class DA_PrepareAction : Actions
 {
     private Building_IronMaiden buildingIronMaiden;
+    private Building_Fire buildingFire;
 
     private void Start()
     {
-        GameObject ironParent = GameObject.FindWithTag("Iron");
-
-        if (ironParent != null)
+        if (targetTag == "WO_Iron")
         {
-            buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
+            GameObject ironParent = GameObject.FindWithTag("Iron");
+
+            if (ironParent != null)
+            {
+                buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
+            }
+
+            if (buildingIronMaiden == null)
+            {
+                Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
+            }
         }
 
-        if (buildingIronMaiden == null)
+        if (targetTag == "WO_Fire")
         {
-            Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
+            GameObject fireParent = GameObject.FindWithTag("FIRE");
+
+            if (fireParent != null)
+            {
+                buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
+            }
+
+            if (buildingFire == null)
+            {
+                Debug.LogWarning("Building_Fire script not found on FireBuilding.");
+            }
         }
     }
 
@@ -34,17 +53,35 @@ public class DA_PrepareAction : Actions
 
         foreach (GameObject build in buildings)
         {
-            Building_IronMaiden buildingIronMaidenScript = build.GetComponentInParent<Building_IronMaiden>();
-            if (buildingIronMaidenScript != null && buildingIronMaidenScript.isAvailable)
+
+            if (targetTag == "WO_Iron")
             {
-                float distance = Vector3.Distance(this.transform.position, build.transform.position);
-                if (distance < closestDistance)
+                Building_IronMaiden buildingIronMaidenScript = build.GetComponentInParent<Building_IronMaiden>();
+                if (buildingIronMaidenScript != null && buildingIronMaidenScript.isAvailable)
                 {
-                    closestDistance = distance;
-                    closestBuilding = build;
+                    float distance = Vector3.Distance(this.transform.position, build.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestBuilding = build;
+                    }
                 }
             }
 
+            if (targetTag == "WO_Fire")
+            {
+                Building_Fire buildingFireScript = build.GetComponentInParent<Building_Fire>();
+
+                if (buildingFireScript != null && buildingFireScript.isAvailable)
+                {
+                    float distance = Vector3.Distance(this.transform.position, build.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestBuilding = build;
+                    }
+                }
+            }
         }
 
         if (closestBuilding == null)
@@ -55,14 +92,30 @@ public class DA_PrepareAction : Actions
         target = closestBuilding;
         agent.SetDestination(target.transform.position);
 
-        buildingIronMaiden = closestBuilding.GetComponentInParent<Building_IronMaiden>();
-        if (buildingIronMaiden == null)
+        if (targetTag == "WO_Iron")
         {
-            Debug.LogWarning("Building_IronMaiden script not found on the closest building.");
-            return false;
+            buildingIronMaiden = closestBuilding.GetComponentInParent<Building_IronMaiden>();
+            if (buildingIronMaiden == null)
+            {
+                Debug.LogWarning("Building_IronMaiden script not found on the closest building.");
+                return false;
+            }
+
+            buildingIronMaiden.isAvailable = false;
         }
 
-        buildingIronMaiden.isAvailable = false;
+        if (targetTag == "WO_Fire")
+        {
+            buildingFire = closestBuilding.GetComponentInParent<Building_Fire>();
+            if (buildingFire == null)
+            {
+                Debug.LogWarning("Building_Fire script not found on the closest building.");
+                return false;
+            }
+
+            buildingFire.isAvailable = false;
+            buildingFire.devilInside = true;
+        }
 
         return true;
     }

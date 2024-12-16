@@ -21,6 +21,11 @@ TagManager:
   - Store
   - Storage
   - LightStore
+  - GOD_WO
+  - GOD
+  - WO_Fire
+  - WI_Fire
+  - FireStore
   layers:
   - Default
   - TransparentFX

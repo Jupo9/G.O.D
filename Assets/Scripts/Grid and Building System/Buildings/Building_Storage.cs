@@ -7,8 +7,10 @@ public class Building_Storage : MonoBehaviour
     public GameObject fireRessource;
     public GameObject lightRessource;
 
-    public float fireCounter;
-    public float lightCounter;
+    public float fireCounter = 0f;
+    public float lightCounter = 0f;
+
+    public bool calculate = false;
 
     private bool fireOn  = false;
     private bool lightOn = false;

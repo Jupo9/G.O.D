@@ -5,6 +5,7 @@ using UnityEngine;
 public class AA_Transport : Actions
 {
     private Building_Storage storage;
+    private GOD god;
 
     private GameObject lightResource;
 
@@ -39,15 +40,29 @@ public class AA_Transport : Actions
 
         foreach(GameObject build in buildings)
         {
-            Building_Storage storageScript = build.GetComponentInParent<Building_Storage>();
-            float distance = Vector3.Distance(this.transform.position, build.transform.position);
-            
-            if (distance < closestDistance) 
+            if (targetTag == "Store")
             {
-                closestDistance = distance;
-                closestBuilding = build;
+                Building_Storage storageScript = build.GetComponentInParent<Building_Storage>();
+                float distance = Vector3.Distance(this.transform.position, build.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBuilding = build;
+                }
             }
 
+            if (targetTag == "GOD_WO")
+            {
+                GOD GODScript = build.GetComponentInParent<GOD>();
+                float distance = Vector3.Distance(this.transform.position, build.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBuilding = build;
+                }
+            }
         }
 
         if (closestBuilding == null)
@@ -60,13 +75,25 @@ public class AA_Transport : Actions
         target = closestBuilding;
         agent.SetDestination(target.transform.position);
 
-        storage = closestBuilding.GetComponentInParent<Building_Storage>();
-        if (storage == null) 
+        if (targetTag == "Store")
         {
-            Debug.LogWarning("Building_Storage script missing on the closest building.");
-            return false;
+            storage = closestBuilding.GetComponentInParent<Building_Storage>();
+            if (storage == null)
+            {
+                Debug.LogWarning("Building_Storage script missing on the closest building.");
+                return false;
+            }
         }
 
+        if (targetTag == "GOD_WO")
+        {
+            god = closestBuilding.GetComponentInParent<GOD>();
+            if (god == null)
+            {
+                Debug.LogWarning("GOD script missing on the closest building.");
+                return false;
+            }
+        }
 
         return true;
     }
@@ -78,10 +105,19 @@ public class AA_Transport : Actions
             lightResource.SetActive(false);
         }
 
-        if (storage != null)
+        if (targetTag == "Store")
         {
-            storage.IncreaseLightCounter();
+            if (storage != null)
+            {
+                storage.IncreaseLightCounter();
+            }
         }
+
+        if (targetTag == "GOD_WO")
+        {
+            god.IncreaseLightRessource();
+        }
+
 
         return true;
     }

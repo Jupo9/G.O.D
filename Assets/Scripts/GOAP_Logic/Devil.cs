@@ -15,6 +15,8 @@ public class Devil : Agents
     public float decayJoy = 1.0f;
     public float decayPower = 1.0f;
 
+    public GameObject fireObject;
+
     protected override void Start()
     {
         base.Start();
