@@ -10,6 +10,7 @@ public class AA_PrepareAction : Actions
     private Building_Shower buildingShower;
     private Building_Light buildingLight;
 
+    public bool done = false;
 
     private void Start()
     {
@@ -160,8 +161,16 @@ public class AA_PrepareAction : Actions
 
     public override bool PostPerform()
     {
-        wantShower = false;
         angelScript.isStunned = true;
+
+        if (targetTag == "WO_Shower")
+        {
+            wantShower = false;
+            Worlds.Instance.GetWorld().SetState("preShower", 1);
+            Debug.Log("preShower wurde zu WorldStates hinzugefügt.");
+            done = true;
+        }
+
         return true;
     }
 }

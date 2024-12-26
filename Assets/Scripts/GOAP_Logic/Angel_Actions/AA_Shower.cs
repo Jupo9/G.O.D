@@ -6,6 +6,8 @@ public class AA_Shower : Actions
 {
     private Building_Shower buildingShower;
 
+    public bool done = false;
+
     private void Start()
     {
         GameObject showerParent = GameObject.FindWithTag("Shower");
@@ -73,6 +75,9 @@ public class AA_Shower : Actions
     public override bool PostPerform()
     {
         buildingShower.StopSteam();
+        Worlds.Instance.GetWorld().SetState("shower", 1);
+        Debug.Log("shower wurde zu WorldStates hinzugefügt.");
+        done = true;
         return true;
     }
 

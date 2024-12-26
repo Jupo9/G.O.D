@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class DA_PunshAngel : Actions
 {
+    private Devil devil;
+
+    public bool done = false;
+
+    private void Start()
+    {
+        devil = GetComponent<Devil>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Angel angelScript = other.GetComponent<Angel>();
         if (angelScript != null)
         {
-            angelScript.isStunned = true; 
+            angelScript.isStunned = true;
+            devil.punshedAngel = true;
             Debug.Log($"{angelScript.name} is now punshable by {this.name}.");
         }
     }
@@ -43,6 +53,9 @@ public class DA_PunshAngel : Actions
 
     public override bool PostPerform()
     {
+        Worlds.Instance.GetWorld().SetState("evil", 1);
+        Debug.Log("evil wurde zu WorldStates hinzugefügt.");
+        done = true;
         return true;
     }
 

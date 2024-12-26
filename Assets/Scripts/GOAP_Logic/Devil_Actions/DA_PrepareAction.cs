@@ -7,6 +7,8 @@ public class DA_PrepareAction : Actions
     private Building_IronMaiden buildingIronMaiden;
     private Building_Fire buildingFire;
 
+    public bool done = false;
+
     private void Start()
     {
         if (targetTag == "WO_Iron")
@@ -122,6 +124,13 @@ public class DA_PrepareAction : Actions
 
     public override bool PostPerform()
     {
+        if (targetTag == "WO_Iron")
+        {
+            Worlds.Instance.GetWorld().SetState("preChill", 1);
+            Debug.Log("preChill wurde zu WorldStates hinzugefügt.");
+            done = true;
+        }
+
         return true;
     }
 }

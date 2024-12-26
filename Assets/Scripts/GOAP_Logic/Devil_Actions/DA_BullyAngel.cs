@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class DA_BullyAngel : Actions
 {
-    private Agents agentsScript;
+    private Devil devil;
 
+    public bool done = false;
     private void Start()
     {
-        agentsScript = GetComponent<Agents>();
-
-        if (agentsScript == null)
-        {
-            Debug.Log("Missing Agents Script!");
-        }
+        devil = GetComponent<Devil>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,8 +18,7 @@ public class DA_BullyAngel : Actions
 
         if (angelScript != null && angelScript.available)
         {
-            Debug.Log("FillEvil");
-            //agentsScript.FillEvil();
+            devil.bullyActive = true; 
         }
     }
 
@@ -36,8 +31,7 @@ public class DA_BullyAngel : Actions
 
             if (angelScript != null)
             {
-                Debug.Log("StipFillEvil");
-                //agentsScript.StopFillEvil();
+                devil.bullyActive = false;
             }
         }
     }
@@ -73,6 +67,9 @@ public class DA_BullyAngel : Actions
 
     public override bool PostPerform()
     {
+        Worlds.Instance.GetWorld().SetState("evil", 1);
+        Debug.Log("evil wurde zu WorldStates hinzugefügt.");
+        done = true;
         return true;
     }
 

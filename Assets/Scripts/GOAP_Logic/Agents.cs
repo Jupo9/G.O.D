@@ -28,18 +28,49 @@ public class Agents : MonoBehaviour
     public Actions currentAction;
     SubGoal currentGoal;
 
-    /*public float needChill = 100f;
-    public float needEvil = 100f;
+    public bool playersWish = false;
+    //private bool idleAction = false;
 
-    public float needShower = 100f;
+    /// <summary>
+    /// Devil Area
+    /// </summary>
 
-    public float lostOverTime = 1f;
+    private bool personalTarget = false;
 
-    private static List<Agents> calmingAgents = new List<Agents>();
+    private bool noticeEvil = false;
+    private bool noticeChill = false;
+    //private bool noticePowerDevil = false;
+    //private bool noticeJoy = false;
 
-    private bool isInChillingZone = false;
-    private bool isEvil = false;
-    private bool isCheckingProbability = false;*/
+    private bool triggerEvil = false;
+    private bool triggerChill = false;
+    //private bool triggerPowerDevil = false; 
+    //private bool triggerJoy = false;
+
+
+    private DA_BullyAngel bullyAngel;
+    private DA_PunshAngel punshAngel;
+    private DA_Chilling chilling;
+    private DA_PrepareAction prepareDevilAction;
+    private DA_CleanAction cleanDevilAction;
+
+    /// <summary>
+    /// Angel Area
+    /// </summary>
+
+    private bool noticePurity = false;
+    //private bool noticeEnjoy = false;
+    //private bool noticePowerAngel = false;
+    //private bool noticeBelieve = false;
+
+    private bool triggerPurity = false;
+    //private bool triggerEnjoy = false;
+    //private bool triggerPowerAngel = false;
+    //private bool triggerBelieve = false;
+
+    private AA_PrepareAction prepareAngelAction;
+    private AA_CleanAction cleanAngelAction;
+    private AA_Shower shower;
 
     protected virtual void Start()
     {
@@ -49,54 +80,21 @@ public class Agents : MonoBehaviour
             actions.Add(a);
         }
 
-        //StartCoroutine(NeedDecay());
-    }
-        
-    /*private void Update()
-    {
-        if(isEvil)
-        {
-            needEvil += lostOverTime;
-        }
-        if(needEvil > 100f)
-        {
-            needEvil = 100f;
-        }
-    }
+        bullyAngel = GetComponent<DA_BullyAngel>();
+        punshAngel = GetComponent<DA_PunshAngel>();
+        chilling = GetComponent<DA_Chilling>();
+        prepareDevilAction = GetComponent<DA_PrepareAction>();
+        cleanDevilAction = GetComponent<DA_CleanAction>();
 
-    private IEnumerator NeedDecay()
-    {
-        while (needChill > 0f || needEvil > 0f || needShower > 0f)
-        {
-            needChill -= lostOverTime;
-            needEvil -= lostOverTime;
-            needShower -= lostOverTime;
+        shower = GetComponent<AA_Shower>();
+        prepareAngelAction = GetComponent<AA_PrepareAction>();
+        cleanAngelAction = GetComponent<AA_CleanAction>();
 
-            yield return new WaitForSeconds(1f);
-
-            /*if (needShower <= 20f && currentGoal == null)
-            {
-                SubGoal s1 = new SubGoal("Survive", 1, true);
-                goals[s1] = 3; 
-            }
-
-            if (needChill <= 0 || needEvil <= 0f || needShower <= 0f)
-            {
-                Destroy(this.gameObject);
-                yield break;
-            }
-        }
+        StartCoroutine("DevilBeliefs");
+        StartCoroutine("AngelBeliefs");
     }
 
-    public void FillEvil()
-    {
-        isEvil = true;
-    }
 
-    public void StopFillEvil()
-    {
-        isEvil = false;
-    }*/
 
     bool invoked = false;
     void CompleteAction()
@@ -191,12 +189,6 @@ public class Agents : MonoBehaviour
         {
             if (currentAction != null && currentAction.running)
             {
-                /*if (currentAction is DA_Chilling && isInChillingZone)
-                {
-                    needChill = Mathf.Min(100f, needChill + Time.deltaTime * 10f);
-                    if (needChill > 100f) needChill = 100f;
-                }*/
-
                 if (currentAction is DA_BullyAngel)
                 {
                     GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
@@ -211,8 +203,14 @@ public class Agents : MonoBehaviour
                         }
                     }
 
+                    if (availableAngels.Count == 0 && !personalTarget)
+                    {
+                        Debug.Log("Missing free Angel");
+                    }
+
                     if (availableAngels.Count > 0)
                     {
+                        personalTarget = true;
                         GameObject nearestAngel = availableAngels
                             .OrderBy(angel => Vector3.Distance(transform.position, angel.transform.position))
                             .First();
@@ -222,15 +220,14 @@ public class Agents : MonoBehaviour
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
                     }
 
-                    else
-                    {
-                        Debug.Log("No available Angels to bully!");
-                    }
+                    punshAngel.done = true;
                 }
 
                 if (currentAction is DA_PunshAngel)
                 {
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
+
+                    bullyAngel.done = true;
                 }
 
                 if(currentAction is GA_MoveAround) 
@@ -294,64 +291,280 @@ public class Agents : MonoBehaviour
             else
             {
                 //Debug.Log("No Action in Queue");
-               /* if (!isCheckingProbability)
-                {
-                    StartCoroutine(CheckProbabilityRoutine());
-                }*/
             }
 
         }
     }
 
-  
-   /* private IEnumerator CheckProbabilityRoutine()
+    private IEnumerator DevilBeliefs()
     {
-        isCheckingProbability = true;
-        while(isCheckingProbability)
+        Devil devil = GetComponent<Devil>();
+
+        while (true)
         {
-            ExecuteWithProbability();
+            if (devil != null)
+            {
+                if (!noticeEvil)
+                {
+                    Debug.Log("current Value of NeedEvil: " + devil.needEvil);
+
+                    float evilIndicator = Random.Range(20f, 70f);
+
+                    if (evilIndicator > devil.needEvil)
+                    {
+                        Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
+                        triggerEvil = true;
+                        ResetEvil();             
+                    }
+                    else
+                    {
+                        Debug.Log("Random Number was: " + evilIndicator + " and was not high enough for " + devil.needEvil);
+                    }
+                }
+
+                if (!noticeChill)
+                {
+                    float chillIndicator = Random.Range(20f, 70f);
+
+                    if (chillIndicator > devil.needChill)
+                    {
+                       Debug.Log("Random Number was: " + chillIndicator + " and was higher than " + devil.needChill);
+                       triggerChill = true;
+                       ResetChill();
+                    }
+                }
+
+                /*if (!noticeJoy)
+                {
+                    float joyIndicator = Random.Range(20f, 70f);
+                }
+
+                if (!noticePowerDevil)
+                {
+                    float powerDevilIndicator = Random.Range(20f, 70f);
+                }*/
+            }
+
             yield return new WaitForSeconds(5f);
         }
     }
 
-    public void ExecuteWithProbability()
+    private IEnumerator AngelBeliefs()
     {
-        float randomChance = Random.Range(15f, 70f);
+        Angel angel = GetComponent<Angel>();
 
-        if (randomChance > needEvil)
+        while (true)
         {
-            Debug.Log($" hit {100 - needEvil} and number was {randomChance}");
-            ResetPlanner();
-            StopProbabilityCheck();
+            if (angel != null)
+            {
+                if (!noticePurity)
+                {
+                    Debug.Log("current Value of NeedEvil: " + angel.needPurity);
 
-        }
-        else
-        {
-            Debug.Log($" failed {100 - needEvil} and number was {randomChance}");
+                    float showerIndicator = Random.Range(20f, 70f);
+
+                    if (showerIndicator > angel.needPurity)
+                    {
+                        Debug.Log("Random Number was: " + showerIndicator + " and was higher than " + angel.needPurity);
+                        triggerPurity = true;
+                        ResetPurity();
+                    }
+                    else
+                    {
+                        Debug.Log("Random Number was: " + showerIndicator + " and was not high enough for " + angel.needPurity);
+                    }
+                }
+
+
+                /*if (!noticeBelieve)
+                {
+                    float believeIndicator = Random.Range(20f, 70f);
+                }
+
+                /*if (!noticeEnjoy)
+                {
+                    float enjoyIndicator = Random.Range(20f, 70f);
+                }
+
+                if (!noticePowerAngel)
+                {
+                    float powerAngelIndicator = Random.Range(20f, 70f);
+                }*/
+            }
+
+            yield return new WaitForSeconds(5f);
         }
     }
 
-    private void StopProbabilityCheck()
+    private void ResetEvil()
     {
-        StopCoroutine(CheckProbabilityRoutine());
-        isCheckingProbability = false;
+        if (triggerEvil)
+        {
+            if (currentAction is DA_CleanAction || currentAction is DA_Transport)
+            {
+                Debug.Log("Planner wird zurückgesetzt. Evil");
+                personalTarget = false;
+                noticeEvil = true;
+                triggerEvil = false;
+
+                bullyAngel.done = false;
+                punshAngel.done = false;
+
+                if (Worlds.Instance.GetWorld().HasState("evil"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["evil"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("evil", 0);
+                        Debug.Log("evil wurde zu WorldStates entfernt.");
+                        ResetPlanner();
+                    }
+                }
+
+                noticeEvil = false;
+            }
+            else
+            {
+                triggerEvil = false;
+            }
+        }
+    }
+
+    private void ResetChill()
+    {
+        if (triggerChill)
+        {
+            if (currentAction is DA_CleanAction || currentAction is DA_Transport || currentAction is DA_BullyAngel || currentAction is DA_PunshAngel)
+            {
+                Debug.Log("Planner wird zurückgesetzt. Chill");
+                noticeChill = true;
+                triggerChill = false;
+
+                prepareDevilAction.done = false;
+                chilling.done = false;
+                cleanDevilAction.done = false;
+
+                if (Worlds.Instance.GetWorld().HasState("preChill"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["preChill"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("preChill", 0);
+                        Debug.Log("preChill wurde zu WorldStates entfernt.");
+                    }
+                }
+
+                if (Worlds.Instance.GetWorld().HasState("chill"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["chill"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("chill", 0);
+                        Debug.Log("chill wurde zu WorldStates entfernt.");
+                    }
+                }
+
+                if (Worlds.Instance.GetWorld().HasState("cleanChill"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["cleanChill"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("cleanChill", 0);
+                        Debug.Log("cleanChill wurde zu WorldStates entfernt.");
+                    }
+                }
+
+                ResetPlanner();
+                noticeChill = false;
+
+            }
+            else
+            {
+                triggerChill = false;
+            }
+        }
+    }
+
+    private void ResetPurity()
+    {
+        if (triggerPurity)
+        {
+            if (currentAction is AA_CleanAction || currentAction is AA_Transport)
+            {
+                Debug.Log("Planner wird zurückgesetzt. Purity");
+                noticePurity = true;
+                triggerPurity = false;
+
+                prepareAngelAction.done = false;
+                shower.done = false;
+                cleanAngelAction.done = false;
+
+                if (Worlds.Instance.GetWorld().HasState("preShower"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["preShower"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("preShower", 0);
+                        Debug.Log("preShower wurde zu WorldStates entfernt.");
+                    }
+                }
+
+                if (Worlds.Instance.GetWorld().HasState("shower"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["shower"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("shower", 0);
+                        Debug.Log("shower wurde zu WorldStates entfernt.");
+                    }
+                }
+
+                if (Worlds.Instance.GetWorld().HasState("cleanShower"))
+                {
+                    int value = Worlds.Instance.GetWorld().GetStates()["cleanShower"];
+                    if (value == 1)
+                    {
+                        Worlds.Instance.GetWorld().ModifyState("cleanShower", 0);
+                        Debug.Log("cleanShower wurde zu WorldStates entfernt.");
+                    }
+                }
+
+                ResetPlanner();
+                noticePurity = false;
+
+            }
+            else
+            {
+                triggerChill = false;
+            }
+        }
     }
 
     private void ResetPlanner()
     {
-        Debug.Log("Resetting planner and actions...");
-        foreach (Actions action in actions)
-        {
-            action.running = false; // Beispiel: Stoppe alle laufenden Aktionen
-            action.target = null; // Setze das Ziel der Aktionen zurück
-        }
+        planner = new Planner();
 
-        planner = null;
         actionQueue = null;
         currentAction = null;
         currentGoal = null;
 
-        Debug.Log("Planner reset complete. Actions will loop.");
-    }*/
+        var sortedGoals = from entry in goals orderby entry.Value descending select entry;
+
+        foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
+        {
+            actionQueue = planner.plan(actions, sg.Key.subGoals, null);
+            if (actionQueue != null)
+            {
+                currentGoal = sg.Key;
+                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
+                break;
+            }
+        }
+
+        if (actionQueue == null)
+        {
+            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
+        }
+    }
 
 }

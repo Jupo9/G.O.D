@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class AA_CleanAction : Actions
 {
     private Angel angelScript;
     private Building_Shower buildingShower;
     private Building_Light buildingLight;
+
+    public bool done = false;
 
     private void Start()
     {
@@ -55,7 +58,6 @@ public class AA_CleanAction : Actions
         if (targetTag == "WO_Shower")
         {
             StartCoroutine(WaitBeforeActionShower());
-
         }
 
         if (targetTag == "WO_Light")
@@ -72,6 +74,13 @@ public class AA_CleanAction : Actions
         {
             angelScript.available = true;
             angelScript.isStunned = false;
+        }
+
+        if (targetTag == "WO_Shower")
+        {
+            Worlds.Instance.GetWorld().SetState("cleanShower", 1);
+            Debug.Log("cleanShower wurde zu WorldStates hinzugefügt.");
+            done = true;
         }
 
         return true;

@@ -26,20 +26,26 @@ public class WorldStates
 
     public bool HasState(string key)
     {
+        if (states == null)
+        {
+            Debug.LogError("WorldStates.states ist null!");
+            return false;
+        }
+
         return states.ContainsKey(key);
     }
 
-    void AddState(string key, int value) 
+    void AddState(string key, int value)
     {
         states.Add(key, value);
     }
 
-    public void ModifyState(string key, int value) 
+    public void ModifyState(string key, int value)
     {
-        if(states.ContainsKey(key)) 
+        if (states.ContainsKey(key))
         {
             states[key] += value;
-            if (states[key] <= 0) 
+            if (states[key] <= 0)
             {
                 RemoveState(key);
             }
@@ -50,9 +56,9 @@ public class WorldStates
         }
     }
 
-    public void RemoveState(string key) 
+    public void RemoveState(string key)
     {
-        if( states.ContainsKey(key))
+        if (states.ContainsKey(key))
         {
             states.Remove(key);
         }
@@ -60,7 +66,7 @@ public class WorldStates
 
     public void SetState(string key, int value)
     {
-        if(states.ContainsKey(key))
+        if (states.ContainsKey(key))
         {
             states[key] = value;
         }
@@ -75,3 +81,4 @@ public class WorldStates
         return states;
     }
 }
+

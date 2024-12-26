@@ -60,9 +60,9 @@ public abstract class Actions : MonoBehaviour
 
     public bool IsArchievableGiven(Dictionary<string, int> conditions)
     {
-        foreach(KeyValuePair<string, int> p in preconditions)
+        foreach (KeyValuePair<string, int> p in preconditions)
         {
-            if(!conditions.ContainsKey(p.Key))
+            if (!conditions.ContainsKey(p.Key))
             {
                 return false;
             }
@@ -70,6 +70,8 @@ public abstract class Actions : MonoBehaviour
         return true;
     }
 
+
     public abstract bool PrePerform();
     public abstract bool PostPerform();
 }
+

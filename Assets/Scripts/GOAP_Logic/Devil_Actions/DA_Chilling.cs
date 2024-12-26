@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class DA_Chilling : Actions
 {
     private Building_IronMaiden buildingIronMaiden;
 
+    public bool done = false;
     private void Start()
     {
         GameObject ironParent = GameObject.FindWithTag("Iron");
@@ -69,6 +71,9 @@ public class DA_Chilling : Actions
 
     public override bool PostPerform()
     {
+        Worlds.Instance.GetWorld().SetState("chill", 1);
+        Debug.Log("chill wurde zu WorldStates hinzugefügt.");
+        done = true;
         return true;
     }
 

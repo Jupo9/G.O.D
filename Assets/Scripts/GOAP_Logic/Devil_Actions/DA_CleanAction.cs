@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class DA_CleanAction : Actions
 {
     private Building_IronMaiden buildingIronMaiden;
 
     private Building_Fire buildingFire;
+
+    public bool done = false;
 
     private void Start()
     {
@@ -60,6 +63,12 @@ public class DA_CleanAction : Actions
 
     public override bool PostPerform()
     {
+        if (targetTag == "WO_Iron")
+        {
+            Worlds.Instance.GetWorld().SetState("cleanChill", 1);
+            Debug.Log("cleanChill wurde zu WorldStates hinzugefügt.");
+            done = true;
+        }
         return true;
     }
 
