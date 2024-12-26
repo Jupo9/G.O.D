@@ -937,7 +937,7 @@ GameObject:
   - component: {fileID: 1259606297831886261}
   m_Layer: 0
   m_Name: LightFarm
-  m_TagString: Untagged
+  m_TagString: LIGHT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1146,7 +1146,6 @@ GameObject:
   - component: {fileID: 6599591021473920095}
   - component: {fileID: 1843866105396698992}
   - component: {fileID: 2448057355718456091}
-  - component: {fileID: 7326806523470998017}
   m_Layer: 0
   m_Name: LightBuildingManager
   m_TagString: Untagged
@@ -1211,31 +1210,10 @@ MonoBehaviour:
   angelInside: 0
   calculate: 0
   maxAmount: 4
-  lightAmount: 1
+  lightAmount: 0
   lightResource: {fileID: 1835842436952301108}
   waypointOutside: {fileID: 5541647326792044970}
   waypointInside: {fileID: 2185453957677954939}
---- !u!65 &7326806523470998017
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7117976109752227338}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.0904908, y: 2.41304, z: 1.1089458}
-  m_Center: {x: 0.048293352, y: -0.7065202, z: -0.054472923}
 --- !u!1 &7426086118967487406
 GameObject:
   m_ObjectHideFlags: 0

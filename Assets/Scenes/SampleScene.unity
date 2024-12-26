@@ -260,21 +260,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2448057355718456091, guid: 4af04e9b975dd9a4f927cec06d3344c4, type: 3}
-      propertyPath: lightAmount
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5468502704688439952, guid: 4af04e9b975dd9a4f927cec06d3344c4, type: 3}
       propertyPath: m_Name
       value: LightFarm
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468502704688439952, guid: 4af04e9b975dd9a4f927cec06d3344c4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117976109752227338, guid: 4af04e9b975dd9a4f927cec06d3344c4, type: 3}
-      propertyPath: m_TagString
-      value: LIGHT
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1000,6 +988,23 @@ MonoBehaviour:
   devilCountText: {fileID: 1084307168}
   fireCountText: {fileID: 107981689}
   lightCountText: {fileID: 1840536893}
+--- !u!1 &164600439 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 305858564381295597, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
+  m_PrefabInstance: {fileID: 216893671}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &164600444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164600439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbd84e18e0956c84aab5e950adc528c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &179132755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,10 +1113,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7505585699621333876, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 305858564381295597, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 164600444}
   m_SourcePrefab: {fileID: 100100000, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
 --- !u!1 &226638423
 GameObject:
@@ -1147,11 +1159,6 @@ Transform:
   - {fileID: 1658949089}
   m_Father: {fileID: 1395269247}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &289961732 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5541647326792044970, guid: c915f7ca82096394789f33945851e017, type: 3}
-  m_PrefabInstance: {fileID: 858306960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &315890891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,31 +1239,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 738612762937690515, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
   m_PrefabInstance: {fileID: 1457751718}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &323403530 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7117976109752227338, guid: c915f7ca82096394789f33945851e017, type: 3}
-  m_PrefabInstance: {fileID: 858306960}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &323403533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323403530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f836dee05c0de3a4aa44aaa93271c127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAvailable: 1
-  devilInside: 0
-  calculate: 0
-  maxAmount: 4
-  fireAmount: 1
-  fireResource: {fileID: 1331245629}
-  waypointOutside: {fileID: 289961732}
-  waypointInside: {fileID: 1362758292}
 --- !u!1 &333007429
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,10 +2983,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 847406913447947973, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_Name
-      value: FireBuilding
-      objectReference: {fileID: 0}
     - target: {fileID: 1259606297831886261, guid: c915f7ca82096394789f33945851e017, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.34
@@ -3045,60 +3023,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1835842436952301108, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: LIGHT
-      objectReference: {fileID: 0}
-    - target: {fileID: 2185453957677954939, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: WI_Fire
-      objectReference: {fileID: 0}
-    - target: {fileID: 2448057355718456091, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: lightResource
-      value: 
-      objectReference: {fileID: 1331245629}
-    - target: {fileID: 5140388474360728285, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: FireStore
-      objectReference: {fileID: 0}
     - target: {fileID: 5468502704688439952, guid: c915f7ca82096394789f33945851e017, type: 3}
       propertyPath: m_Name
       value: FireFarm
       objectReference: {fileID: 0}
-    - target: {fileID: 5468502704688439952, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5468502704688439952, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: FIRE
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541647326792044970, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: WO_Fire
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668159163928302446, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: FIRE
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117976109752227338, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_Name
-      value: FireBuildingManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7117976109752227338, guid: c915f7ca82096394789f33945851e017, type: 3}
-      propertyPath: m_TagString
-      value: Storage
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2448057355718456091, guid: c915f7ca82096394789f33945851e017, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 1225410815320897639, guid: c915f7ca82096394789f33945851e017, type: 3}
-    - {fileID: 5344105952633589257, guid: c915f7ca82096394789f33945851e017, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7117976109752227338, guid: c915f7ca82096394789f33945851e017, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 323403533}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c915f7ca82096394789f33945851e017, type: 3}
 --- !u!1 &858821544 stripped
 GameObject:
@@ -4276,11 +4208,6 @@ MonoBehaviour:
   available: 1
   isStunned: 0
   lightResource: {fileID: 1189588305}
---- !u!1 &1331245629 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6668159163928302446, guid: c915f7ca82096394789f33945851e017, type: 3}
-  m_PrefabInstance: {fileID: 858306960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1334033938
 GameObject:
   m_ObjectHideFlags: 0
@@ -4391,11 +4318,6 @@ CanvasRenderer:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 738612762937690515, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
   m_PrefabInstance: {fileID: 960226698}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1362758292 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2185453957677954939, guid: c915f7ca82096394789f33945851e017, type: 3}
-  m_PrefabInstance: {fileID: 858306960}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1395269246
 GameObject:
@@ -6294,6 +6216,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1994028767 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 305858564381295597, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
+  m_PrefabInstance: {fileID: 7397281956697655210}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1994028772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994028767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbd84e18e0956c84aab5e950adc528c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1999528550
 GameObject:
   m_ObjectHideFlags: 0
@@ -6737,10 +6676,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7505585699621333876, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 305858564381295597, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1994028772}
   m_SourcePrefab: {fileID: 100100000, guid: cae421348cb89c844a5da23e800b5dd2, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -6770,5 +6716,5 @@ SceneRoots:
   - {fileID: 1457751718}
   - {fileID: 960226698}
   - {fileID: 26609910}
-  - {fileID: 837210053}
   - {fileID: 858306960}
+  - {fileID: 837210053}

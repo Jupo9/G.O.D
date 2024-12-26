@@ -27,16 +27,15 @@ public class DA_CleanAction : Actions
 
         if (targetTag == "WO_Fire")
         {
-            GameObject fireParent = GameObject.FindWithTag("Iron");
+            GameObject fireParent = GameObject.FindWithTag("FIRE");
 
             if (fireParent != null)
             {
                 buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
             }
-
             if (buildingFire == null)
             {
-                Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
+                Debug.LogWarning("Building_Fire script not found on FireBuilding.");
             }
         }
 

@@ -41,7 +41,7 @@ public class AA_PrepareAction : Actions
 
             if (lightParent != null)
             {
-                buildingLight = lightParent.GetComponentInChildren<Building_Light>();
+                buildingLight = lightParent.GetComponentInParent<Building_Light>();
             }
 
             if (buildingLight == null)

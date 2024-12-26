@@ -12,7 +12,7 @@ public class AA_Working : Actions
 
         if (lightParent != null)
         {
-            buildingLight = lightParent.GetComponentInChildren<Building_Light>();
+            buildingLight = lightParent.GetComponentInParent<Building_Light>();
         }
 
         if (buildingLight == null)
