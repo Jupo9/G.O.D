@@ -2806,12 +2806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a586654843491f84881f99bc610de30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: bully angel
+  actionName: bully
   wayCosts: 1
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Angel
-  duration: 10
+  duration: 5
   preConditions: []
   afterEffects:
   - key: evil
@@ -2866,7 +2866,7 @@ MonoBehaviour:
   duration: 10
   preConditions:
   - key: preWork
-    value: 1
+    value: 0
   afterEffects:
   - key: work
     value: 0
@@ -6349,7 +6349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2648118792853232727, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4010812146690604503, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
       propertyPath: m_StoppingDistance

@@ -250,7 +250,6 @@ public class Agents : MonoBehaviour
                 }
             }
 
-
             if (planner == null || actionQueue == null)
             {
                 planner = new Planner();
@@ -566,5 +565,47 @@ public class Agents : MonoBehaviour
             Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
         }
     }
+
+    
+    /// <summary>
+    /// Delete Plannner is an option to delete Items complete from the list
+    /// to bring back a deleted action for example:
+    ///                 if (!actions.Contains(bullyAngel))
+    ///                 {
+    ///                 actions.Add(bullyAngel);
+    ///                 }
+    /// unfortunately this caused a lot of performance and it turns out is not the right choice for many npc's
+    /// so if there is any action that should be complete remove for a list than this can be used, but only as a quick solution
+    /// </summary>
+    /*private void DeletePlanner()
+    {
+        for (int i = actions.Count - 1; i >= 0; i--)
+        {
+            Actions action = actions[i];
+
+            if (action is DA_BullyAngel bullyAngelAction && bullyAngelAction.done)
+            {
+                actions.RemoveAt(i); 
+                Debug.Log("DA_BullyAngel Aktion entfernt, da 'done' == true");
+            }
+            else if (action is DA_PunshAngel punshAngelAction && punshAngelAction.done)
+            {
+                actions.RemoveAt(i);
+                Debug.Log("DA_PunshAngel Aktion entfernt, da 'done' == true");
+            }
+        }
+
+
+
+        if (actionQueue != null)
+        {
+            actionQueue.Clear();
+            actionQueue = null;
+        }
+
+        currentAction = null;
+        currentGoal = null;
+        test = false;
+    }*/
 
 }
