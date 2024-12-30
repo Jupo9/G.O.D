@@ -24,9 +24,33 @@ public class Planner
     public Queue<Actions> plan(List<Actions> actions, Dictionary<string, int> goal, WorldStates states)
     {
         List<Actions> usableActions = new List<Actions>();
-        foreach (Actions a in actions) 
+
+        foreach (Actions a in actions)
         {
-            if(a.IsArchievable())
+            Dictionary<string, int> relevantState = Worlds.Instance.GetWorld().GetStates();
+
+
+            bool stateCheck = true;
+
+            foreach (KeyValuePair<string, int> precondition in a.preconditions)
+            {
+                if (relevantState.ContainsKey(precondition.Key) && relevantState[precondition.Key] != precondition.Value)
+                {
+                    if (precondition.Key == "evil" && relevantState[precondition.Key] == 1)
+                    {
+                        Debug.Log($"Action '{a.actionName}': Treating 'evil == 1' as completed for precondition.");
+                        a.ApplyEffects();
+                        relevantState[precondition.Key] = 0; 
+                        continue; 
+                    }
+
+                    Debug.Log($"Skipping Action '{a.actionName}' due to state '{precondition.Key}' != {precondition.Value} (current: {relevantState[precondition.Key]}).");
+                    stateCheck = false;
+                    break;
+                }
+            }
+
+            if (a.IsArchievable() && stateCheck)
             {
                 usableActions.Add(a);
             }
@@ -71,6 +95,13 @@ public class Planner
         }
 
         Queue<Actions> queue = new Queue<Actions>();
+
+        if (result.Count == 0)
+        {
+            Debug.LogError("No actions available to achieve the goal. Plan failed.");
+            return null;
+        }
+
         foreach (Actions a in result)
         {
             queue.Enqueue(a);
@@ -95,9 +126,13 @@ public class Planner
                 Dictionary<string, int> currentState = new Dictionary<string, int>(parent.state);
                 foreach(KeyValuePair<string, int> eff in action.effect)
                 {
-                    if(!currentState.ContainsKey(eff.Key))
+                    if (!currentState.ContainsKey(eff.Key))
                     {
                         currentState.Add(eff.Key, eff.Value);
+                    }
+                    else
+                    {
+                        currentState[eff.Key] = eff.Value;
                     }
                 }
                 Node node = new Node(parent, parent.cost + action.wayCosts, currentState, action);
@@ -123,9 +158,9 @@ public class Planner
 
     private bool GoalAchieved(Dictionary<string, int> goal, Dictionary<string, int> state)
     {
-        foreach(KeyValuePair<string , int> g in goal)
+        foreach (KeyValuePair<string, int> g in goal)
         {
-            if(!state.ContainsKey(g.Key))
+            if (!state.ContainsKey(g.Key))
             {
                 return false;
             }
@@ -136,6 +171,7 @@ public class Planner
     private List<Actions> ActionSubset(List<Actions> actions, Actions removeMe)
     {
         List<Actions> subset = new List<Actions>();
+
         foreach(Actions a in actions)
         {
             if (!a.Equals(removeMe))

@@ -37,7 +37,10 @@ public class WorldStates
 
     void AddState(string key, int value)
     {
-        states.Add(key, value);
+        if (!states.ContainsKey(key))
+        {
+            states.Add(key, value);
+        }
     }
 
     public void ModifyState(string key, int value)
@@ -64,15 +67,32 @@ public class WorldStates
         }
     }
 
+    public void UpdateStateBasedOnEvent(string key, int valueChange)
+    {
+        if (states.ContainsKey(key))
+        {
+            states[key] += valueChange;
+            if (states[key] <= 0)
+            {
+                RemoveState(key);
+            }
+        }
+        else
+        {
+            Debug.Log($"State '{key}' does not exist. Adding it dynamically.");
+            AddState(key, valueChange);
+        }
+    }
+
     public void SetState(string key, int value)
     {
         if (states.ContainsKey(key))
         {
-            states[key] = value;
+            states[key] = value; // Setzt den Wert direkt
         }
         else
         {
-            states.Add(key, value);
+            states.Add(key, value); // Fügt den Zustand hinzu, falls er noch nicht existiert
         }
     }
 

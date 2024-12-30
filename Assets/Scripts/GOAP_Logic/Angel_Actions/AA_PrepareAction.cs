@@ -166,7 +166,7 @@ public class AA_PrepareAction : Actions
         if (targetTag == "WO_Shower")
         {
             wantShower = false;
-            Worlds.Instance.GetWorld().SetState("preShower", 1);
+            Worlds.Instance.GetWorld().UpdateStateBasedOnEvent("preShower", 1);
             Debug.Log("preShower wurde zu WorldStates hinzugefügt.");
             done = true;
         }

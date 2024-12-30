@@ -75,7 +75,7 @@ public class AA_Shower : Actions
     public override bool PostPerform()
     {
         buildingShower.StopSteam();
-        Worlds.Instance.GetWorld().SetState("shower", 1);
+        Worlds.Instance.GetWorld().UpdateStateBasedOnEvent("shower", 1);
         Debug.Log("shower wurde zu WorldStates hinzugefügt.");
         done = true;
         return true;

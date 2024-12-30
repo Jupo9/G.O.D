@@ -53,7 +53,7 @@ public class DA_PunshAngel : Actions
 
     public override bool PostPerform()
     {
-        Worlds.Instance.GetWorld().SetState("evil", 1);
+        Worlds.Instance.GetWorld().UpdateStateBasedOnEvent("evil", 1);
         Debug.Log("evil wurde zu WorldStates hinzugefügt.");
         done = true;
         return true;

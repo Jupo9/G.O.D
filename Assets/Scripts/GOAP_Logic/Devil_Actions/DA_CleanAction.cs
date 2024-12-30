@@ -34,7 +34,7 @@ public class DA_CleanAction : Actions
 
             if (fireParent != null)
             {
-                buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
+                buildingFire = fireParent.GetComponentInParent<Building_Fire>();
             }
             if (buildingFire == null)
             {
@@ -50,6 +50,16 @@ public class DA_CleanAction : Actions
 
         if (targetTag == "WO_Iron")
         {
+            Dictionary<string, int> worldStates = Worlds.Instance.GetWorld().GetStates();
+
+            if (worldStates.ContainsKey("cleanChill") && worldStates["cleanChill"] == 1)
+            {
+                Debug.Log("'cleanChill' is already 1. Marking action as complete.");
+                ApplyEffects();
+                done = true;
+                return false;
+            }
+
             StartCoroutine(WaitBeforeActionLight());
         }
 
@@ -66,7 +76,6 @@ public class DA_CleanAction : Actions
         if (targetTag == "WO_Iron")
         {
             Worlds.Instance.GetWorld().SetState("cleanChill", 1);
-            Debug.Log("cleanChill wurde zu WorldStates hinzugefügt.");
             done = true;
         }
         return true;

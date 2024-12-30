@@ -7,6 +7,7 @@ public class DA_BullyAngel : Actions
     private Devil devil;
 
     public bool done = false;
+
     private void Start()
     {
         devil = GetComponent<Devil>();
@@ -38,6 +39,16 @@ public class DA_BullyAngel : Actions
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> worldStates = Worlds.Instance.GetWorld().GetStates();
+
+        if (worldStates.ContainsKey("evil") && worldStates["evil"] == 1)
+        {
+            Debug.Log("DA_BullyAngel: 'evil' is already 1. Marking action as complete.");
+            ApplyEffects();
+            done = true;
+            return false; 
+        }
+
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
         if (angels.Length == 0) return false;
 
@@ -68,7 +79,6 @@ public class DA_BullyAngel : Actions
     public override bool PostPerform()
     {
         Worlds.Instance.GetWorld().SetState("evil", 1);
-        Debug.Log("evil wurde zu WorldStates hinzugefügt.");
         done = true;
         return true;
     }

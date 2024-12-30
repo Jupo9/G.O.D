@@ -28,6 +28,8 @@ public class Agents : MonoBehaviour
     public Actions currentAction;
     SubGoal currentGoal;
 
+    private Queue<Actions> currentPlan;
+
     public bool playersWish = false;
     //private bool idleAction = false;
 
@@ -80,6 +82,8 @@ public class Agents : MonoBehaviour
             actions.Add(a);
         }
 
+        //Worlds.Instance.GetWorld().SetState("evil", 1);
+
         bullyAngel = GetComponent<DA_BullyAngel>();
         punshAngel = GetComponent<DA_PunshAngel>();
         chilling = GetComponent<DA_Chilling>();
@@ -111,10 +115,35 @@ public class Agents : MonoBehaviour
             }
             currentGoal = null;
         }
+
+        if (currentAction.effect != null)
+        {
+            Dictionary<string, int> relevantState = Worlds.Instance.GetWorld().GetStates();
+
+            foreach (KeyValuePair<string, int> eff in currentAction.effect)
+            {
+                if (relevantState.ContainsKey(eff.Key))
+                {
+                    relevantState[eff.Key] += eff.Value;
+                }
+                else
+                {
+                    relevantState[eff.Key] = eff.Value;
+                }
+            }
+
+            Debug.Log(currentAction.actionName + "Action effects applied to state.");
+        }
     }
 
     private void LateUpdate()
     {
+        if (playersWish)
+        {
+            ResetPlanner();
+            playersWish = false; 
+        }
+
         if (CompareTag("Angel"))
         {
             if (currentAction != null && currentAction.running)
@@ -152,18 +181,33 @@ public class Agents : MonoBehaviour
                     if (actionQueue != null)
                     {
                         currentGoal = sg.Key;
+                        currentPlan = new Queue<Actions>(actionQueue);
                         break;
                     }
                 }
 
-               Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
+                Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
             }
 
             if (actionQueue != null && actionQueue.Count > 0)
             {
                 currentAction = actionQueue.Dequeue();
-               Debug.Log("Assigned Action: " + currentAction.actionName);
-                if (currentAction.PrePerform())
+                Debug.Log("Assigned Action: " + currentAction.actionName);
+
+                Dictionary<string, int> relevantState = Worlds.Instance.GetWorld().GetStates();
+                bool canPerform = true;
+
+                foreach (KeyValuePair<string, int> precondition in currentAction.preconditions)
+                {
+                    if (relevantState.ContainsKey(precondition.Key) && relevantState[precondition.Key] != 0)
+                    {
+                        Debug.Log($"Skipping Action '{currentAction.actionName}' due to unmet state condition: {precondition.Key}");
+                        canPerform = false;
+                        break;
+                    }
+                }
+
+                if (canPerform && currentAction.PrePerform())
                 {
                     if (currentAction.target == null && currentAction.targetTag != "")
                     {
@@ -179,7 +223,7 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                //Debug.Log("No actions in queue!");
+                //Debug.Log("No Action in Queue");
             }
 
 
@@ -220,7 +264,7 @@ public class Agents : MonoBehaviour
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
                     }
 
-                    punshAngel.done = true;
+                    //punshAngel.done = true;
                 }
 
                 if (currentAction is DA_PunshAngel)
@@ -262,6 +306,7 @@ public class Agents : MonoBehaviour
                     if (actionQueue != null)
                     {
                         currentGoal = sg.Key;
+                        currentPlan = new Queue<Actions>(actionQueue);
                         break;
                     }
                 }
@@ -273,7 +318,22 @@ public class Agents : MonoBehaviour
             {
                 currentAction = actionQueue.Dequeue();
                 Debug.Log("Assigned Action: " + currentAction.actionName);
-                if (currentAction.PrePerform())
+
+                Dictionary<string, int> relevantState = Worlds.Instance.GetWorld().GetStates();
+
+                /*bool canPerform = true;
+
+                foreach (KeyValuePair<string, int> precondition in currentAction.preconditions)
+                {
+                    if (relevantState.ContainsKey(precondition.Key) && relevantState[precondition.Key] != 0)
+                    {
+                        Debug.Log($"Skipping Action '{currentAction.actionName}' due to unmet state condition: {precondition.Key}");
+                        canPerform = false;
+                        break;
+                    }
+                }*/
+
+                if (currentAction.PrePerform()) // (/*canPerform &&*/ currentAction.PrePerform()) 
                 {
                     if (currentAction.target == null && currentAction.targetTag != "")
                     {
@@ -305,20 +365,20 @@ public class Agents : MonoBehaviour
             {
                 if (!noticeEvil)
                 {
-                    Debug.Log("current Value of NeedEvil: " + devil.needEvil);
+                    //Debug.Log("current Value of NeedEvil: " + devil.needEvil);
 
                     float evilIndicator = Random.Range(20f, 70f);
 
                     if (evilIndicator > devil.needEvil)
                     {
-                        Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
+                        //Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
                         triggerEvil = true;
                         ResetEvil();             
                     }
-                    else
+                    /*else
                     {
                         Debug.Log("Random Number was: " + evilIndicator + " and was not high enough for " + devil.needEvil);
-                    }
+                    }*/
                 }
 
                 if (!noticeChill)
@@ -327,7 +387,6 @@ public class Agents : MonoBehaviour
 
                     if (chillIndicator > devil.needChill)
                     {
-                       Debug.Log("Random Number was: " + chillIndicator + " and was higher than " + devil.needChill);
                        triggerChill = true;
                        ResetChill();
                     }
@@ -358,29 +417,21 @@ public class Agents : MonoBehaviour
             {
                 if (!noticePurity)
                 {
-                    Debug.Log("current Value of NeedEvil: " + angel.needPurity);
-
                     float showerIndicator = Random.Range(20f, 70f);
 
                     if (showerIndicator > angel.needPurity)
                     {
-                        Debug.Log("Random Number was: " + showerIndicator + " and was higher than " + angel.needPurity);
                         triggerPurity = true;
                         ResetPurity();
                     }
-                    else
-                    {
-                        Debug.Log("Random Number was: " + showerIndicator + " and was not high enough for " + angel.needPurity);
-                    }
                 }
-
 
                 /*if (!noticeBelieve)
                 {
                     float believeIndicator = Random.Range(20f, 70f);
                 }
 
-                /*if (!noticeEnjoy)
+                if (!noticeEnjoy)
                 {
                     float enjoyIndicator = Random.Range(20f, 70f);
                 }
@@ -407,19 +458,14 @@ public class Agents : MonoBehaviour
                 triggerEvil = false;
 
                 bullyAngel.done = false;
-                punshAngel.done = false;
+                //punshAngel.done = false;
 
                 if (Worlds.Instance.GetWorld().HasState("evil"))
                 {
-                    int value = Worlds.Instance.GetWorld().GetStates()["evil"];
-                    if (value == 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("evil", 0);
-                        Debug.Log("evil wurde zu WorldStates entfernt.");
-                        ResetPlanner();
-                    }
+                    Worlds.Instance.GetWorld().SetState("evil", 0);
+                    Debug.Log("State 'evil' wurde auf 0 gesetzt.");
                 }
-
+                
                 noticeEvil = false;
             }
             else
@@ -445,32 +491,17 @@ public class Agents : MonoBehaviour
 
                 if (Worlds.Instance.GetWorld().HasState("preChill"))
                 {
-                    int value = Worlds.Instance.GetWorld().GetStates()["preChill"];
-                    if (value == 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("preChill", 0);
-                        Debug.Log("preChill wurde zu WorldStates entfernt.");
-                    }
+                    Worlds.Instance.GetWorld().SetState("preChill", 0);
                 }
 
                 if (Worlds.Instance.GetWorld().HasState("chill"))
                 {
-                    int value = Worlds.Instance.GetWorld().GetStates()["chill"];
-                    if (value == 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("chill", 0);
-                        Debug.Log("chill wurde zu WorldStates entfernt.");
-                    }
+                    Worlds.Instance.GetWorld().SetState("chill", 0);
                 }
 
                 if (Worlds.Instance.GetWorld().HasState("cleanChill"))
                 {
-                    int value = Worlds.Instance.GetWorld().GetStates()["cleanChill"];
-                    if (value == 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("cleanChill", 0);
-                        Debug.Log("cleanChill wurde zu WorldStates entfernt.");
-                    }
+                    Worlds.Instance.GetWorld().SetState("cleanChill", 0);
                 }
 
                 ResetPlanner();
@@ -528,7 +559,7 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                ResetPlanner();
+
                 noticePurity = false;
 
             }
@@ -539,34 +570,33 @@ public class Agents : MonoBehaviour
         }
     }
 
-    private void ResetPlanner()
+    public void CancelCurrentAction()
     {
-        planner = new Planner();
-
-        actionQueue = null;
-        currentAction = null;
-        currentGoal = null;
-
-        var sortedGoals = from entry in goals orderby entry.Value descending select entry;
-
-        foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
+        if (currentAction != null && currentAction.running)
         {
-            actionQueue = planner.plan(actions, sg.Key.subGoals, null);
-            if (actionQueue != null)
-            {
-                currentGoal = sg.Key;
-                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
-                break;
-            }
-        }
-
-        if (actionQueue == null)
-        {
-            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
+            currentAction.running = false;
+            currentAction.agent.ResetPath();
+            Debug.Log("Current action abgebrochen.");
         }
     }
 
-    
+    public void ResetPlanner()
+    {
+        CancelCurrentAction();
+
+        if (currentPlan == null || currentPlan.Count == 0)
+        {
+            Debug.Log("ResetPlanner: Kein gültiger Plan vorhanden.");
+            return;
+        }
+
+        actionQueue = new Queue<Actions>(currentPlan);
+
+        Debug.Log("ResetPlanner: Plan wurde zurückgesetzt. Der Agent startet wieder mit der ersten Action.");
+    }
+
+
+
     /// <summary>
     /// Delete Plannner is an option to delete Items complete from the list
     /// to bring back a deleted action for example:

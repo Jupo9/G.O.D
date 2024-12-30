@@ -855,6 +855,128 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107981687}
   m_CullTransparentMesh: 1
+--- !u!1 &110397633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 110397638}
+  - component: {fileID: 110397637}
+  - component: {fileID: 110397636}
+  - component: {fileID: 110397635}
+  - component: {fileID: 110397634}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &110397634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110397633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea632029f1aa60448dfa4251abd6d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateKey: foodAvailable
+  valueChangeOnDestruction: -1
+--- !u!65 &110397635
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110397633}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &110397636
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110397633}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &110397637
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110397633}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &110397638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110397633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.69, y: 0, z: 8.03}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &157334855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,6 +1772,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dd9f79309ef7c04685bf7a8a6b20f83, type: 3}
+--- !u!1 &546460875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 546460877}
+  - component: {fileID: 546460876}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &546460876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546460875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749d5d68002b60e4eb662efab77b9de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToDestroy: {fileID: 110397633}
+--- !u!4 &546460877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546460875}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 95.38046, y: -110.27897, z: -142.42845}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &550125448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,6 +2117,14 @@ PrefabInstance:
       value: Survive
       objectReference: {fileID: 0}
     - target: {fileID: 7312468730933501963, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+      propertyPath: decayEvil
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312468730933501963, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
+      propertyPath: decayChill
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312468730933501963, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
       propertyPath: fireObject
       value: 
       objectReference: {fileID: 1450897885}
@@ -2035,9 +2210,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4602959420552902784, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 801310400}
-    - targetCorrespondingSourceObject: {fileID: 4602959420552902784, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 801310399}
     - targetCorrespondingSourceObject: {fileID: 4602959420552902784, guid: 60fa51ffeaba66d46a2bfcc79aa63eeb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 801310398}
@@ -2606,12 +2778,13 @@ MonoBehaviour:
   - key: cleanChill
     value: 0
   - key: evil
-    value: 0
+    value: 1
   afterEffects:
   - key: Survive
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &801310398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2640,31 +2813,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
---- !u!114 &801310399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801310385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd869a5ae9f91434698cc3c246f86016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: Action
-  wayCosts: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Angel
-  duration: 3
-  preConditions: []
-  afterEffects:
-  - key: evil
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  done: 0
+  useLocalState: 0
 --- !u!114 &801310400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2691,6 +2840,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &801310401
 MonoBehaviour:
@@ -2718,6 +2868,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &801310402
 MonoBehaviour:
@@ -2743,6 +2894,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &801310403
 MonoBehaviour:
@@ -2770,6 +2922,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &801310404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2794,6 +2947,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &801310405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2818,6 +2972,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &801310406
 MonoBehaviour:
@@ -2845,6 +3000,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &801310407
 MonoBehaviour:
@@ -2872,6 +3028,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &801310408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2896,6 +3053,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!1001 &837210053
 PrefabInstance:
@@ -3036,6 +3194,50 @@ MonoBehaviour:
   doubleDoors: {fileID: 1509115879}
   waypointOutside: {fileID: 586370097}
   waypointInside: {fileID: 1349578332}
+--- !u!1 &882236013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882236015}
+  - component: {fileID: 882236014}
+  m_Layer: 0
+  m_Name: EventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &882236014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882236013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b9efab83f1e424dbde6be1c885b9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &882236015
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882236013}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &892364019 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 408633179327547679, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
@@ -3733,6 +3935,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   moveRadius: 10
   minMovementTime: 1
   maxMovementTime: 10
@@ -4448,6 +4651,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1469637098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4476,6 +4680,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1469637099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4500,6 +4705,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1469637100
 MonoBehaviour:
@@ -4527,6 +4733,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1469637101
 MonoBehaviour:
@@ -4554,6 +4761,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1469637102
 MonoBehaviour:
@@ -4579,6 +4787,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1469637103
 MonoBehaviour:
@@ -4606,6 +4815,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1469637104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4630,6 +4840,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1469637105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4654,6 +4865,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1469637106
 MonoBehaviour:
@@ -4681,6 +4893,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1469637107
 MonoBehaviour:
@@ -4708,6 +4921,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1469637108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4732,6 +4946,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!95 &1509115879 stripped
 Animator:
@@ -5392,6 +5607,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   moveRadius: 10
   minMovementTime: 1
   maxMovementTime: 10
@@ -5421,6 +5637,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1651528378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5447,6 +5664,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1651528379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5473,6 +5691,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1651528380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5499,6 +5718,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1651528381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5525,6 +5745,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1651528382
 MonoBehaviour:
@@ -5552,6 +5773,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1651528383
 MonoBehaviour:
@@ -5579,6 +5801,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1651528384
 MonoBehaviour:
@@ -5606,6 +5829,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!114 &1651528385
 MonoBehaviour:
@@ -5633,6 +5857,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
 --- !u!114 &1651528386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5657,6 +5882,7 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
+  useLocalState: 0
   done: 0
 --- !u!1 &1658949088
 GameObject:
@@ -7084,3 +7310,6 @@ SceneRoots:
   - {fileID: 26609910}
   - {fileID: 858306960}
   - {fileID: 837210053}
+  - {fileID: 110397638}
+  - {fileID: 546460877}
+  - {fileID: 882236015}

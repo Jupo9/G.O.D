@@ -12,7 +12,7 @@ public class DA_Working : Actions
 
         if (lightParent != null)
         {
-            buildingFire = lightParent.GetComponentInChildren<Building_Fire>();
+            buildingFire = lightParent.GetComponentInParent<Building_Fire>();
         }
 
         if (buildingFire == null)
