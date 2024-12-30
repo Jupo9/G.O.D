@@ -452,27 +452,42 @@ public class Agents : MonoBehaviour
         {
             if (currentAction is DA_CleanAction || currentAction is DA_Transport)
             {
-                Debug.Log("Planner wird zurückgesetzt. Evil");
-                personalTarget = false;
                 noticeEvil = true;
-                triggerEvil = false;
-
-                bullyAngel.done = false;
-                //punshAngel.done = false;
-
-                if (Worlds.Instance.GetWorld().HasState("evil"))
-                {
-                    Worlds.Instance.GetWorld().SetState("evil", 0);
-                    Debug.Log("State 'evil' wurde auf 0 gesetzt.");
-                }
-                
-                noticeEvil = false;
+                Debug.Log("ResetEvil");
+                StartCoroutine(WaitBeforeResetEvil());
             }
             else
             {
                 triggerEvil = false;
             }
         }
+    }
+
+    private IEnumerator WaitBeforeResetEvil()
+    {
+        Debug.Log("Start Corountine Evil");
+
+        while (!currentAction.PostPerform()) 
+        {
+            yield return null;
+        }
+
+        Debug.Log("Planner wird zurückgesetzt. Evil");
+        personalTarget = false;
+        triggerEvil = false;
+
+        bullyAngel.done = false;
+        //punshAngel.done = false;
+
+        if (Worlds.Instance.GetWorld().HasState("evil"))
+        {
+            Worlds.Instance.GetWorld().SetState("evil", 0);
+            Debug.Log("State 'evil' wurde auf 0 gesetzt.");
+        }
+
+        noticeEvil = false;
+
+        ResetPlanner();
     }
 
     private void ResetChill()
@@ -570,7 +585,7 @@ public class Agents : MonoBehaviour
         }
     }
 
-    public void CancelCurrentAction()
+    /*public void CancelCurrentAction()
     {
         if (currentAction != null && currentAction.running)
         {
@@ -578,11 +593,11 @@ public class Agents : MonoBehaviour
             currentAction.agent.ResetPath();
             Debug.Log("Current action abgebrochen.");
         }
-    }
+    }*/
 
     public void ResetPlanner()
     {
-        CancelCurrentAction();
+        //CancelCurrentAction();
 
         if (currentPlan == null || currentPlan.Count == 0)
         {
