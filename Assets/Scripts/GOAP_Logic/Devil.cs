@@ -15,7 +15,21 @@ public class Devil : Agents
     public float decayJoy = 1.0f;
     public float decayPower = 1.0f;
 
+    public float bullyCharge = 1.0f;
+    public float punshPoints = 10f;
+
     public GameObject fireObject;
+
+    public bool bullyActive = false;
+    public bool punshedAngel = false;
+
+    public WorldStates localStates;
+
+    void Awake()
+    {
+        localStates = new WorldStates();
+    }
+
 
     protected override void Start()
     {
@@ -26,13 +40,50 @@ public class Devil : Agents
         StartCoroutine("LostOverTimeDevil");
     }
 
+    private void Update()
+    {
+        if (needEvil > 100)
+        {
+            needEvil = 100;
+        }
+
+        if (needChill > 100)
+        {
+            needChill = 100;
+        }
+
+        if (needJoy > 100)
+        {
+            needJoy = 100;
+        }
+
+        if (needPower > 100)
+        {
+            needPower = 100;
+        }
+    }
+
     IEnumerator LostOverTimeDevil()
     {
-        needEvil -= decayEvil;
-        needChill -= decayChill;
-        needJoy -= decayJoy;
-        needPower -= decayPower;
+        while (true)
+        {
+            needEvil -= decayEvil;
+            needChill -= decayChill;
+            needJoy -= decayJoy;
+            needPower -= decayPower;
 
-        yield return new WaitForSeconds(1f);
+            if (bullyActive)
+            {
+                needEvil += bullyCharge;
+            }
+
+            if (punshedAngel)
+            {
+                needEvil += punshPoints;
+                punshedAngel = false;
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 }

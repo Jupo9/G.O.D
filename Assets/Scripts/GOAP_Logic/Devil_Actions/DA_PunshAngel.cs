@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DA_PunshAngel : Actions
 {
+    public bool done = false;
+
     private void OnTriggerEnter(Collider other)
     {
         Angel angelScript = other.GetComponent<Angel>();
@@ -43,6 +45,7 @@ public class DA_PunshAngel : Actions
 
     public override bool PostPerform()
     {
+        done = true;
         return true;
     }
 

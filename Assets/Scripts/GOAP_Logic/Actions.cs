@@ -53,6 +53,19 @@ public abstract class Actions : MonoBehaviour
         }
     }
 
+    public Dictionary<string, int> GetRelevantState()
+    {
+        Devil devil = GetComponentInParent<Devil>(); 
+        if (devil != null)
+        {
+            return devil.localStates.GetStates(); 
+        }
+        else
+        {
+            return Worlds.Instance.GetWorld().GetStates();
+        }
+    }
+
     public bool IsArchievable()
     {
         return true;
@@ -68,6 +81,23 @@ public abstract class Actions : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public void ApplyEffects()
+    {
+        Dictionary<string, int> relevantState = GetRelevantState();
+
+        foreach (KeyValuePair<string, int> eff in effect)
+        {
+            if (relevantState.ContainsKey(eff.Key))
+            {
+                relevantState[eff.Key] = 1; 
+            }
+            else
+            {
+                relevantState[eff.Key] = 1;
+            }
+        }
     }
 
     public abstract bool PrePerform();

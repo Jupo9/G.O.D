@@ -4,17 +4,9 @@ using UnityEngine;
 
 public class DA_BullyAngel : Actions
 {
-    private Agents agentsScript;
+    private Devil devil;
 
-    private void Start()
-    {
-        agentsScript = GetComponent<Agents>();
-
-        if (agentsScript == null)
-        {
-            Debug.Log("Missing Agents Script!");
-        }
-    }
+    public bool done = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,8 +14,7 @@ public class DA_BullyAngel : Actions
 
         if (angelScript != null && angelScript.available)
         {
-            Debug.Log("FillEvil");
-            //agentsScript.FillEvil();
+            devil.bullyActive = true;
         }
     }
 
@@ -36,15 +27,35 @@ public class DA_BullyAngel : Actions
 
             if (angelScript != null)
             {
-                Debug.Log("StipFillEvil");
-                //agentsScript.StopFillEvil();
+                devil.bullyActive = false;
             }
         }
     }
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantState();
+
+        if (relevantState.ContainsKey("evil"))
+        {
+            int evilValue = relevantState["evil"];
+            Debug.Log($"PrePerform Check in Bully: Key 'evil' has value {evilValue}");
+
+            if (evilValue == 1)
+            {
+                Debug.Log("Key 'evil' hat Wert 1. Aktion wird sofort beendet.");
+                ApplyEffects(); 
+                PostPerform(); 
+                return false; 
+            }
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'evil' does not exist.");
+        }
+
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
+
         if (angels.Length == 0) return false;
 
         GameObject closestAngel = null;
@@ -73,6 +84,8 @@ public class DA_BullyAngel : Actions
 
     public override bool PostPerform()
     {
+        done = true;
+        ApplyEffects();
         return true;
     }
 

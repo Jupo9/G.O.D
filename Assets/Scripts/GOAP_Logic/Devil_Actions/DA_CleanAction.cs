@@ -8,6 +8,8 @@ public class DA_CleanAction : Actions
 
     private Building_Fire buildingFire;
 
+    public bool done = false;
+
     private void Start()
     {
         if (targetTag == "WO_Iron")
@@ -60,6 +62,10 @@ public class DA_CleanAction : Actions
 
     public override bool PostPerform()
     {
+        if (targetTag == "WO_Iron")
+        {
+            done = true;
+        }
         return true;
     }
 

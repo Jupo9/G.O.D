@@ -6,6 +6,8 @@ public class DA_Chilling : Actions
 {
     private Building_IronMaiden buildingIronMaiden;
 
+    public bool done = false;
+
     private void Start()
     {
         GameObject ironParent = GameObject.FindWithTag("Iron");
@@ -69,6 +71,7 @@ public class DA_Chilling : Actions
 
     public override bool PostPerform()
     {
+        done = true;
         return true;
     }
 

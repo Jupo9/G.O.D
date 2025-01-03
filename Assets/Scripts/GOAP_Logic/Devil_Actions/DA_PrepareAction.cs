@@ -7,6 +7,8 @@ public class DA_PrepareAction : Actions
     private Building_IronMaiden buildingIronMaiden;
     private Building_Fire buildingFire;
 
+    public bool done = false;
+
     private void Start()
     {
         if (targetTag == "WO_Iron")
@@ -42,6 +44,18 @@ public class DA_PrepareAction : Actions
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantState();
+
+        if (relevantState.ContainsKey("evil"))
+        {
+            int evilValue = relevantState["evil"];
+            Debug.Log($"PrePerform Check in Bully: Key 'evil' has value {evilValue}");
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'evil' does not exist.");
+        }
+
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
         {
@@ -122,6 +136,11 @@ public class DA_PrepareAction : Actions
 
     public override bool PostPerform()
     {
+        if (targetTag == "WO_Iron")
+        {
+            done = true;
+        }
+
         return true;
     }
 }
