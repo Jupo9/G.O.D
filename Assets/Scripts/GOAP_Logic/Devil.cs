@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Devil : Agents
@@ -24,6 +23,14 @@ public class Devil : Agents
     public bool bullyActive = false;
     public bool punshedAngel = false;
 
+    public WorldStates localStates;
+
+    void Awake()
+    {
+        localStates = new WorldStates();
+    }
+
+
     protected override void Start()
     {
         base.Start();
@@ -40,22 +47,22 @@ public class Devil : Agents
             needEvil = 100;
         }
 
-        if (needChill > 100) 
+        if (needChill > 100)
         {
             needChill = 100;
         }
 
-        if (needJoy > 100) 
+        if (needJoy > 100)
         {
             needJoy = 100;
         }
 
-        if (needPower > 100) 
+        if (needPower > 100)
         {
             needPower = 100;
         }
     }
-        
+
     IEnumerator LostOverTimeDevil()
     {
         while (true)

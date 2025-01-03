@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class DA_CleanAction : Actions
 {
@@ -34,7 +33,7 @@ public class DA_CleanAction : Actions
 
             if (fireParent != null)
             {
-                buildingFire = fireParent.GetComponentInParent<Building_Fire>();
+                buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
             }
             if (buildingFire == null)
             {
@@ -50,16 +49,6 @@ public class DA_CleanAction : Actions
 
         if (targetTag == "WO_Iron")
         {
-            Dictionary<string, int> worldStates = Worlds.Instance.GetWorld().GetStates();
-
-            if (worldStates.ContainsKey("cleanChill") && worldStates["cleanChill"] == 1)
-            {
-                Debug.Log("'cleanChill' is already 1. Marking action as complete.");
-                ApplyEffects();
-                done = true;
-                return false;
-            }
-
             StartCoroutine(WaitBeforeActionLight());
         }
 
@@ -75,7 +64,6 @@ public class DA_CleanAction : Actions
     {
         if (targetTag == "WO_Iron")
         {
-            Worlds.Instance.GetWorld().SetState("cleanChill", 1);
             done = true;
         }
         return true;

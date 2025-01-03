@@ -8,18 +8,13 @@ public class DA_BullyAngel : Actions
 
     public bool done = false;
 
-    private void Start()
-    {
-        devil = GetComponent<Devil>();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         Angel angelScript = other.GetComponent<Angel>();
 
         if (angelScript != null && angelScript.available)
         {
-            devil.bullyActive = true; 
+            devil.bullyActive = true;
         }
     }
 
@@ -39,17 +34,28 @@ public class DA_BullyAngel : Actions
 
     public override bool PrePerform()
     {
-        Dictionary<string, int> worldStates = Worlds.Instance.GetWorld().GetStates();
+        Dictionary<string, int> relevantState = GetRelevantState();
 
-        if (worldStates.ContainsKey("evil") && worldStates["evil"] == 1)
+        if (relevantState.ContainsKey("evil"))
         {
-            Debug.Log("DA_BullyAngel: 'evil' is already 1. Marking action as complete.");
-            ApplyEffects();
-            done = true;
-            return false; 
+            int evilValue = relevantState["evil"];
+            Debug.Log($"PrePerform Check in Bully: Key 'evil' has value {evilValue}");
+
+            if (evilValue == 1)
+            {
+                Debug.Log("Key 'evil' hat Wert 1. Aktion wird sofort beendet.");
+                ApplyEffects(); 
+                PostPerform(); 
+                return false; 
+            }
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'evil' does not exist.");
         }
 
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
+
         if (angels.Length == 0) return false;
 
         GameObject closestAngel = null;
@@ -78,8 +84,8 @@ public class DA_BullyAngel : Actions
 
     public override bool PostPerform()
     {
-        Worlds.Instance.GetWorld().SetState("evil", 1);
         done = true;
+        ApplyEffects();
         return true;
     }
 

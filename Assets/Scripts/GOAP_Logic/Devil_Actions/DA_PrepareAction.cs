@@ -32,7 +32,7 @@ public class DA_PrepareAction : Actions
 
             if (fireParent != null)
             {
-                buildingFire = fireParent.GetComponentInParent<Building_Fire>();
+                buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
             }
 
             if (buildingFire == null)
@@ -44,6 +44,18 @@ public class DA_PrepareAction : Actions
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantState();
+
+        if (relevantState.ContainsKey("evil"))
+        {
+            int evilValue = relevantState["evil"];
+            Debug.Log($"PrePerform Check in Bully: Key 'evil' has value {evilValue}");
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'evil' does not exist.");
+        }
+
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
         {
@@ -58,16 +70,6 @@ public class DA_PrepareAction : Actions
 
             if (targetTag == "WO_Iron")
             {
-                Dictionary<string, int> worldStates = Worlds.Instance.GetWorld().GetStates();
-
-                if (worldStates.ContainsKey("preChill") && worldStates["preChill"] == 1)
-                {
-                    Debug.Log("'preChill' is already 1. Marking action as complete.");
-                    ApplyEffects();
-                    done = true;
-                    return false;
-                }
-
                 Building_IronMaiden buildingIronMaidenScript = build.GetComponentInParent<Building_IronMaiden>();
                 if (buildingIronMaidenScript != null && buildingIronMaidenScript.isAvailable)
                 {
@@ -136,7 +138,6 @@ public class DA_PrepareAction : Actions
     {
         if (targetTag == "WO_Iron")
         {
-            Worlds.Instance.GetWorld().SetState("preChill", 1);
             done = true;
         }
 

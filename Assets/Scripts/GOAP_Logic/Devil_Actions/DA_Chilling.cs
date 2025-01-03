@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class DA_Chilling : Actions
 {
     private Building_IronMaiden buildingIronMaiden;
 
     public bool done = false;
+
     private void Start()
     {
         GameObject ironParent = GameObject.FindWithTag("Iron");
@@ -30,16 +30,6 @@ public class DA_Chilling : Actions
 
     public override bool PrePerform()
     {
-        Dictionary<string, int> worldStates = Worlds.Instance.GetWorld().GetStates();
-
-        if (worldStates.ContainsKey("chill") && worldStates["chill"] == 1)
-        {
-            Debug.Log("'chill' is already 1. Marking action as complete.");
-            ApplyEffects();
-            done = true;
-            return false;
-        }
-
         Invoke("CloseDoors", 2f);
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
@@ -81,7 +71,6 @@ public class DA_Chilling : Actions
 
     public override bool PostPerform()
     {
-        Worlds.Instance.GetWorld().SetState("chill", 1);
         done = true;
         return true;
     }

@@ -21,7 +21,6 @@ public abstract class Actions : MonoBehaviour
     public WorldStates agentBeliefs;
 
     public bool running = false;
-    public bool useLocalState = false;
 
     public Actions()
     {
@@ -56,9 +55,10 @@ public abstract class Actions : MonoBehaviour
 
     public Dictionary<string, int> GetRelevantState()
     {
-        if (useLocalState && agentBeliefs != null)
+        Devil devil = GetComponentInParent<Devil>(); 
+        if (devil != null)
         {
-            return agentBeliefs.GetStates();
+            return devil.localStates.GetStates(); 
         }
         else
         {
@@ -73,11 +73,9 @@ public abstract class Actions : MonoBehaviour
 
     public bool IsArchievableGiven(Dictionary<string, int> conditions)
     {
-        Dictionary<string, int> relevantState = GetRelevantState();
-
-        foreach (KeyValuePair<string, int> p in preconditions)
+        foreach(KeyValuePair<string, int> p in preconditions)
         {
-            if (!conditions.ContainsKey(p.Key))
+            if(!conditions.ContainsKey(p.Key))
             {
                 return false;
             }
@@ -93,20 +91,15 @@ public abstract class Actions : MonoBehaviour
         {
             if (relevantState.ContainsKey(eff.Key))
             {
-                relevantState[eff.Key] = eff.Value;
-                Debug.Log($"Effekt angewendet: Zustand '{eff.Key}' gesetzt auf {eff.Value}.");
+                relevantState[eff.Key] = 1; 
             }
             else
             {
-                relevantState[eff.Key] = eff.Value;
-                Debug.Log($"Neuer Zustand hinzugefügt: '{eff.Key}' = {eff.Value}.");
+                relevantState[eff.Key] = 1;
             }
         }
-
-        Debug.Log($"Effekte angewendet auf {(useLocalState ? "lokalen" : "globalen")} Zustand.");
     }
 
     public abstract bool PrePerform();
     public abstract bool PostPerform();
 }
-
