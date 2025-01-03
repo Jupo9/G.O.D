@@ -35,7 +35,7 @@ public class Agents : MonoBehaviour
     /// Devil Area
     /// </summary>
 
-    //private bool personalTarget = false;
+    private bool personalTarget = false;
 
     private bool noticeEvil = false;
     private bool noticeChill = false;
@@ -93,9 +93,8 @@ public class Agents : MonoBehaviour
 
         StartCoroutine("DevilBeliefs");
         //StartCoroutine("AngelBeliefs");
-
     }
-        
+
     bool invoked = false;
     void CompleteAction()
     {
@@ -115,11 +114,7 @@ public class Agents : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (playersWish)
-        {
-            TellMe();
-            playersWish = false;
-        }
+        MonitorEvilKey();
 
         if (CompareTag("Angel"))
         {
@@ -167,21 +162,21 @@ public class Agents : MonoBehaviour
 
             if (actionQueue != null && actionQueue.Count > 0)
             {
-                currentAction = actionQueue.Dequeue();
+               currentAction = actionQueue.Dequeue();
                Debug.Log("Assigned Action: " + currentAction.actionName);
-                if (currentAction.PrePerform())
-                {
-                    if (currentAction.target == null && currentAction.targetTag != "")
-                    {
-                        currentAction.target = GameObject.FindWithTag(currentAction.targetTag);
-                    }
+               if (currentAction.PrePerform())
+               {
+                   if (currentAction.target == null && currentAction.targetTag != "")
+                   {
+                       currentAction.target = GameObject.FindWithTag(currentAction.targetTag);
+                   }
 
-                    if (currentAction.target != null)
-                    {
-                        currentAction.running = true;
-                        currentAction.agent.SetDestination(currentAction.target.transform.position);
-                    }
-                }
+                   if (currentAction.target != null)
+                   {
+                       currentAction.running = true;
+                       currentAction.agent.SetDestination(currentAction.target.transform.position);
+                   }
+               }
             }
             else
             {
@@ -197,10 +192,6 @@ public class Agents : MonoBehaviour
             {
                 if (currentAction is DA_BullyAngel)
                 {
-                    /*if (<<Key ist 1>>)
-                    {
-                        überspringen
-                    }*/
 
                     GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
 
@@ -214,8 +205,14 @@ public class Agents : MonoBehaviour
                         }
                     }
 
+                    if (availableAngels.Count == 0 && !personalTarget)
+                    {
+                        Debug.Log("Missing free Angel");
+                    }
+
                     if (availableAngels.Count > 0)
                     {
+                        personalTarget = true;
                         GameObject nearestAngel = availableAngels
                             .OrderBy(angel => Vector3.Distance(transform.position, angel.transform.position))
                             .First();
@@ -297,21 +294,6 @@ public class Agents : MonoBehaviour
         }
     }
 
-    private void TellMe()
-    {
-        Dictionary<string, int> relevantState = Worlds.Instance.GetWorld().GetStates();
-
-        if (relevantState.ContainsKey("evil"))
-        {
-            int evilValue = relevantState["evil"];
-            Debug.Log($"Key 'evil' exists with value: {evilValue}");
-        }
-        else
-        {
-            Debug.Log("Key 'evil' does not exist.");
-        }
-    }
-
     private IEnumerator DevilBeliefs()
     {
         Devil devil = GetComponent<Devil>();
@@ -364,32 +346,17 @@ public class Agents : MonoBehaviour
         }
     }
 
+
+
     private void ResetEvil()
     {
         if (triggerEvil)
         {
             if (currentAction is DA_CleanAction || currentAction is DA_Transport)
             {
-                Debug.Log("Planner wird zurückgesetzt. Evil");
-                //personalTarget = false;
                 noticeEvil = true;
-                triggerEvil = false;
-
-                bullyAngel.done = false;
-                punshAngel.done = false;
-
-                if (Worlds.Instance.GetWorld().HasState("evil"))
-                {
-                    int value = Worlds.Instance.GetWorld().GetStates()["evil"];
-                    if (value == 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("evil", 0);
-                        Debug.Log("evil wurde zu WorldStates entfernt.");
-                        ResetPlanner();
-                    }
-                }
-
-                noticeEvil = false;
+                Debug.Log("ResetEvil");
+                StartCoroutine("WaitBeforeReset");
             }
             else
             {
@@ -453,6 +420,25 @@ public class Agents : MonoBehaviour
         }
     }
 
+    private IEnumerator WaitBeforeReset()
+    {
+        while (!currentAction.PostPerform())
+        {
+            yield return null;
+        }
+
+        Debug.Log("Planner wird zurückgesetzt. Evil");
+        personalTarget = false;
+        triggerEvil = false;
+
+        bullyAngel.done = false;
+        //punshAngel.done = false;
+
+        noticeEvil = false;
+
+        ResetPlanner();
+    }
+
     private void ResetPlanner()
     {
         planner = new Planner();
@@ -478,5 +464,20 @@ public class Agents : MonoBehaviour
         {
             Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
         }
+    }
+
+    public void MonitorEvilKey()
+    {
+        if (currentAction != null)
+        {
+            Dictionary<string, int> relevantState = currentAction.GetRelevantState();
+
+            if (relevantState.ContainsKey("evil"))
+            {
+                int evilValue = relevantState["evil"];
+                Debug.Log($"MonitorEvilKey: Current value of 'evil' is {evilValue}");
+            }
+        }
+
     }
 }
