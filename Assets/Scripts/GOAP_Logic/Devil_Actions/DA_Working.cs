@@ -15,10 +15,10 @@ public class DA_Working : Actions
             buildingFire = lightParent.GetComponentInParent<Building_Fire>();
         }
 
-        if (buildingFire == null)
+        /*if (buildingFire == null)
         {
             Debug.LogWarning("Building_Fire script not found on FireBuilding.");
-        }
+        }*/
     }
 
     public override bool PrePerform()

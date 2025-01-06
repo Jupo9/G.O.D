@@ -35,7 +35,7 @@ public class Agents : MonoBehaviour
     /// Devil Area
     /// </summary>
 
-    private bool personalTarget = false;
+    //private bool personalTarget = false;
 
     private bool noticeEvil = false;
     private bool noticeChill = false;
@@ -114,7 +114,7 @@ public class Agents : MonoBehaviour
 
     private void LateUpdate()
     {
-        MonitorEvilKey();
+        //MonitorEvilKey();
 
         if (CompareTag("Angel"))
         {
@@ -157,26 +157,26 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-               Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
+                Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
             }
 
             if (actionQueue != null && actionQueue.Count > 0)
             {
-               currentAction = actionQueue.Dequeue();
-               Debug.Log("Assigned Action: " + currentAction.actionName);
-               if (currentAction.PrePerform())
-               {
-                   if (currentAction.target == null && currentAction.targetTag != "")
-                   {
-                       currentAction.target = GameObject.FindWithTag(currentAction.targetTag);
-                   }
+                currentAction = actionQueue.Dequeue();
+                Debug.Log("Assigned Action: " + currentAction.actionName);
+                if (currentAction.PrePerform())
+                {
+                    if (currentAction.target == null && currentAction.targetTag != "")
+                    {
+                        currentAction.target = GameObject.FindWithTag(currentAction.targetTag);
+                    }
 
-                   if (currentAction.target != null)
-                   {
-                       currentAction.running = true;
-                       currentAction.agent.SetDestination(currentAction.target.transform.position);
-                   }
-               }
+                    if (currentAction.target != null)
+                    {
+                        currentAction.running = true;
+                        currentAction.agent.SetDestination(currentAction.target.transform.position);
+                    }
+                }
             }
             else
             {
@@ -196,23 +196,18 @@ public class Agents : MonoBehaviour
                     GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
 
                     List<GameObject> availableAngels = new List<GameObject>();
-                    foreach (GameObject angel in angels) 
+                    foreach (GameObject angel in angels)
                     {
                         Angel angelScript = angel.GetComponent<Angel>();
-                        if(angelScript != null &&  angelScript.available)
+                        if (angelScript != null && angelScript.available)
                         {
                             availableAngels.Add(angel);
                         }
                     }
 
-                    if (availableAngels.Count == 0 && !personalTarget)
-                    {
-                        Debug.Log("Missing free Angel");
-                    }
-
                     if (availableAngels.Count > 0)
                     {
-                        personalTarget = true;
+                        //personalTarget = true;
                         GameObject nearestAngel = availableAngels
                             .OrderBy(angel => Vector3.Distance(transform.position, angel.transform.position))
                             .First();
@@ -221,6 +216,11 @@ public class Agents : MonoBehaviour
 
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
                     }
+
+                    /*if (availableAngels.Count == 0 && !personalTarget)
+                    {
+                        Debug.Log("Missing free Angel");
+                    }*/
                 }
 
                 if (currentAction is DA_PunshAngel)
@@ -228,7 +228,7 @@ public class Agents : MonoBehaviour
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if(currentAction is GA_MoveAround) 
+                if (currentAction is GA_MoveAround)
                 {
                     ///Überprüfen von Werten um neuen Plan aufzustellen
                 }
@@ -265,7 +265,7 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-               Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
+                Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
             }
 
             if (actionQueue != null && actionQueue.Count > 0)
@@ -304,20 +304,20 @@ public class Agents : MonoBehaviour
             {
                 if (!noticeEvil)
                 {
-                   // Debug.Log("current Value of NeedEvil: " + devil.needEvil);
+                    Debug.Log("current Value of NeedEvil: " + devil.needEvil);
 
                     float evilIndicator = Random.Range(20f, 70f);
 
                     if (evilIndicator > devil.needEvil)
                     {
-                        //Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
+                        Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
                         triggerEvil = true;
                         ResetEvil();
                     }
-                    /*else
+                    else
                     {
                         Debug.Log("Random Number was: " + evilIndicator + " and was not high enough for " + devil.needEvil);
-                    }*/
+                    }
                 }
 
                 if (!noticeChill)
@@ -345,8 +345,6 @@ public class Agents : MonoBehaviour
             yield return new WaitForSeconds(5f);
         }
     }
-
-
 
     private void ResetEvil()
     {
@@ -427,17 +425,55 @@ public class Agents : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Planner wird zurückgesetzt. Evil");
-        personalTarget = false;
-        triggerEvil = false;
+        Dictionary<string, int> relevantState = currentAction.GetRelevantState();
 
+        if (relevantState.ContainsKey("evil"))
+        {
+            int evilValue = relevantState["evil"];
+
+            if (evilValue == 1)
+            {
+                relevantState["evil"] = 0;
+                Debug.Log("MonitorEvilKey: Key 'evil' set to 0");
+            }
+        }
+
+        Debug.Log("Planner wird zurückgesetzt. Evil");
+
+        triggerEvil = false;
         bullyAngel.done = false;
         //punshAngel.done = false;
-
         noticeEvil = false;
 
         ResetPlanner();
     }
+
+    /*private void ResetPlannerOld()
+    {
+        planner = new Planner();
+
+        actionQueue = null;
+        currentAction = null;
+        currentGoal = null;
+
+        var sortedGoals = from entry in goals orderby entry.Value descending select entry;
+
+        foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
+        {
+            actionQueue = planner.plan(actions, sg.Key.subGoals, null);
+            if (actionQueue != null)
+            {
+                currentGoal = sg.Key;
+                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
+                break;
+            }
+        }
+
+        if (actionQueue == null)
+        {
+            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
+        }
+    }*/
 
     private void ResetPlanner()
     {
@@ -465,6 +501,7 @@ public class Agents : MonoBehaviour
             Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
         }
     }
+
 
     public void MonitorEvilKey()
     {

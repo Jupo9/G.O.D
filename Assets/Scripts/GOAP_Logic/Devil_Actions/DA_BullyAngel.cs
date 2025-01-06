@@ -8,13 +8,22 @@ public class DA_BullyAngel : Actions
 
     public bool done = false;
 
+
+    private void Start()
+    {
+        devil = GetComponent<Devil>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        Angel angelScript = other.GetComponent<Angel>();
-
-        if (angelScript != null && angelScript.available)
+        if (other.CompareTag("Angel"))
         {
-            devil.bullyActive = true;
+            Angel angelScript = other.GetComponent<Angel>();
+
+            if (angelScript != null)
+            {
+                devil.bullyActive = true;
+            }
         }
     }
 
@@ -44,8 +53,8 @@ public class DA_BullyAngel : Actions
             if (evilValue == 1)
             {
                 Debug.Log("Key 'evil' hat Wert 1. Aktion wird sofort beendet.");
+                done = true;
                 ApplyEffects(); 
-                PostPerform(); 
                 return false; 
             }
         }

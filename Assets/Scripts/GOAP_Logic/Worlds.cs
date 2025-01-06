@@ -48,4 +48,3 @@ public sealed class Worlds
         world.UpdateStateBasedOnEvent(stateKey, valueChange);
     }
 }
-

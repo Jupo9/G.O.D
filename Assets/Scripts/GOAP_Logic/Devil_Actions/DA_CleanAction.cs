@@ -21,10 +21,10 @@ public class DA_CleanAction : Actions
                 buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
             }
 
-            if (buildingIronMaiden == null)
+            /*if (buildingIronMaiden == null)
             {
                 Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
-            }
+            }*/
         }
 
         if (targetTag == "WO_Fire")
@@ -35,10 +35,10 @@ public class DA_CleanAction : Actions
             {
                 buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
             }
-            if (buildingFire == null)
+            /*if (buildingFire == null)
             {
                 Debug.LogWarning("Building_Fire script not found on FireBuilding.");
-            }
+            }*/
         }
 
     }

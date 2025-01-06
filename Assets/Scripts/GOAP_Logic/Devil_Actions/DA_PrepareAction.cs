@@ -20,10 +20,10 @@ public class DA_PrepareAction : Actions
                 buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
             }
 
-            if (buildingIronMaiden == null)
+            /*if (buildingIronMaiden == null)
             {
                 Debug.LogWarning("Building_IronMaiden script not found on IronMaidenBuilding.");
-            }
+            }*/
         }
 
         if (targetTag == "WO_Fire")
@@ -35,27 +35,15 @@ public class DA_PrepareAction : Actions
                 buildingFire = fireParent.GetComponentInChildren<Building_Fire>();
             }
 
-            if (buildingFire == null)
+            /*if (buildingFire == null)
             {
                 Debug.LogWarning("Building_Fire script not found on FireBuilding.");
-            }
+            }*/
         }
     }
 
     public override bool PrePerform()
     {
-        Dictionary<string, int> relevantState = GetRelevantState();
-
-        if (relevantState.ContainsKey("evil"))
-        {
-            int evilValue = relevantState["evil"];
-            Debug.Log($"PrePerform Check in Bully: Key 'evil' has value {evilValue}");
-        }
-        else
-        {
-            Debug.Log("PrePerform Check in Bully: Key 'evil' does not exist.");
-        }
-
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
         {
