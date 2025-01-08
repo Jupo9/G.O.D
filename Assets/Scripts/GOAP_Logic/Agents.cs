@@ -28,6 +28,8 @@ public class Agents : MonoBehaviour
     public Actions currentAction;
     SubGoal currentGoal;
 
+    private Actions currentRunningAction;
+
     public bool playersWish = false;
     //private bool idleAction = false;
 
@@ -304,19 +306,19 @@ public class Agents : MonoBehaviour
             {
                 if (!noticeEvil)
                 {
-                    Debug.Log("current Value of NeedEvil: " + devil.needEvil);
+                    //Debug.Log("current Value of NeedEvil: " + devil.needEvil);
 
                     float evilIndicator = Random.Range(20f, 70f);
 
                     if (evilIndicator > devil.needEvil)
                     {
-                        Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
+                        //Debug.Log("Random Number was: " + evilIndicator + " and was higher than " + devil.needEvil);
                         triggerEvil = true;
                         ResetEvil();
                     }
                     else
                     {
-                        Debug.Log("Random Number was: " + evilIndicator + " and was not high enough for " + devil.needEvil);
+                        //Debug.Log("Random Number was: " + evilIndicator + " and was not high enough for " + devil.needEvil);
                     }
                 }
 
@@ -353,6 +355,7 @@ public class Agents : MonoBehaviour
             if (currentAction is DA_CleanAction || currentAction is DA_Transport)
             {
                 noticeEvil = true;
+                currentRunningAction = currentAction;
                 Debug.Log("ResetEvil");
                 StartCoroutine("WaitBeforeReset");
             }
@@ -362,6 +365,71 @@ public class Agents : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator WaitBeforeReset()
+    {
+        if (currentRunningAction == null)
+        {
+            Debug.LogError("[WaitBeforeReset] Keine laufende Aktion gefunden!");
+            yield break;
+        }
+
+        while (currentRunningAction.running)
+        {
+            Debug.Log($"[WaitBeforeReset] Waiting for action {currentRunningAction.actionName} to finish.");
+            yield return null;
+        }
+
+        Debug.Log($"[WaitBeforeReset] Action {currentRunningAction.actionName} has completed. Proceeding to reset.");
+
+        Dictionary<string, int> relevantState = currentAction.GetRelevantState();
+
+        if (relevantState.ContainsKey("evil"))
+        {
+            int evilValue = relevantState["evil"];
+
+            if (evilValue == 1)
+            {
+                relevantState["evil"] = 0;
+                Debug.Log("MonitorEvilKey: Key 'evil' set to 0");
+            }
+        }
+
+        Debug.Log("Planner wird zurückgesetzt. Evil");
+
+        triggerEvil = false;
+        bullyAngel.done = false;
+        //punshAngel.done = false;
+        noticeEvil = false;
+        ResetPlanner();
+    }
+
+    /*private void ResetPlannerOld()
+    {
+        planner = new Planner();
+
+        actionQueue = null;
+        currentAction = null;
+        currentGoal = null;
+
+        var sortedGoals = from entry in goals orderby entry.Value descending select entry;
+
+        foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
+        {
+            actionQueue = planner.plan(actions, sg.Key.subGoals, null);
+            if (actionQueue != null)
+            {
+                currentGoal = sg.Key;
+                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
+                break;
+            }
+        }
+
+        if (actionQueue == null)
+        {
+            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
+        }
+    }*/
 
     private void ResetChill()
     {
@@ -417,63 +485,6 @@ public class Agents : MonoBehaviour
             }
         }
     }
-
-    private IEnumerator WaitBeforeReset()
-    {
-        while (!currentAction.PostPerform())
-        {
-            yield return null;
-        }
-
-        Dictionary<string, int> relevantState = currentAction.GetRelevantState();
-
-        if (relevantState.ContainsKey("evil"))
-        {
-            int evilValue = relevantState["evil"];
-
-            if (evilValue == 1)
-            {
-                relevantState["evil"] = 0;
-                Debug.Log("MonitorEvilKey: Key 'evil' set to 0");
-            }
-        }
-
-        Debug.Log("Planner wird zurückgesetzt. Evil");
-
-        triggerEvil = false;
-        bullyAngel.done = false;
-        //punshAngel.done = false;
-        noticeEvil = false;
-
-        ResetPlanner();
-    }
-
-    /*private void ResetPlannerOld()
-    {
-        planner = new Planner();
-
-        actionQueue = null;
-        currentAction = null;
-        currentGoal = null;
-
-        var sortedGoals = from entry in goals orderby entry.Value descending select entry;
-
-        foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
-        {
-            actionQueue = planner.plan(actions, sg.Key.subGoals, null);
-            if (actionQueue != null)
-            {
-                currentGoal = sg.Key;
-                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
-                break;
-            }
-        }
-
-        if (actionQueue == null)
-        {
-            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
-        }
-    }*/
 
     private void ResetPlanner()
     {

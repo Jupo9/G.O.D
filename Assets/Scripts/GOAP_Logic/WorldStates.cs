@@ -28,7 +28,6 @@ public class WorldStates
     {
         if (states == null)
         {
-            Debug.LogError("WorldStates.states ist null!");
             return false;
         }
 
@@ -88,11 +87,11 @@ public class WorldStates
     {
         if (states.ContainsKey(key))
         {
-            states[key] = value; // Setzt den Wert direkt
+            states[key] = value;
         }
         else
         {
-            states.Add(key, value); // Fügt den Zustand hinzu, falls er noch nicht existiert
+            states.Add(key, value); 
         }
     }
 

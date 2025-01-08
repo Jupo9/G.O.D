@@ -31,7 +31,8 @@ public abstract class Actions : MonoBehaviour
 
     public void Awake()
     {
-        agent = this.GetComponent<NavMeshAgent>();
+        agent = this.GetComponent<NavMeshAgent>() ?? this.gameObject.AddComponent<NavMeshAgent>();
+
         if (agent == null)
         {
             agent = this.gameObject.AddComponent<NavMeshAgent>();
@@ -56,15 +57,12 @@ public abstract class Actions : MonoBehaviour
 
     public Dictionary<string, int> GetRelevantState()
     {
-        Devil devil = GetComponentInParent<Devil>(); 
-        if (devil != null)
+        Devil devil = GetComponentInParent<Devil>();
+        if (devil != null && devil.localStates != null)
         {
-            return devil.localStates.GetStates(); 
+            return devil.localStates.GetStates();
         }
-        else
-        {
-            return Worlds.Instance.GetWorld().GetStates();
-        }
+        return Worlds.Instance.GetWorld().GetStates();
     }
 
     public bool IsArchievable()
@@ -74,9 +72,9 @@ public abstract class Actions : MonoBehaviour
 
     public bool IsArchievableGiven(Dictionary<string, int> conditions)
     {
-        foreach(KeyValuePair<string, int> p in preconditions)
+        foreach (KeyValuePair<string, int> p in preconditions)
         {
-            if(!conditions.ContainsKey(p.Key))
+            if (!conditions.ContainsKey(p.Key) || conditions[p.Key] != p.Value)
             {
                 return false;
             }
@@ -90,14 +88,7 @@ public abstract class Actions : MonoBehaviour
 
         foreach (KeyValuePair<string, int> eff in effect)
         {
-            if (relevantState.ContainsKey(eff.Key))
-            {
-                relevantState[eff.Key] = 1; 
-            }
-            else
-            {
-                relevantState[eff.Key] = 1;
-            }
+            relevantState[eff.Key] = eff.Value;
         }
     }
 

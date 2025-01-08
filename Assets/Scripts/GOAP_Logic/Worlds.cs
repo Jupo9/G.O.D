@@ -39,12 +39,10 @@ public sealed class Worlds
     public void InitializeStates()
     {
         world.ModifyState("evil", 1);
-        Debug.Log("World initialized with 'evil' set to 1");
     }
 
     private static void HandleStateChange(string stateKey, int valueChange)
     {
-        Debug.Log($"State Change Event: {stateKey}, Change: {valueChange}");
         world.UpdateStateBasedOnEvent(stateKey, valueChange);
     }
 }

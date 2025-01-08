@@ -27,34 +27,13 @@ public class Planner
 
         foreach (Actions a in actions)
         {
-            Dictionary<string, int> relevantState = Worlds.Instance.GetWorld().GetStates();
-
-
-            bool stateCheck = true;
-
-            foreach (KeyValuePair<string, int> precondition in a.preconditions)
-            {
-                if (relevantState.ContainsKey(precondition.Key) && relevantState[precondition.Key] != precondition.Value)
-                {
-                    if (precondition.Key == "evil" && relevantState[precondition.Key] == 1)
-                    {
-                        Debug.Log($"Action '{a.actionName}': Treating 'evil == 1' as completed for precondition.");
-                        a.ApplyEffects();
-                        relevantState[precondition.Key] = 0; 
-                        continue; 
-                    }
-
-                    Debug.Log($"Skipping Action '{a.actionName}' due to state '{precondition.Key}' != {precondition.Value} (current: {relevantState[precondition.Key]}).");
-                    stateCheck = false;
-                    break;
-                }
-            }
-
-            if (a.IsArchievable() && stateCheck)
+            if (a.IsArchievable())
             {
                 usableActions.Add(a);
             }
         }
+
+        usableActions.Sort((a, b) => b.wayCosts.CompareTo(a.wayCosts));
 
         List<Node> leaves = new List<Node>();
         Node start = new Node(null, 0, Worlds.Instance.GetWorld().GetStates(), null);
@@ -68,57 +47,33 @@ public class Planner
         }
 
         Node cheapest = null;
-        foreach(Node leaf in leaves)
+        foreach (Node leaf in leaves)
         {
-            if(cheapest == null)
+            if (cheapest == null || leaf.cost < cheapest.cost)
             {
                 cheapest = leaf;
-            }
-            else
-            {
-                if(leaf.cost < cheapest.cost)
-                {
-                    cheapest = leaf;
-                }
             }
         }
 
         List<Actions> result = new List<Actions>();
         Node n = cheapest;
-        while(n != null) 
+        while (n != null)
         {
-            if(n.action != null)
+            if (n.action != null)
             {
                 result.Insert(0, n.action);
             }
             n = n.parent;
         }
 
-        Queue<Actions> queue = new Queue<Actions>();
-
-        if (result.Count == 0)
-        {
-            Debug.LogError("No actions available to achieve the goal. Plan failed.");
-            return null;
-        }
-
-        foreach (Actions a in result)
-        {
-            queue.Enqueue(a);
-        }
-
-        ///Debug.Log("The Plan is: ");
-        foreach(Actions a in queue)
-        {
-            ///Debug.Log("Q: " + a.actionName);
-        }
-
-        return queue;
+        Queue<Actions> queue = new Queue<Actions>(result);
+        return queue.Count > 0 ? queue : null;
     }
 
     private bool BuildGraph(Node parent, List<Node> leaves, List<Actions> usableActions, Dictionary<string, int> goal)
     {
         bool foundPath = false;
+
         foreach(Actions action in usableActions)
         {
             if(action.IsArchievableGiven(parent.state))
@@ -126,18 +81,12 @@ public class Planner
                 Dictionary<string, int> currentState = new Dictionary<string, int>(parent.state);
                 foreach(KeyValuePair<string, int> eff in action.effect)
                 {
-                    if (!currentState.ContainsKey(eff.Key))
-                    {
-                        currentState.Add(eff.Key, eff.Value);
-                    }
-                    else
-                    {
-                        currentState[eff.Key] = eff.Value;
-                    }
+                    currentState[eff.Key] = eff.Value;
                 }
+
                 Node node = new Node(parent, parent.cost + action.wayCosts, currentState, action);
 
-                if(GoalAchieved(goal, currentState))
+                if (GoalAchieved(goal, currentState))
                 {
                     leaves.Add(node);
                     foundPath = true;
@@ -145,8 +94,7 @@ public class Planner
                 else
                 {
                     List<Actions> subset = ActionSubset(usableActions, action);
-                    bool found = BuildGraph(node, leaves, subset, goal);
-                    if(found)
+                    if (BuildGraph(node, leaves, subset, goal))
                     {
                         foundPath = true;
                     }
@@ -170,16 +118,7 @@ public class Planner
 
     private List<Actions> ActionSubset(List<Actions> actions, Actions removeMe)
     {
-        List<Actions> subset = new List<Actions>();
-
-        foreach(Actions a in actions)
-        {
-            if (!a.Equals(removeMe))
-            {
-                subset.Add(a);
-            }
-        }
-        return subset;
+        return actions.Where(a => !a.Equals(removeMe)).ToList();
     }
 }
 

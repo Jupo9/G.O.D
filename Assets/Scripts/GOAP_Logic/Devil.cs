@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Devil : Agents
 {
+    public GameObject objectCanvas;
+
+    public GameObject targetRendererObject;
+    public string targetMaterialName = "Outline_1";
+    private MeshRenderer targetMeshRenderer;
+    private int targetMaterialIndex = -1;
+
     [Header("Believes")]
     public float needEvil = 100f;
     public float needChill = 100f;
@@ -37,6 +44,34 @@ public class Devil : Agents
         SubGoal s1 = new SubGoal("Survive", 1, true);
         goals.Add(s1, 3);
 
+        if (targetRendererObject == null)
+        {
+            Debug.LogError("Kein Zielobjekt für den MeshRenderer zugewiesen!");
+            return;
+        }
+
+        targetMeshRenderer = targetRendererObject.GetComponent<MeshRenderer>();
+        if (targetMeshRenderer == null)
+        {
+            Debug.LogError($"Kein MeshRenderer im Zielobjekt '{targetRendererObject.name}' gefunden!");
+            return;
+        }
+
+        Material[] materials = targetMeshRenderer.materials;
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if (materials[i].name.Contains(targetMaterialName))
+            {
+                targetMaterialIndex = i;
+                break;
+            }
+        }
+
+        if (targetMaterialIndex == -1)
+        {
+            Debug.LogWarning($"Kein Material mit dem Namen '{targetMaterialName}' gefunden!");
+        }
+
         StartCoroutine("LostOverTimeDevil");
     }
 
@@ -61,6 +96,25 @@ public class Devil : Agents
         {
             needPower = 100;
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    ToggleCanvas(true); 
+                }
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1)) 
+        {
+            ToggleCanvas(false); 
+        }
     }
 
     IEnumerator LostOverTimeDevil()
@@ -84,6 +138,29 @@ public class Devil : Agents
             }
 
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void ToggleCanvas(bool state)
+    {
+        if (objectCanvas != null)
+        {
+            objectCanvas.SetActive(state);
+        }
+
+        if (targetMeshRenderer != null && targetMaterialIndex != -1)
+        {
+            Material[] materials = targetMeshRenderer.materials;
+
+            if (state)
+            {
+                materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f); 
+            }
+            else
+            {
+                materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f); 
+            }
+            targetMeshRenderer.materials = materials;
         }
     }
 }
