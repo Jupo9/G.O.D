@@ -1146,7 +1146,7 @@ MonoBehaviour:
   playersWish: 0
   objectCanvas: {fileID: 5247355462559983498}
   targetRendererObject: {fileID: 323286621196770623}
-  meshRendererName: Outline_1
+  targetMaterialName: Outline_1
   needEvil: 100
   needChill: 100
   needJoy: 100
@@ -1708,7 +1708,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: d948fe9b9a072124ca5adf75153f16bf, type: 2}
+      objectReference: {fileID: 2100000, guid: 8456e8d9a5cca0b45a4dbd98b9c8e5c9, type: 2}
     - target: {fileID: -7511558181221131132, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
