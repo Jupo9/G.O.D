@@ -19,6 +19,7 @@ public class Building_Light : MonoBehaviour
     public GameObject waypointOutside;
     public GameObject waypointInside;
 
+    private const string BuildingFireKey = "Build_light";
 
     private void Update()
     {
@@ -45,6 +46,46 @@ public class Building_Light : MonoBehaviour
             lightResource.SetActive(false);
         }
 
+    }
+
+    private void OnEnable()
+    {
+        AddBuilding();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveBuilding();
+    }
+
+    public void AddBuilding()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(BuildingFireKey))
+        {
+            Debug.LogError($"WorldStates does not contain the key '{BuildingFireKey}'. Make sure it is initialized.");
+            return;
+        }
+
+        worldStates.ModifyState(BuildingFireKey, 1);
+        Debug.Log($"Building added. Current count: {worldStates.GetStates()[BuildingFireKey]}");
+    }
+
+    public void RemoveBuilding()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(BuildingFireKey))
+        {
+            int currentCount = worldStates.GetStates()["Build_light"];
+            worldStates.ModifyState(BuildingFireKey, -1);
+            Debug.Log($"Building removed. Remaining: {currentCount - 1}");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot remove 'Build_light'. State does not exist.");
+        }
     }
 
     public void IncreaseLightAmount()

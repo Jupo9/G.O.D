@@ -116,6 +116,10 @@ public class Agents : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (playersWish)
+        {
+            //tests
+        }
         //MonitorEvilKey();
 
         if (CompareTag("Angel"))
@@ -194,6 +198,19 @@ public class Agents : MonoBehaviour
             {
                 if (currentAction is DA_BullyAngel)
                 {
+                    WorldStates worldStates = Worlds.Instance.GetWorld();
+
+                    if (worldStates.HasState("Avail_angel"))
+                    {
+                        int availableAngelsValue = worldStates.GetStates()["Avail_angel"];
+
+                        if (availableAngelsValue == 0)
+                        {
+                            currentAction.running = false;
+                            currentAction = null;
+                            return;
+                        }
+                    }
 
                     GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
 
@@ -227,12 +244,83 @@ public class Agents : MonoBehaviour
 
                 if (currentAction is DA_PunshAngel)
                 {
+                    WorldStates worldStates = Worlds.Instance.GetWorld();
+
+                    if (worldStates.HasState("Avail_angel"))
+                    {
+                        int availableAngelsValue = worldStates.GetStates()["Avail_angel"];
+
+                        if (availableAngelsValue == 0)
+                        {
+                            currentAction.running = false;
+                            currentAction = null;
+                            return;
+                        }
+                    }
+
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if (currentAction is GA_MoveAround)
+                if (currentAction is DA_Chilling)
                 {
-                    ///Überprüfen von Werten um neuen Plan aufzustellen
+                    WorldStates worldStates = Worlds.Instance.GetWorld();
+
+                    if (worldStates.HasState("Build_iron"))
+                    {
+                        int availableAngelsValue = worldStates.GetStates()["Build_iron"];
+
+                        if (availableAngelsValue == 0)
+                        {
+                            currentAction.running = false;
+                            currentAction = null;
+                            return;
+                        }
+                    }
+                }
+
+                if (currentAction is DA_Working)
+                {
+                    WorldStates worldStates = Worlds.Instance.GetWorld();
+
+                    if (worldStates.HasState("Build_iron"))
+                    {
+                        int buildIronValue = worldStates.GetStates()["Build_iron"];
+
+                        if (buildIronValue == 0)
+                        {
+                            currentAction.running = false;
+                            currentAction = null;
+                            return;
+                        }
+                    }
+                }
+
+                if (currentAction is DA_PrepareAction || currentAction is DA_CleanAction)
+                {
+                    WorldStates worldStates = Worlds.Instance.GetWorld();
+
+                    if (worldStates.HasState("Build_iron"))
+                    {
+                        int buildIronValue = worldStates.GetStates()["Build_iron"];
+
+                        if (buildIronValue == 0)
+                        {
+                            currentAction.running = false;
+                            currentAction = null;
+                            return;
+                        }
+                    }
+                    if (worldStates.HasState("Build_fire"))
+                    {
+                        int buildFireValue = worldStates.GetStates()["Build_fire"];
+
+                        if (buildFireValue == 0)
+                        {
+                            currentAction.running = false;
+                            currentAction = null;
+                            return;
+                        }
+                    }
                 }
 
                 if (currentAction != null && currentAction.running)
@@ -249,7 +337,6 @@ public class Agents : MonoBehaviour
                     return;
                 }
             }
-
 
             if (planner == null || actionQueue == null)
             {
@@ -290,7 +377,7 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                //Debug.Log("No Action in Queue");
+                ResetPlanner();
             }
 
         }

@@ -11,6 +11,8 @@ public class Building_IronMaiden : MonoBehaviour
     public GameObject waypointOutside;
     public GameObject waypointInside;
 
+    private const string BuildingIronKey = "Build_iron";
+
     private void Start()
     {
         if (doubleDoors == null)
@@ -21,6 +23,46 @@ public class Building_IronMaiden : MonoBehaviour
             {
                 doubleDoors = childTransfrom.GetComponent<Animator>();
             }
+        }
+    }
+
+    private void OnEnable()
+    {
+        AddBuilding();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveBuilding();
+    }
+
+    public void AddBuilding()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(BuildingIronKey))
+        {
+            Debug.LogError($"WorldStates does not contain the key '{BuildingIronKey}'. Make sure it is initialized.");
+            return;
+        }
+
+        worldStates.ModifyState(BuildingIronKey, 1);
+        Debug.Log($"Building added. Current count: {worldStates.GetStates()[BuildingIronKey]}");
+    }
+
+    public void RemoveBuilding()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(BuildingIronKey))
+        {
+            int currentCount = worldStates.GetStates()["Build_iron"];
+            worldStates.ModifyState(BuildingIronKey, -1);
+            Debug.Log($"Building removed. Remaining: {currentCount - 1}");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot remove 'Build_iron'. State does not exist.");
         }
     }
 

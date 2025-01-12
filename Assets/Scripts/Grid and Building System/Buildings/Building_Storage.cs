@@ -15,6 +15,7 @@ public class Building_Storage : MonoBehaviour
     private bool fireOn  = false;
     private bool lightOn = false;
 
+    private const string BuildingStorageKey = "Build_storage";
 
     private void Start()
     {
@@ -45,6 +46,46 @@ public class Building_Storage : MonoBehaviour
             lightOn = false;
         }
 
+    }
+
+    private void OnEnable()
+    {
+        AddBuilding();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveBuilding();
+    }
+
+    public void AddBuilding()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(BuildingStorageKey))
+        {
+            Debug.LogError($"WorldStates does not contain the key '{BuildingStorageKey}'. Make sure it is initialized.");
+            return;
+        }
+
+        worldStates.ModifyState(BuildingStorageKey, 1);
+        Debug.Log($"Building added. Current count: {worldStates.GetStates()[BuildingStorageKey]}");
+    }
+
+    public void RemoveBuilding()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(BuildingStorageKey))
+        {
+            int currentCount = worldStates.GetStates()["Build_storage"];
+            worldStates.ModifyState(BuildingStorageKey, -1);
+            Debug.Log($"Building removed. Remaining: {currentCount - 1}");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot remove 'Build_storage'. State does not exist.");
+        }
     }
 
     public void IncreaseFireCounter()

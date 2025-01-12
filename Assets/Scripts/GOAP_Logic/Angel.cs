@@ -21,6 +21,8 @@ public class Angel : Agents
 
     public GameObject lightResource;
 
+    private const string AvialableAngelKey = "Avail_angel";
+
     protected override void Start()
     {
         base.Start();
@@ -46,7 +48,47 @@ public class Angel : Agents
         }
 
     }
-    
+
+    private void OnEnable()
+    {
+        AddAngelState();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveAngelState();
+    }
+
+    public void AddAngelState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(AvialableAngelKey))
+        {
+            Debug.LogError($"WorldStates does not contain the key '{AvialableAngelKey}'. Make sure it is initialized.");
+            return;
+        }
+
+        worldStates.ModifyState(AvialableAngelKey, 1);
+        Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableAngelKey]}");
+    }
+
+    public void RemoveAngelState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(AvialableAngelKey))
+        {
+            int currentCount = worldStates.GetStates()["Avail_angel"];
+            worldStates.ModifyState(AvialableAngelKey, -1);
+            Debug.Log($"Angel removed. Remaining: {currentCount - 1}");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot remove 'Avail_angel'. State does not exist.");
+        }
+    }
+
     IEnumerator LostOverTime()
     {
         while (true) 

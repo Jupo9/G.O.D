@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public abstract class Actions : MonoBehaviour
 {
     public string actionName = "Action";
-    public float wayCosts = 1f;
+    public float priorityValue = 1f;
     public float timeCosts = 2f;
     public GameObject target;
     public string targetTag;

@@ -33,7 +33,7 @@ public class Planner
             }
         }
 
-        usableActions.Sort((a, b) => b.wayCosts.CompareTo(a.wayCosts));
+        usableActions.Sort((a, b) => b.priorityValue.CompareTo(a.priorityValue));
 
         List<Node> leaves = new List<Node>();
         Node start = new Node(null, 0, Worlds.Instance.GetWorld().GetStates(), null);
@@ -84,7 +84,7 @@ public class Planner
                     currentState[eff.Key] = eff.Value;
                 }
 
-                Node node = new Node(parent, parent.cost + action.wayCosts, currentState, action);
+                Node node = new Node(parent, parent.cost + action.priorityValue, currentState, action);
 
                 if (GoalAchieved(goal, currentState))
                 {
