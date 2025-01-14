@@ -65,12 +65,14 @@ public class Angel : Agents
 
         if (!worldStates.HasState(AvialableAngelKey))
         {
-            Debug.LogError($"WorldStates does not contain the key '{AvialableAngelKey}'. Make sure it is initialized.");
-            return;
+            worldStates.SetState(AvialableAngelKey, 1);
+            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableAngelKey]}");
         }
-
-        worldStates.ModifyState(AvialableAngelKey, 1);
-        Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableAngelKey]}");
+        else
+        {
+            worldStates.ModifyState(AvialableAngelKey, 1);
+            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableAngelKey]}");
+        }
     }
 
     public void RemoveAngelState()

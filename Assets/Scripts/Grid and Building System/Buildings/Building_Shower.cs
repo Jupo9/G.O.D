@@ -44,12 +44,14 @@ public class Building_Shower : MonoBehaviour
 
         if (!worldStates.HasState(BuildingShowerKey))
         {
-            Debug.LogError($"WorldStates does not contain the key '{BuildingShowerKey}'. Make sure it is initialized.");
-            return;
+            worldStates.SetState(BuildingShowerKey, 1);
+            Debug.Log($"Building_Shower added. Current count: {worldStates.GetStates()[BuildingShowerKey]}");
         }
-
-        worldStates.ModifyState(BuildingShowerKey, 1);
-        Debug.Log($"Building added. Current count: {worldStates.GetStates()[BuildingShowerKey]}");
+        else
+        {
+            worldStates.ModifyState(BuildingShowerKey, +1);
+            Debug.Log($"Building_Shower added. Current count: {worldStates.GetStates()[BuildingShowerKey]}");
+        }
     }
 
     public void RemoveBuilding()
@@ -59,12 +61,11 @@ public class Building_Shower : MonoBehaviour
         if (worldStates.HasState(BuildingShowerKey))
         {
             int currentCount = worldStates.GetStates()["Build_shower"];
-            worldStates.ModifyState(BuildingShowerKey, -1);
-            Debug.Log($"Building removed. Remaining: {currentCount - 1}");
-        }
-        else
-        {
-            Debug.LogWarning("Cannot remove 'Build_shower'. State does not exist.");
+            if (currentCount > 0)
+            {
+                worldStates.ModifyState(BuildingShowerKey, -1);
+                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingShowerKey]}");
+            }
         }
     }
 

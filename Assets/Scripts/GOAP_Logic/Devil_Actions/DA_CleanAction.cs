@@ -160,7 +160,7 @@ public class DA_CleanAction : Actions
 
         yield return new WaitForSeconds(2);
 
-        buildingFire.isAvailable = true;
+        buildingFire.fireIsOpen = true;
         buildingFire.devilInside = false;
     }
 }

@@ -16,7 +16,6 @@ public class GOD : MonoBehaviour
     public GameObject lightRessource;
     [SerializeField] TextMeshProUGUI timerText;
 
-    private float currentTime;
     private float currentFire = 0f;
     private float currentLight = 0f;
 

@@ -5,58 +5,51 @@ using UnityEngine.AI;
 
 public class GA_MoveAround : Actions
 {
-    //private NavMeshAgent agents;
+    [SerializeField] private float moveRadius = 25f;
+    [SerializeField] private float minMovementTime = 5f;
+    [SerializeField] private float maxMovementTime = 15f;
 
-    [SerializeField] public float moveRadius = 10f;
-    [SerializeField] public float minMovementTime = 1f;
-    [SerializeField] public float maxMovementTime = 10f;
-
-    private float timeToChangeDirection;
-    private bool moveAround = false;
-
-    void Update()
-    {
-        if (moveAround)
-        {
-            timeToChangeDirection -= Time.deltaTime;
-
-
-            if (timeToChangeDirection <= 0 || agent.remainingDistance <= agent.stoppingDistance)
-            {
-                SetNewRandomDestination();
-
-                timeToChangeDirection = Random.Range(minMovementTime, maxMovementTime);
-            }
-        }
-    }
-
-    void SetNewRandomDestination()
-    {
-        Vector3 randomDirection = Random.insideUnitSphere * moveRadius;
-        randomDirection += transform.position;
-
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, moveRadius, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-        }
-    }
+    private bool movingAround = false;
 
     public override bool PrePerform()
     {
-        agent = GetComponent<NavMeshAgent>();
+        movingAround = true;
+        StartCoroutine(RandomMove());
 
-        SetNewRandomDestination();
-
-        timeToChangeDirection = Random.Range(minMovementTime, maxMovementTime);
-        moveAround = true;
         return true;
     }
 
     public override bool PostPerform()
     {
-        moveAround = false;
+        movingAround = false;
         return true;
+    }
+
+    private IEnumerator RandomMove()
+    {
+        while (movingAround)
+        {
+            SetNewRandomDestination();
+
+            float waitTime = Random.Range(minMovementTime, maxMovementTime);
+            yield return new WaitForSeconds(waitTime);
+        }
+    }
+
+    private void SetNewRandomDestination()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * moveRadius;
+        randomDirection += transform.position;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, moveRadius, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+            Debug.Log($"Neues Ziel: {hit.position}");
+        }
+        else
+        {
+            Debug.LogWarning("Keine gültige NavMesh-Position gefunden!");
+        }
     }
 }

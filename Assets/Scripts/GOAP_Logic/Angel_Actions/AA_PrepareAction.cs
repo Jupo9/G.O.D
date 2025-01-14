@@ -111,7 +111,7 @@ public class AA_PrepareAction : Actions
             {
                 Building_Light buildingLightScript = build.GetComponentInParent<Building_Light>();
 
-                if (buildingLightScript != null && buildingLightScript.isAvailable)
+                if (buildingLightScript != null && buildingLightScript.lightIsOpen)
                 {
                     float distance = Vector3.Distance(this.transform.position, build.transform.position);
                     if (distance < closestDistance)
@@ -153,7 +153,7 @@ public class AA_PrepareAction : Actions
             }
 
             buildingLight.angelInside = true;
-            buildingLight.isAvailable = false;
+            buildingLight.lightIsOpen = false;
         }
 
         return true;

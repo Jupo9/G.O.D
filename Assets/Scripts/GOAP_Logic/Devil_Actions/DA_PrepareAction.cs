@@ -74,7 +74,7 @@ public class DA_PrepareAction : Actions
             {
                 Building_Fire buildingFireScript = build.GetComponentInParent<Building_Fire>();
 
-                if (buildingFireScript != null && buildingFireScript.isAvailable)
+                if (buildingFireScript != null && buildingFireScript.fireIsOpen)
                 {
                     float distance = Vector3.Distance(this.transform.position, build.transform.position);
                     if (distance < closestDistance)
@@ -115,7 +115,7 @@ public class DA_PrepareAction : Actions
                 return false;
             }
 
-            buildingFire.isAvailable = false;
+            buildingFire.fireIsOpen = false;
             buildingFire.devilInside = true;
         }
 

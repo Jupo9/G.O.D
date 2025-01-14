@@ -6,9 +6,14 @@ using UnityEngine;
 public class Building_Fire : MonoBehaviour
 {
     [Header("Conditions")]
-    public bool isAvailable = true;
+    public bool fireIsOpen = true;
     public bool devilInside = false;
     public bool calculate = false;
+    public bool empty = false;
+    public bool addOne = false;
+    public bool minusOne = false;
+
+    private bool fullBuilding = false;
 
     [Header("Fire Inputs")]
     public float maxAmount = 4f;
@@ -22,30 +27,60 @@ public class Building_Fire : MonoBehaviour
 
 
     private const string BuildingFireKey = "Build_fire";
+    private const string FireRessource = "Res_fire";
 
     private void Update()
     {
-        if (fireAmount == maxAmount)
+        if (addOne)
         {
-            isAvailable = false;
+            addOne = false;
+            IncreaseFireAmount();
+        }
+
+        if (minusOne)
+        {
+            minusOne = false;
+            DecreaseFireAmount();
+        }
+
+        if (fireAmount == maxAmount && !fullBuilding)
+        {
+            fireIsOpen = false;
+            fullBuilding = true;
+            RemoveBuilding();
+            NoKeyFixer();
+        }
+
+        if (fireAmount == maxAmount - 1 && fullBuilding)
+        {
+            fullBuilding = false;
+            AddBuilding();
         }
 
         if (!devilInside)
         {
             if (fireAmount < maxAmount)
             {
-                isAvailable = true;
+                fireIsOpen = true;
             }
         }
 
-        if (fireAmount > 0)
+        if (fireAmount > 0 && empty)
         {
             fireResource.SetActive(true);
+            empty = false;
         }
 
-        if (fireAmount == 0)
+        if (fireAmount == 0 && !empty)
         {
             fireResource.SetActive(false);
+            empty = true;
+        }
+
+        if (fireAmount < 0)
+        {
+            fireAmount = 0;
+            NoKeyFixer();
         }
 
     }
@@ -66,12 +101,14 @@ public class Building_Fire : MonoBehaviour
 
         if (!worldStates.HasState(BuildingFireKey))
         {
-            Debug.LogError($"WorldStates does not contain the key '{BuildingFireKey}'. Make sure it is initialized.");
-            return;
+            worldStates.SetState(BuildingFireKey, 1);
+            Debug.Log($"Building_Fire added. Current count: {worldStates.GetStates()[BuildingFireKey]}");
         }
-
-        worldStates.ModifyState(BuildingFireKey, 1);
-        Debug.Log($"Building added. Current count: {worldStates.GetStates()[BuildingFireKey]}");
+        else
+        {
+            worldStates.ModifyState(BuildingFireKey, +1);
+            Debug.Log($"Building_Fire added. Current count: {worldStates.GetStates()[BuildingFireKey]}");
+        }
     }
 
     public void RemoveBuilding()
@@ -81,34 +118,72 @@ public class Building_Fire : MonoBehaviour
         if (worldStates.HasState(BuildingFireKey))
         {
             int currentCount = worldStates.GetStates()["Build_fire"];
-            worldStates.ModifyState(BuildingFireKey, -1);
-            Debug.Log($"Building removed. Remaining: {currentCount - 1}");
+            if (currentCount > 0)
+            {
+                worldStates.ModifyState(BuildingFireKey, -1);
+                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingFireKey]}");
+            }
+
+        }
+    }
+
+    public void AddFire()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(FireRessource))
+        {
+            worldStates.SetState(FireRessource, 1);
+            Debug.Log($"Fireadded. Current count: {worldStates.GetStates()[FireRessource]}");
         }
         else
         {
-            Debug.LogWarning("Cannot remove 'Build_fire'. State does not exist.");
+            worldStates.ModifyState(FireRessource, +1);
+            Debug.Log($"Fire added. Current count: {worldStates.GetStates()[FireRessource]}");
+        }
+    }
+
+    public void RemoveFire() 
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(FireRessource))
+        {
+            int currentCount = worldStates.GetStates()["Res_fire"];
+            if (currentCount > 0)
+            {
+                worldStates.ModifyState(FireRessource, -1);
+                Debug.Log($"Fire added. Current count: {worldStates.GetStates()[FireRessource]}");
+            }
         }
     }
 
     public void IncreaseFireAmount()
     {
         fireAmount += 1f;
+        AddFire();
     }
 
     public void DecreaseFireAmount()
     {
         fireAmount -= 1f;
+        RemoveFire();
     }
 
-    public void TestStandby()
+    private void NoKeyFixer()
     {
-        if (isAvailable)
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(FireRessource))
         {
-            isAvailable = false;
+            worldStates.SetState(FireRessource, 0);
+            Debug.Log($"Ressource removed. Remaining: {worldStates.GetStates()[FireRessource]}");
         }
-        else
+
+        if (!worldStates.HasState(BuildingFireKey))
         {
-            isAvailable = true;
+            worldStates.SetState(BuildingFireKey, 0);
+            Debug.Log($"Building_Fire added. Current count: {worldStates.GetStates()[BuildingFireKey]}");
         }
     }
 }

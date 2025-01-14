@@ -42,12 +42,14 @@ public class Building_IronMaiden : MonoBehaviour
 
         if (!worldStates.HasState(BuildingIronKey))
         {
-            Debug.LogError($"WorldStates does not contain the key '{BuildingIronKey}'. Make sure it is initialized.");
-            return;
+            worldStates.SetState(BuildingIronKey, 1);
+            Debug.Log($"Building_IronMaiden added. Current count: {worldStates.GetStates()[BuildingIronKey]}");
         }
-
-        worldStates.ModifyState(BuildingIronKey, 1);
-        Debug.Log($"Building added. Current count: {worldStates.GetStates()[BuildingIronKey]}");
+        else
+        {
+            worldStates.ModifyState(BuildingIronKey, 1);
+            Debug.Log($"Building_IronMaiden added. Current count: {worldStates.GetStates()[BuildingIronKey]}");
+        }
     }
 
     public void RemoveBuilding()
@@ -57,12 +59,11 @@ public class Building_IronMaiden : MonoBehaviour
         if (worldStates.HasState(BuildingIronKey))
         {
             int currentCount = worldStates.GetStates()["Build_iron"];
-            worldStates.ModifyState(BuildingIronKey, -1);
-            Debug.Log($"Building removed. Remaining: {currentCount - 1}");
-        }
-        else
-        {
-            Debug.LogWarning("Cannot remove 'Build_iron'. State does not exist.");
+            if (currentCount > 0)
+            {
+                worldStates.ModifyState(BuildingIronKey, -1);
+                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingIronKey]}");
+            }
         }
     }
 

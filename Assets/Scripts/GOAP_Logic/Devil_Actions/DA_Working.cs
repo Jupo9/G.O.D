@@ -55,7 +55,8 @@ public class DA_Working : Actions
         buildingFire = closestBuilding.GetComponentInParent<Building_Fire>();
         if (buildingFire == null)
         {
-            Debug.LogWarning("Building_Light script not found on the closest building.");
+            /// IDK ob das hier noch probleme später macht, mal schauen ^^
+            Debug.LogWarning("Building_Fire script not found on the closest building.");
             return false;
         }
 

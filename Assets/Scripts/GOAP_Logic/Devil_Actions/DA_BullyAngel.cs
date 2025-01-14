@@ -19,7 +19,6 @@ public class DA_BullyAngel : Actions
         if (other.CompareTag("Angel"))
         {
             Angel angelScript = other.GetComponent<Angel>();
-            angelScript.RemoveAngelState();
 
             if (angelScript != null)
             {
@@ -34,8 +33,6 @@ public class DA_BullyAngel : Actions
         if (other.CompareTag("Angel"))
         {
             Angel angelScript = other.GetComponent<Angel>();
-
-            angelScript.AddAngelState();
 
             if (angelScript != null)
             {

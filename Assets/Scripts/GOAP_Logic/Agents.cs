@@ -116,10 +116,6 @@ public class Agents : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (playersWish)
-        {
-            //tests
-        }
         //MonitorEvilKey();
 
         if (CompareTag("Angel"))
@@ -196,10 +192,10 @@ public class Agents : MonoBehaviour
         {
             if (currentAction != null && currentAction.running)
             {
+                WorldStates worldStates = Worlds.Instance.GetWorld();
+
                 if (currentAction is DA_BullyAngel)
                 {
-                    WorldStates worldStates = Worlds.Instance.GetWorld();
-
                     if (worldStates.HasState("Avail_angel"))
                     {
                         int availableAngelsValue = worldStates.GetStates()["Avail_angel"];
@@ -208,11 +204,14 @@ public class Agents : MonoBehaviour
                         {
                             currentAction.running = false;
                             currentAction = null;
+                            currentAction.priorityValue += 1;
                             return;
                         }
                     }
 
-                    GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
+                    currentAction.agent.SetDestination(currentAction.target.transform.position);
+
+                    /*GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
 
                     List<GameObject> availableAngels = new List<GameObject>();
                     foreach (GameObject angel in angels)
@@ -236,7 +235,7 @@ public class Agents : MonoBehaviour
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
                     }
 
-                    /*if (availableAngels.Count == 0 && !personalTarget)
+                    if (availableAngels.Count == 0 && !personalTarget)
                     {
                         Debug.Log("Missing free Angel");
                     }*/
@@ -244,8 +243,6 @@ public class Agents : MonoBehaviour
 
                 if (currentAction is DA_PunshAngel)
                 {
-                    WorldStates worldStates = Worlds.Instance.GetWorld();
-
                     if (worldStates.HasState("Avail_angel"))
                     {
                         int availableAngelsValue = worldStates.GetStates()["Avail_angel"];
@@ -254,6 +251,7 @@ public class Agents : MonoBehaviour
                         {
                             currentAction.running = false;
                             currentAction = null;
+                            currentAction.priorityValue += 1;
                             return;
                         }
                     }
@@ -263,8 +261,6 @@ public class Agents : MonoBehaviour
 
                 if (currentAction is DA_Chilling)
                 {
-                    WorldStates worldStates = Worlds.Instance.GetWorld();
-
                     if (worldStates.HasState("Build_iron"))
                     {
                         int availableAngelsValue = worldStates.GetStates()["Build_iron"];
@@ -273,6 +269,7 @@ public class Agents : MonoBehaviour
                         {
                             currentAction.running = false;
                             currentAction = null;
+                            currentAction.priorityValue += 1;
                             return;
                         }
                     }
@@ -280,8 +277,6 @@ public class Agents : MonoBehaviour
 
                 if (currentAction is DA_Working)
                 {
-                    WorldStates worldStates = Worlds.Instance.GetWorld();
-
                     if (worldStates.HasState("Build_iron"))
                     {
                         int buildIronValue = worldStates.GetStates()["Build_iron"];
@@ -290,6 +285,7 @@ public class Agents : MonoBehaviour
                         {
                             currentAction.running = false;
                             currentAction = null;
+                            currentAction.priorityValue += 1;
                             return;
                         }
                     }
@@ -297,8 +293,6 @@ public class Agents : MonoBehaviour
 
                 if (currentAction is DA_PrepareAction || currentAction is DA_CleanAction)
                 {
-                    WorldStates worldStates = Worlds.Instance.GetWorld();
-
                     if (worldStates.HasState("Build_iron"))
                     {
                         int buildIronValue = worldStates.GetStates()["Build_iron"];
@@ -307,6 +301,7 @@ public class Agents : MonoBehaviour
                         {
                             currentAction.running = false;
                             currentAction = null;
+                            currentAction.priorityValue += 1;
                             return;
                         }
                     }
@@ -318,6 +313,7 @@ public class Agents : MonoBehaviour
                         {
                             currentAction.running = false;
                             currentAction = null;
+                            currentAction.priorityValue += 1;
                             return;
                         }
                     }
