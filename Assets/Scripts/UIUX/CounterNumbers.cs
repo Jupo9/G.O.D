@@ -51,57 +51,53 @@ public class CounterNumbers : MonoBehaviour
 
     int ShowCurrentFireNumb()
     {
-        GameObject[] targetTag = GameObject.FindGameObjectsWithTag("FIRE");
-        HashSet<GameObject> target = new HashSet<GameObject>();
+        WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        foreach (GameObject go in targetTag)
+        if (worldStates.HasState("Res_fire"))
         {
-            Transform root = go.transform.root;
-            target.Add(root.gameObject);
+            return worldStates.GetStates()["Res_fire"];
         }
 
-        return target.Count;
+        Debug.LogWarning("State 'UI_Avail_devil' does not exist in WorldStates.");
+        return 0;
     }
 
     int ShowCurrentLightNumb()
     {
-        GameObject[] targetTag = GameObject.FindGameObjectsWithTag("LIGHT");
-        HashSet<GameObject> target = new HashSet<GameObject>();
+        WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        foreach (GameObject go in targetTag)
+        if (worldStates.HasState("Res_light"))
         {
-            Transform root = go.transform.root;
-            target.Add(root.gameObject);
+            return worldStates.GetStates()["Res_light"];
         }
 
-        return target.Count;
+        Debug.LogWarning("State 'UI_Avail_devil' does not exist in WorldStates.");
+        return 0;
     }
 
     int ShowCurrentAngelNumb()
     {
-        GameObject[] targetTag = GameObject.FindGameObjectsWithTag("Angel");
-        HashSet<GameObject> target = new HashSet<GameObject>();
+        WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        foreach (GameObject go in targetTag) 
+        if (worldStates.HasState("UI_Avail_angel")) 
         {
-            Transform root = go.transform.root;
-            target.Add(root.gameObject);
+            return worldStates.GetStates()["UI_Avail_angel"];
         }
 
-        return target.Count;
+        Debug.LogWarning("State 'UI_Avail_angel' does not exist in WorldStates.");
+        return 0; 
     }
 
     int ShowCurrentDevilNumb()
     {
-        GameObject[] targetTag = GameObject.FindGameObjectsWithTag("Devil");
-        HashSet<GameObject> target = new HashSet<GameObject>();
+        WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        foreach (GameObject go in targetTag)
+        if (worldStates.HasState("UI_Avail_devil"))
         {
-            Transform root = go.transform.root;
-            target.Add(root.gameObject);
+            return worldStates.GetStates()["UI_Avail_devil"];
         }
 
-        return target.Count;
+        Debug.LogWarning("State 'UI_Avail_devil' does not exist in WorldStates.");
+        return 0;
     }
 }

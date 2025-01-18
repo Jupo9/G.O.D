@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.AI;
-using Unity.VisualScripting;
 
 public class SubGoal
 {
@@ -291,8 +289,10 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                if (currentAction is DA_PrepareAction || currentAction is DA_CleanAction)
+                if (currentAction is DA_PrepareAction ||
+                    currentAction is DA_CleanAction && !cleanDevilAction.doneChill)
                 {
+                    Debug.Log("Start Agent Action");
                     if (worldStates.HasState("Build_iron"))
                     {
                         int buildIronValue = worldStates.GetStates()["Build_iron"];
@@ -305,6 +305,11 @@ public class Agents : MonoBehaviour
                             return;
                         }
                     }
+                }
+
+                if ((currentAction is DA_PrepareAction && !prepareDevilAction.doneWork) ||
+                    (currentAction is DA_CleanAction && !cleanDevilAction.doneWork))
+                {
                     if (worldStates.HasState("Build_fire"))
                     {
                         int buildFireValue = worldStates.GetStates()["Build_fire"];
@@ -449,6 +454,25 @@ public class Agents : MonoBehaviour
         }
     }
 
+    private void ResetChill()
+    {
+        if (triggerChill)
+        {
+            if (currentAction is DA_BullyAngel)
+            {
+                noticeChill = true;
+                currentRunningAction = currentAction;
+                Debug.Log("ResetChill");
+                StartCoroutine("WaitBeforeReset");
+            }
+            else
+            {
+                triggerEvil = false;
+            }
+        }
+    }
+
+
     private IEnumerator WaitBeforeReset()
     {
         if (currentRunningAction == null)
@@ -465,56 +489,47 @@ public class Agents : MonoBehaviour
 
         Debug.Log($"[WaitBeforeReset] Action {currentRunningAction.actionName} has completed. Proceeding to reset.");
 
-        Dictionary<string, int> relevantState = currentAction.GetRelevantState();
+        Dictionary<string, int> relevantState = currentAction.GetRelevantDevilState();
 
         if (relevantState.ContainsKey("evil"))
         {
             int evilValue = relevantState["evil"];
 
-            if (evilValue == 1)
+            if (evilValue <= 1)
             {
                 relevantState["evil"] = 0;
                 Debug.Log("MonitorEvilKey: Key 'evil' set to 0");
             }
+
+            Debug.Log("Planner wird zurückgesetzt. Evil");
+            triggerEvil = false;
+            bullyAngel.done = false;
+            //punshAngel.done = false;
+            noticeEvil = false;
         }
 
-        Debug.Log("Planner wird zurückgesetzt. Evil");
+        if (relevantState.ContainsKey("cleanChill"))
+        {
+            int chillValue = relevantState["cleanChill"];
 
-        triggerEvil = false;
-        bullyAngel.done = false;
-        //punshAngel.done = false;
-        noticeEvil = false;
+            if (chillValue <= 1)
+            {
+                relevantState["cleanChill"] = 0;
+                Debug.Log("MonitorChillKey: Key 'cleanChill' set to 0");
+            }
+
+            Debug.Log("Planner wird zurückgesetzt. cleanChill");
+            triggerChill = false;
+            prepareDevilAction.doneChill = false;
+            cleanDevilAction.doneChill = false;
+            chilling.done = false;
+            noticeChill = false;
+        }
+
         ResetPlanner();
     }
 
-    /*private void ResetPlannerOld()
-    {
-        planner = new Planner();
-
-        actionQueue = null;
-        currentAction = null;
-        currentGoal = null;
-
-        var sortedGoals = from entry in goals orderby entry.Value descending select entry;
-
-        foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
-        {
-            actionQueue = planner.plan(actions, sg.Key.subGoals, null);
-            if (actionQueue != null)
-            {
-                currentGoal = sg.Key;
-                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
-                break;
-            }
-        }
-
-        if (actionQueue == null)
-        {
-            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
-        }
-    }*/
-
-    private void ResetChill()
+    /*private void ResetChill()
     {
         if (triggerChill)
         {
@@ -531,7 +546,7 @@ public class Agents : MonoBehaviour
                 if (Worlds.Instance.GetWorld().HasState("preChill"))
                 {
                     int value = Worlds.Instance.GetWorld().GetStates()["preChill"];
-                    if (value == 1)
+                    if (value <= 1)
                     {
                         Worlds.Instance.GetWorld().ModifyState("preChill", 0);
                         Debug.Log("preChill wurde zu WorldStates entfernt.");
@@ -541,7 +556,7 @@ public class Agents : MonoBehaviour
                 if (Worlds.Instance.GetWorld().HasState("chill"))
                 {
                     int value = Worlds.Instance.GetWorld().GetStates()["chill"];
-                    if (value == 1)
+                    if (value <= 1)
                     {
                         Worlds.Instance.GetWorld().ModifyState("chill", 0);
                         Debug.Log("chill wurde zu WorldStates entfernt.");
@@ -551,7 +566,7 @@ public class Agents : MonoBehaviour
                 if (Worlds.Instance.GetWorld().HasState("cleanChill"))
                 {
                     int value = Worlds.Instance.GetWorld().GetStates()["cleanChill"];
-                    if (value == 1)
+                    if (value <= 1)
                     {
                         Worlds.Instance.GetWorld().ModifyState("cleanChill", 0);
                         Debug.Log("cleanChill wurde zu WorldStates entfernt.");
@@ -567,7 +582,7 @@ public class Agents : MonoBehaviour
                 triggerChill = false;
             }
         }
-    }
+    }*/
 
     private void ResetPlanner()
     {
@@ -601,7 +616,7 @@ public class Agents : MonoBehaviour
     {
         if (currentAction != null)
         {
-            Dictionary<string, int> relevantState = currentAction.GetRelevantState();
+            Dictionary<string, int> relevantState = currentAction.GetRelevantDevilState();
 
             if (relevantState.ContainsKey("evil"))
             {

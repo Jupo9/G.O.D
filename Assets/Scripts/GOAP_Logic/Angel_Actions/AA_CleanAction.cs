@@ -78,8 +78,6 @@ public class AA_CleanAction : Actions
 
         if (targetTag == "WO_Shower")
         {
-            Worlds.Instance.GetWorld().UpdateStateBasedOnEvent("cleanShower", 1);
-            Debug.Log("cleanShower wurde zu WorldStates hinzugefügt.");
             done = true;
         }
 

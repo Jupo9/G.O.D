@@ -174,7 +174,6 @@ public class Building_Storage : MonoBehaviour
             if (currentCount > 0) 
             {
                 worldStates.ModifyState(BuildingStorageKey, -1);
-                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingStorageKey]}");
             }
         }
     }

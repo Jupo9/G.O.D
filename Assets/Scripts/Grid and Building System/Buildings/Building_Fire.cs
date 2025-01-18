@@ -121,7 +121,6 @@ public class Building_Fire : MonoBehaviour
             if (currentCount > 0)
             {
                 worldStates.ModifyState(BuildingFireKey, -1);
-                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingFireKey]}");
             }
 
         }
@@ -183,7 +182,6 @@ public class Building_Fire : MonoBehaviour
         if (!worldStates.HasState(BuildingFireKey))
         {
             worldStates.SetState(BuildingFireKey, 0);
-            Debug.Log($"Building_Fire added. Current count: {worldStates.GetStates()[BuildingFireKey]}");
         }
     }
 }

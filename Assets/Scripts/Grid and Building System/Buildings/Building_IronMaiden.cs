@@ -62,7 +62,6 @@ public class Building_IronMaiden : MonoBehaviour
             if (currentCount > 0)
             {
                 worldStates.ModifyState(BuildingIronKey, -1);
-                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingIronKey]}");
             }
         }
     }

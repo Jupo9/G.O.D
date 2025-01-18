@@ -4,21 +4,47 @@ using UnityEngine;
 
 public class DA_PunshAngel : Actions
 {
+    private Devil devil;
+
     public bool done = false;
+
+    private void Start()
+    {
+        devil = GetComponent<Devil>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         Angel angelScript = other.GetComponent<Angel>();
         if (angelScript != null)
         {
-            angelScript.isStunned = true; 
-            
+            angelScript.isStunned = true;
+            devil.punshedAngel = true;
             Debug.Log($"{angelScript.name} is now punshable by {this.name}.");
         }
     }
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantDevilState();
+
+        if (relevantState.ContainsKey("evil"))
+        {
+            int evilValue = relevantState["evil"];
+
+            if (evilValue <= 1)
+            {
+                Debug.Log("Key 'evil' has value 1. Action will be skipped.");
+                done = true;
+                ApplyEffects();
+                return false;
+            }
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'evil' does not exist.");
+        }
+
         GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
         if (angels.Length == 0) return false;
 

@@ -18,12 +18,8 @@ public class DA_BullyAngel : Actions
     {
         if (other.CompareTag("Angel"))
         {
-            Angel angelScript = other.GetComponent<Angel>();
-
-            if (angelScript != null)
-            {
-                devil.bullyActive = true;
-            }
+            Debug.Log("Hit Angel");
+            devil.bullyActive = true;
         }
     }
 
@@ -32,27 +28,22 @@ public class DA_BullyAngel : Actions
     {
         if (other.CompareTag("Angel"))
         {
-            Angel angelScript = other.GetComponent<Angel>();
-
-            if (angelScript != null)
-            {
-                devil.bullyActive = false;
-            }
+            Debug.Log("leave Angel");
+            devil.bullyActive = false;
         }
     }
 
     public override bool PrePerform()
     {
-        Dictionary<string, int> relevantState = GetRelevantState();
+        Dictionary<string, int> relevantState = GetRelevantDevilState();
 
         if (relevantState.ContainsKey("evil"))
         {
             int evilValue = relevantState["evil"];
-            Debug.Log($"PrePerform Check in Bully: Key 'evil' has value {evilValue}");
 
-            if (evilValue == 1)
+            if (evilValue <= 1)
             {
-                Debug.Log("Key 'evil' hat Wert 1. Aktion wird sofort beendet.");
+                Debug.Log("Key 'evil' has value 1. Action will be skipped.");
                 done = true;
                 ApplyEffects(); 
                 return false; 

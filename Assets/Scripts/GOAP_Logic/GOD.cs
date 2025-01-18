@@ -1,27 +1,41 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GOD : MonoBehaviour
 {
-    public float wantFire = 0f;
-    public float wantLight = 0f;
+    public bool plusFire = false;
+    public bool plusLight = false;
+    public bool fullFire = false;
+    public bool fullLight = false;
+
+    public int needCounter = 0;
     public float timer = 0f;
+
     public TextMeshProUGUI needFire;
     public TextMeshProUGUI needLight;
+    public TextMeshProUGUI waveCounterUI;
     public GameObject fireRessource;
     public GameObject lightRessource;
     [SerializeField] TextMeshProUGUI timerText;
 
-    private float currentFire = 0f;
-    private float currentLight = 0f;
+    private bool getFire = false;
+    private bool getLight = false;
+
+    private int wantFire;
+    private int wantLight;
+    private int chargeRes;
+    private int currentFire;
+    private int currentLight;
+
+    private int balanceFire = 0;
+    private int waveCounter = 0;
+
 
     private void Start()
     {
-       StartCoroutine(TimerCountdown());
+        HappyGOD();
+        StartCoroutine(TimerCountdown());
 
         fireRessource.SetActive(false);
         lightRessource.SetActive(false);
@@ -33,24 +47,49 @@ public class GOD : MonoBehaviour
         needFire.text = "Fire: " + wantFire;
         needLight.text = "Light: " + wantLight;
 
-        if (currentFire >= 1)
+        if (plusFire)
         {
+            plusFire = false;
+            IncreaseFireRessource();
+        }
+        if (plusLight) 
+        {
+            plusLight = false;
+            IncreaseLightRessource();
+        }
+
+        if (currentFire >= 1 && getFire)
+        {
+            getFire = false;
             fireRessource.SetActive(true);
         }
-        if (currentFire == 0)
+        if (currentLight >= 1 && getLight)
         {
-            fireRessource.SetActive(false);
-        }
-        if (currentLight >= 1)
-        {
+            getLight = false;
             lightRessource.SetActive(true);
         }
-        if (currentLight == 0)
+        if (currentFire == 0 && !getFire)
         {
+            getFire = true;
+            fireRessource.SetActive(false);
+        }
+        if (currentLight == 0 && !getLight)
+        {
+            getLight = true;
             lightRessource.SetActive(false);
         }
-        
-        if (wantFire == 0f && wantLight == 0f)
+
+        if (wantFire == 0f && !fullFire)
+        {
+            fullFire = true;
+        }
+
+        if (wantLight == 0f && !fullLight)
+        {
+            fullLight = true;
+        }
+
+        if (fullFire && fullLight)
         {
             HappyGOD();
         }
@@ -78,22 +117,35 @@ public class GOD : MonoBehaviour
 
     public void IncreaseFireRessource() 
     {
-        currentFire += 1f;
-        wantFire -= 1f;
+        currentFire += 1;
+        wantFire -= 1;
     }
 
     public void IncreaseLightRessource() 
     {
-        currentLight += 1f;
-        wantLight -= 1f;
+        currentLight += 1;
+        wantLight -= 1;
     }
 
     private void HappyGOD()
     {
+        fullFire = false;
+        fullLight = false;
+
+        currentFire = 0;
+        currentLight = 0;
+
+        waveCounter += 1;
+        waveCounterUI.text = "Wave: " + waveCounter;
+
         timer = 300f;
-        wantFire = 5f;
-        wantLight = 5f;
-        currentFire = 0f;
-        currentLight = 0f;
+        chargeRes = waveCounter * needCounter;
+
+        int randomY = chargeRes / 2;
+
+        wantFire = Random.Range(waveCounter + balanceFire, randomY + 2); 
+        wantLight = chargeRes - wantFire;
+
+        balanceFire = wantLight - waveCounter;
     }
 }

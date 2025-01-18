@@ -64,7 +64,6 @@ public class Building_Shower : MonoBehaviour
             if (currentCount > 0)
             {
                 worldStates.ModifyState(BuildingShowerKey, -1);
-                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingShowerKey]}");
             }
         }
     }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DA_Chilling : Actions
 {
+    private Devil devil;
+
     private Building_IronMaiden buildingIronMaiden;
 
     public bool done = false;
@@ -11,6 +13,8 @@ public class DA_Chilling : Actions
     private void Start()
     {
         GameObject ironParent = GameObject.FindWithTag("Iron");
+
+        devil = GetComponent<Devil>();
 
         if (ironParent != null)
         {
@@ -30,7 +34,28 @@ public class DA_Chilling : Actions
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantDevilState();
+
+        if (relevantState.ContainsKey("cleanChill"))
+        {
+            int evilValue = relevantState["cleanChill"];
+
+            if (evilValue <= 1)
+            {
+                Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
+                done = true;
+                ApplyEffects();
+                return false;
+            }
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
+        }
+
         Invoke("CloseDoors", 2f);
+
+        devil.isChilled = true;
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
@@ -72,6 +97,7 @@ public class DA_Chilling : Actions
     public override bool PostPerform()
     {
         done = true;
+        devil.isChilled = false;
         return true;
     }
 

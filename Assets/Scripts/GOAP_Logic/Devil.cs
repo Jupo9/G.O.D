@@ -1,15 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Devil : Agents
 {
+    [Header("UI")]
     public GameObject objectCanvas;
-
     public GameObject targetRendererObject;
-    public string targetMaterialName = "Outline_1";
+    public GameObject targetBuildUI;
+    public GameObject targetNeedUI;
+    public string targetMaterialName = "Outline_1"; 
+
     private MeshRenderer targetMeshRenderer;
     private int targetMaterialIndex = -1;
+
+    private bool isBuilding = false;
 
     [Header("Believes")]
     public float needEvil = 100f;
@@ -17,20 +21,28 @@ public class Devil : Agents
     public float needJoy = 100f;
     public float needPower = 100f;
 
+    [Header("Decays")]
     public float decayEvil = 1.0f;
     public float decayChill = 1.0f;
     public float decayJoy = 1.0f;
     public float decayPower = 1.0f;
 
+    [Header("Charge Power")]
     public float bullyCharge = 1.0f;
+    public float chillCharge = 1.0f;
     public float punshPoints = 10f;
+
+    [Header("Current State")]
+    public bool bullyActive = false;
+    public bool punshedAngel = false;
+    public bool isChilled = false;
 
     public GameObject fireObject;
 
-    public bool bullyActive = false;
-    public bool punshedAngel = false;
-
     public WorldStates localStates;
+
+    private const string AvialableDevilKey = "Avail_devil";
+    private const string UIAvialableDevilKey = "UI_Avail_devil";
 
     void Awake()
     {
@@ -43,6 +55,8 @@ public class Devil : Agents
         base.Start();
         SubGoal s1 = new SubGoal("Survive", 1, true);
         goals.Add(s1, 3);
+
+        StartCoroutine("LostOverTimeDevil");
 
         if (targetRendererObject == null)
         {
@@ -71,8 +85,6 @@ public class Devil : Agents
         {
             Debug.LogWarning($"Kein Material mit dem Namen '{targetMaterialName}' gefunden!");
         }
-
-        StartCoroutine("LostOverTimeDevil");
     }
 
     private void Update()
@@ -113,7 +125,98 @@ public class Devil : Agents
 
         if (Input.GetMouseButtonDown(1)) 
         {
-            ToggleCanvas(false); 
+            if (!isBuilding) 
+            {
+                targetBuildUI.SetActive(false);
+            }
+
+            targetNeedUI.SetActive(false);
+
+            ToggleCanvas(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            targetBuildUI.SetActive(false);
+            targetNeedUI.SetActive(false);
+        }
+    }
+
+    private void OnEnable()
+    {
+        AddDevilState();
+        AddUIDevilState();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveDevilState();
+        RemoveUIDevilState();
+    }
+
+    /// <summary>
+    /// UI States are there for the visibility for the Player, because the other State will be removed when the Devil is not available
+    /// So the UI shows always the current count of Devils and the normal Devil State is hidden for the player and only important for the System
+    /// </summary>
+
+    public void AddDevilState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(AvialableDevilKey))
+        {
+            worldStates.SetState(AvialableDevilKey, 1);
+            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+        }
+        else
+        {
+            worldStates.ModifyState(AvialableDevilKey, +1);
+            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+        }
+    }
+
+    public void RemoveDevilState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(AvialableDevilKey))
+        {
+            int currentCount = worldStates.GetStates()["Avail_devil"];
+            if (currentCount > 0)
+            {
+                worldStates.ModifyState(AvialableDevilKey, -1);
+            }
+        }
+
+    }
+
+    public void AddUIDevilState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(UIAvialableDevilKey))
+        {
+            worldStates.SetState(UIAvialableDevilKey, 1);
+            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
+        }
+        else
+        {
+            worldStates.ModifyState(UIAvialableDevilKey, +1);
+            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
+        }
+    }
+
+    public void RemoveUIDevilState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(UIAvialableDevilKey))
+        {
+            int currentCount = worldStates.GetStates()["UI_Avail_devil"];
+            if (currentCount > 0)
+            {
+                worldStates.ModifyState(UIAvialableDevilKey, -1);
+            }
         }
     }
 
@@ -131,11 +234,18 @@ public class Devil : Agents
                 needEvil += bullyCharge;
             }
 
+            if (isChilled) 
+            {
+                needChill += chillCharge;
+            }
+
             if (punshedAngel)
             {
                 needEvil += punshPoints;
                 punshedAngel = false;
             }
+
+
 
             yield return new WaitForSeconds(1f);
         }

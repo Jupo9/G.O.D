@@ -120,7 +120,6 @@ public class Building_Light : MonoBehaviour
             if (currentCount > 0) 
             {
                 worldStates.ModifyState(BuildingLightKey, -1);
-                Debug.Log($"Building removed. Remaining: {worldStates.GetStates()[BuildingLightKey]}");
             }
         }
     }

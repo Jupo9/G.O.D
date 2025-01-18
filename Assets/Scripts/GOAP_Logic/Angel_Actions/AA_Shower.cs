@@ -6,10 +6,14 @@ public class AA_Shower : Actions
 {
     private Building_Shower buildingShower;
 
+    private Angel angel;
+
     public bool done = false;
 
     private void Start()
     {
+        angel = GetComponent<Angel>();
+
         GameObject showerParent = GameObject.FindWithTag("Shower");
 
         if (showerParent != null)
@@ -26,6 +30,8 @@ public class AA_Shower : Actions
     public override bool PrePerform()
     {
         Invoke("CloseDoor", 2f);
+
+        angel.isPurity = true;
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
@@ -75,8 +81,7 @@ public class AA_Shower : Actions
     public override bool PostPerform()
     {
         buildingShower.StopSteam();
-        Worlds.Instance.GetWorld().UpdateStateBasedOnEvent("shower", 1);
-        Debug.Log("shower wurde zu WorldStates hinzugefügt.");
+        angel.isPurity = false;
         done = true;
         return true;
     }

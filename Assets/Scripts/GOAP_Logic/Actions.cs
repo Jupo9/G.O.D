@@ -55,7 +55,7 @@ public abstract class Actions : MonoBehaviour
         }
     }
 
-    public Dictionary<string, int> GetRelevantState()
+    public Dictionary<string, int> GetRelevantDevilState()
     {
         Devil devil = GetComponentInParent<Devil>();
         if (devil != null && devil.localStates != null)
@@ -84,7 +84,7 @@ public abstract class Actions : MonoBehaviour
 
     public void ApplyEffects()
     {
-        Dictionary<string, int> relevantState = GetRelevantState();
+        Dictionary<string, int> relevantState = GetRelevantDevilState();
 
         foreach (KeyValuePair<string, int> eff in effect)
         {

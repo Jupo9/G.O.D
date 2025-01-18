@@ -7,7 +7,9 @@ public class DA_PrepareAction : Actions
     private Building_IronMaiden buildingIronMaiden;
     private Building_Fire buildingFire;
 
-    public bool done = false;
+    public bool doneChill = false;
+    public bool doneWork = false;
+    public bool foundBuilding = false;
 
     private void Start()
     {
@@ -44,6 +46,25 @@ public class DA_PrepareAction : Actions
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantDevilState();
+
+        if (relevantState.ContainsKey("cleanChill"))
+        {
+            int evilValue = relevantState["cleanChill"];
+
+            if (evilValue <= 1)
+            {
+                Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
+                doneChill = true;
+                ApplyEffects();
+                return false;
+            }
+        }
+        else
+        {
+            Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
+        }
+
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
         {
@@ -67,6 +88,11 @@ public class DA_PrepareAction : Actions
                         closestDistance = distance;
                         closestBuilding = build;
                     }
+                }
+                else
+                {
+                    Debug.Log("No building found");
+                    return false;
                 }
             }
 
@@ -103,7 +129,26 @@ public class DA_PrepareAction : Actions
                 return false;
             }
 
-            buildingIronMaiden.isAvailable = false;
+            WorldStates worldStates = Worlds.Instance.GetWorld();
+
+            if (worldStates.HasState("Build_iron"))
+            {
+                int buildIronValue = worldStates.GetStates()["Build_iron"];
+
+                if (buildIronValue == 0)
+                {
+                    Debug.Log("no iron found");
+                    foundBuilding = false;
+                }
+
+                else if (buildIronValue >= 1)
+                {
+                    Debug.Log("iron found");
+                    buildingIronMaiden.isAvailable = false;
+                    buildingIronMaiden.RemoveBuilding();
+                    foundBuilding = true;
+                }
+            }
         }
 
         if (targetTag == "WO_Fire")
@@ -126,9 +171,17 @@ public class DA_PrepareAction : Actions
     {
         if (targetTag == "WO_Iron")
         {
-            done = true;
+            doneChill = true;
+        }
+
+        if (targetTag == "WO_Fire")
+        {
+            doneWork = true;
         }
 
         return true;
     }
+
 }
+
+
