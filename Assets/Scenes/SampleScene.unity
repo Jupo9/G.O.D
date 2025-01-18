@@ -3965,7 +3965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4252274124762628591, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6024764023122209494, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
       propertyPath: isAvailable
@@ -6755,6 +6755,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4252274124762628591, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024764023122209494, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
+      propertyPath: isAvailable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6106347667454277596, guid: 50158929f96628c40bdca95ae3cc8269, type: 3}
@@ -7672,7 +7676,9 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  done: 0
+  foundBuilding: 0
+  doneShower: 0
+  doneWork: 0
 --- !u!114 &1651528382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7726,7 +7732,9 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  done: 0
+  foundBuilding: 0
+  doneShower: 0
+  doneWork: 0
 --- !u!114 &1651528384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7753,7 +7761,9 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  done: 0
+  foundBuilding: 0
+  doneShower: 0
+  doneWork: 0
 --- !u!114 &1651528385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7804,7 +7814,9 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
-  done: 0
+  foundBuilding: 0
+  doneShower: 0
+  doneWork: 0
 --- !u!1 &1658949088
 GameObject:
   m_ObjectHideFlags: 0
@@ -8969,7 +8981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2648118792853232727, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4010812146690604503, guid: 5c55229c1fd5efa49afd72f1abcd6c28, type: 3}
       propertyPath: m_StoppingDistance

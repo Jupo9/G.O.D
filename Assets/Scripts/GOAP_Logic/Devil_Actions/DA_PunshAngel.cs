@@ -36,7 +36,7 @@ public class DA_PunshAngel : Actions
             {
                 Debug.Log("Key 'evil' has value 1. Action will be skipped.");
                 done = true;
-                ApplyEffects();
+                ApplyDevilEffects();
                 return false;
             }
         }
@@ -75,6 +75,7 @@ public class DA_PunshAngel : Actions
     public override bool PostPerform()
     {
         done = true;
+        ApplyDevilEffects();
         return true;
     }
 

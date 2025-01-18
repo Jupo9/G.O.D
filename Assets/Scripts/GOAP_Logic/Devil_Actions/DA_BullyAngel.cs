@@ -45,7 +45,7 @@ public class DA_BullyAngel : Actions
             {
                 Debug.Log("Key 'evil' has value 1. Action will be skipped.");
                 done = true;
-                ApplyEffects(); 
+                ApplyDevilEffects(); 
                 return false; 
             }
         }
@@ -85,7 +85,7 @@ public class DA_BullyAngel : Actions
     public override bool PostPerform()
     {
         done = true;
-        ApplyEffects();
+        ApplyDevilEffects();
         return true;
     }
 

@@ -9,10 +9,17 @@ public class AA_CleanAction : Actions
     private Building_Shower buildingShower;
     private Building_Light buildingLight;
 
-    public bool done = false;
+    public bool foundBuilding = false;
+    public bool doneShower = false;
+    public bool doneWork = false;
 
     private void Start()
     {
+        if (targetTag == "WO_Light")
+        {
+
+        }
+
         angelScript = GetComponent<Angel>();
 
         if (angelScript == null)
@@ -53,6 +60,29 @@ public class AA_CleanAction : Actions
 
     public override bool PrePerform()
     {
+        if (targetTag == "WO_Light")
+        {
+            Dictionary<string, int> relevantState = GetRelevantAngelState();
+
+            if (relevantState.ContainsKey("cleanShower"))
+            {
+                int evilValue = relevantState["cleanShower"];
+
+                if (evilValue <= 1)
+                {
+                    Debug.Log("Key 'cleanShower' has value 1. Action will be skipped.");
+                    doneShower = true;
+                    ApplyAngelEffects();
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.Log("PrePerform Check: Key 'cleanShower' does not exist.");
+                return false;
+            }
+        }
+
         agent.isStopped = true;
 
         if (targetTag == "WO_Shower")
@@ -78,7 +108,8 @@ public class AA_CleanAction : Actions
 
         if (targetTag == "WO_Shower")
         {
-            done = true;
+            doneShower = true;
+            ApplyAngelEffects();
         }
 
         return true;

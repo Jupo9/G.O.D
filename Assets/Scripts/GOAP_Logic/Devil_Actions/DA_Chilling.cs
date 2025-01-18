@@ -44,13 +44,14 @@ public class DA_Chilling : Actions
             {
                 Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
                 done = true;
-                ApplyEffects();
+                ApplyDevilEffects();
                 return false;
             }
         }
         else
         {
             Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
+            return false;
         }
 
         Invoke("CloseDoors", 2f);

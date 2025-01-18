@@ -10,6 +10,7 @@ public class DA_CleanAction : Actions
 
     public bool doneChill = false;
     public bool doneWork = false;
+    public bool foundBuilding = false;
 
     private void Start()
     {
@@ -46,38 +47,50 @@ public class DA_CleanAction : Actions
 
     public override bool PrePerform()
     {
-        Dictionary<string, int> relevantState = GetRelevantDevilState();
+        foundBuilding = false;
 
-        if (relevantState.ContainsKey("cleanChill"))
+        if (targetTag == "WO_Iron")
         {
-            int evilValue = relevantState["cleanChill"];
+            Dictionary<string, int> relevantState = GetRelevantDevilState();
 
-            if (evilValue <= 1)
+            if (relevantState.ContainsKey("cleanChill"))
             {
-                Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
-                doneChill = true;
-                ApplyEffects();
+                int evilValue = relevantState["cleanChill"];
+
+                if (evilValue <= 1)
+                {
+                    Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
+                    doneChill = true;
+                    ApplyDevilEffects();
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
                 return false;
             }
         }
-        else
-        {
-            Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
-        }
-
+        foundBuilding = true;
         agent.isStopped = true;
 
         if (targetTag == "WO_Iron")
         {
-            StartCoroutine(WaitBeforeActionLight());
+            StartCoroutine(WaitBeforeActionIron());
+            return true;
         }
 
         if (targetTag == "WO_Fire")
         {
             StartCoroutine(WaitBeforeActionFire());
+            return true;
         }
 
-        return false;
+        else
+        {
+            return false;
+        }
+
     }
 
     public override bool PostPerform()
@@ -95,7 +108,7 @@ public class DA_CleanAction : Actions
         return true;
     }
 
-    private IEnumerator WaitBeforeActionLight()
+    private IEnumerator WaitBeforeActionIron()
     {
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
@@ -140,6 +153,7 @@ public class DA_CleanAction : Actions
         yield return new WaitForSeconds(2);
 
         buildingIronMaiden.isAvailable = true;
+        buildingIronMaiden.AddBuilding();
     }
 
     private IEnumerator WaitBeforeActionFire()

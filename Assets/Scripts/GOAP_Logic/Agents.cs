@@ -58,12 +58,12 @@ public class Agents : MonoBehaviour
     /// Angel Area
     /// </summary>
 
-    //private bool noticePurity = false;
+    private bool noticePurity = false;
     //private bool noticeEnjoy = false;
     //private bool noticePowerAngel = false;
     //private bool noticeBelieve = false;
 
-    //private bool triggerPurity = false;
+    private bool triggerPurity = false;
     //private bool triggerEnjoy = false;
     //private bool triggerPowerAngel = false;
     //private bool triggerBelieve = false;
@@ -80,19 +80,25 @@ public class Agents : MonoBehaviour
         {
             actions.Add(a);
         }
+        if (CompareTag("Angel"))
+        {
+            shower = GetComponent<AA_Shower>();
+            prepareAngelAction = GetComponent<AA_PrepareAction>();
+            cleanAngelAction = GetComponent<AA_CleanAction>();
 
-        bullyAngel = GetComponent<DA_BullyAngel>();
-        punshAngel = GetComponent<DA_PunshAngel>();
-        chilling = GetComponent<DA_Chilling>();
-        prepareDevilAction = GetComponent<DA_PrepareAction>();
-        cleanDevilAction = GetComponent<DA_CleanAction>();
+            StartCoroutine("AngelBeliefs");
+        }
 
-        shower = GetComponent<AA_Shower>();
-        prepareAngelAction = GetComponent<AA_PrepareAction>();
-        cleanAngelAction = GetComponent<AA_CleanAction>();
+        if (CompareTag("Devil"))
+        {
+            bullyAngel = GetComponent<DA_BullyAngel>();
+            punshAngel = GetComponent<DA_PunshAngel>();
+            chilling = GetComponent<DA_Chilling>();
+            prepareDevilAction = GetComponent<DA_PrepareAction>();
+            cleanDevilAction = GetComponent<DA_CleanAction>();
 
-        StartCoroutine("DevilBeliefs");
-        //StartCoroutine("AngelBeliefs");
+            StartCoroutine("DevilBeliefs");
+        }
     }
 
     bool invoked = false;
@@ -114,17 +120,10 @@ public class Agents : MonoBehaviour
 
     private void LateUpdate()
     {
-        //MonitorEvilKey();
-
         if (CompareTag("Angel"))
         {
             if (currentAction != null && currentAction.running)
             {
-                if (currentAction is AA_PrepareAction)
-                {
-                    ///Implentieren von Methoden
-                }
-
                 if (currentAction != null && currentAction.running)
                 {
                     float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
@@ -139,7 +138,6 @@ public class Agents : MonoBehaviour
                     return;
                 }
             }
-
 
             if (planner == null || actionQueue == null)
             {
@@ -177,10 +175,22 @@ public class Agents : MonoBehaviour
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
                     }
                 }
+                else
+                {
+                    Debug.Log($"Action {currentAction.actionName} failed in PrePerform.");
+
+                    if (currentAction is AA_PrepareAction && !prepareAngelAction.foundBuilding ||
+                        currentAction is AA_Shower ||
+                        currentAction is AA_CleanAction && !cleanAngelAction.foundBuilding )
+                    {
+                        currentAction.priorityValue += 1;
+                    }
+                }
             }
             else
             {
-                //Debug.Log("No actions in queue!");
+                Debug.Log("Paaain");
+                ResetPlanner();
             }
 
 
@@ -190,109 +200,18 @@ public class Agents : MonoBehaviour
         {
             if (currentAction != null && currentAction.running)
             {
-                WorldStates worldStates = Worlds.Instance.GetWorld();
-
                 if (currentAction is DA_BullyAngel)
                 {
-                    if (worldStates.HasState("Avail_angel"))
-                    {
-                        int availableAngelsValue = worldStates.GetStates()["Avail_angel"];
-
-                        if (availableAngelsValue == 0)
-                        {
-                            currentAction.running = false;
-                            currentAction = null;
-                            currentAction.priorityValue += 1;
-                            return;
-                        }
-                    }
-
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
-
-                    /*GameObject[] angels = GameObject.FindGameObjectsWithTag("Angel");
-
-                    List<GameObject> availableAngels = new List<GameObject>();
-                    foreach (GameObject angel in angels)
-                    {
-                        Angel angelScript = angel.GetComponent<Angel>();
-                        if (angelScript != null && angelScript.available)
-                        {
-                            availableAngels.Add(angel);
-                        }
-                    }
-
-                    if (availableAngels.Count > 0)
-                    {
-                        //personalTarget = true;
-                        GameObject nearestAngel = availableAngels
-                            .OrderBy(angel => Vector3.Distance(transform.position, angel.transform.position))
-                            .First();
-
-                        currentAction.target = nearestAngel;
-
-                        currentAction.agent.SetDestination(currentAction.target.transform.position);
-                    }
-
-                    if (availableAngels.Count == 0 && !personalTarget)
-                    {
-                        Debug.Log("Missing free Angel");
-                    }*/
                 }
 
                 if (currentAction is DA_PunshAngel)
                 {
-                    if (worldStates.HasState("Avail_angel"))
-                    {
-                        int availableAngelsValue = worldStates.GetStates()["Avail_angel"];
-
-                        if (availableAngelsValue == 0)
-                        {
-                            currentAction.running = false;
-                            currentAction = null;
-                            currentAction.priorityValue += 1;
-                            return;
-                        }
-                    }
-
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if (currentAction is DA_Chilling)
+               /* if (currentAction is DA_Working)
                 {
-                    if (worldStates.HasState("Build_iron"))
-                    {
-                        int availableAngelsValue = worldStates.GetStates()["Build_iron"];
-
-                        if (availableAngelsValue == 0)
-                        {
-                            currentAction.running = false;
-                            currentAction = null;
-                            currentAction.priorityValue += 1;
-                            return;
-                        }
-                    }
-                }
-
-                if (currentAction is DA_Working)
-                {
-                    if (worldStates.HasState("Build_iron"))
-                    {
-                        int buildIronValue = worldStates.GetStates()["Build_iron"];
-
-                        if (buildIronValue == 0)
-                        {
-                            currentAction.running = false;
-                            currentAction = null;
-                            currentAction.priorityValue += 1;
-                            return;
-                        }
-                    }
-                }
-
-                if (currentAction is DA_PrepareAction ||
-                    currentAction is DA_CleanAction && !cleanDevilAction.doneChill)
-                {
-                    Debug.Log("Start Agent Action");
                     if (worldStates.HasState("Build_iron"))
                     {
                         int buildIronValue = worldStates.GetStates()["Build_iron"];
@@ -322,7 +241,7 @@ public class Agents : MonoBehaviour
                             return;
                         }
                     }
-                }
+                }*/
 
                 if (currentAction != null && currentAction.running)
                 {
@@ -373,6 +292,19 @@ public class Agents : MonoBehaviour
                     {
                         currentAction.running = true;
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
+                    }
+                }
+                else
+                {
+                    Debug.Log($"Action {currentAction.actionName} failed in PrePerform.");
+
+                    if (currentAction is DA_PrepareAction && !prepareDevilAction.foundBuilding ||
+                        currentAction is DA_Chilling ||
+                        currentAction is DA_CleanAction && !cleanDevilAction.foundBuilding ||
+                        currentAction is DA_BullyAngel ||
+                        currentAction is DA_PunshAngel)
+                    {
+                        currentAction.priorityValue += 1;
                     }
                 }
             }
@@ -440,12 +372,12 @@ public class Agents : MonoBehaviour
     {
         if (triggerEvil)
         {
-            if (currentAction is DA_CleanAction || currentAction is DA_Transport)
+            if (currentAction is DA_CleanAction || currentAction is DA_Transport || currentAction is GA_MoveAround)
             {
                 noticeEvil = true;
                 currentRunningAction = currentAction;
                 Debug.Log("ResetEvil");
-                StartCoroutine("WaitBeforeReset");
+                StartCoroutine("WaitBeforeResetDevil");
             }
             else
             {
@@ -458,12 +390,12 @@ public class Agents : MonoBehaviour
     {
         if (triggerChill)
         {
-            if (currentAction is DA_BullyAngel)
+            if (currentAction is DA_BullyAngel || currentAction is GA_MoveAround)
             {
                 noticeChill = true;
                 currentRunningAction = currentAction;
                 Debug.Log("ResetChill");
-                StartCoroutine("WaitBeforeReset");
+                StartCoroutine("WaitBeforeResetDevil");
             }
             else
             {
@@ -473,21 +405,21 @@ public class Agents : MonoBehaviour
     }
 
 
-    private IEnumerator WaitBeforeReset()
+    private IEnumerator WaitBeforeResetDevil()
     {
         if (currentRunningAction == null)
         {
-            Debug.LogError("[WaitBeforeReset] Keine laufende Aktion gefunden!");
+            Debug.LogError("[WaitBeforeResetDevil] Keine laufende Aktion gefunden!");
             yield break;
         }
 
         while (currentRunningAction.running)
         {
-            Debug.Log($"[WaitBeforeReset] Waiting for action {currentRunningAction.actionName} to finish.");
+            Debug.Log($"[WaitBeforeResetDevil] Waiting for action {currentRunningAction.actionName} to finish.");
             yield return null;
         }
 
-        Debug.Log($"[WaitBeforeReset] Action {currentRunningAction.actionName} has completed. Proceeding to reset.");
+        Debug.Log($"[WaitBeforeResetDevil] Action {currentRunningAction.actionName} has completed. Proceeding to reset.");
 
         Dictionary<string, int> relevantState = currentAction.GetRelevantDevilState();
 
@@ -529,60 +461,89 @@ public class Agents : MonoBehaviour
         ResetPlanner();
     }
 
-    /*private void ResetChill()
+    private IEnumerator AngelBeliefs()
     {
-        if (triggerChill)
+        Angel angel = GetComponent<Angel>();
+
+        while (true)
         {
-            if (currentAction is DA_CleanAction || currentAction is DA_Transport || currentAction is DA_BullyAngel || currentAction is DA_PunshAngel)
+            if (angel != null)
             {
-                Debug.Log("Planner wird zurückgesetzt. Chill");
-                noticeChill = true;
-                triggerChill = false;
-
-                prepareDevilAction.done = false;
-                chilling.done = false;
-                cleanDevilAction.done = false;
-
-                if (Worlds.Instance.GetWorld().HasState("preChill"))
+                if (!noticePurity)
                 {
-                    int value = Worlds.Instance.GetWorld().GetStates()["preChill"];
-                    if (value <= 1)
+                    float showerIndicator = Random.Range(20f, 70f);
+
+                    if (showerIndicator > angel.needPurity)
                     {
-                        Worlds.Instance.GetWorld().ModifyState("preChill", 0);
-                        Debug.Log("preChill wurde zu WorldStates entfernt.");
+                        triggerPurity = true;
+                        ResetShower();
                     }
                 }
 
-                if (Worlds.Instance.GetWorld().HasState("chill"))
-                {
-                    int value = Worlds.Instance.GetWorld().GetStates()["chill"];
-                    if (value <= 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("chill", 0);
-                        Debug.Log("chill wurde zu WorldStates entfernt.");
-                    }
-                }
+                //Add more notices
+            }
 
-                if (Worlds.Instance.GetWorld().HasState("cleanChill"))
-                {
-                    int value = Worlds.Instance.GetWorld().GetStates()["cleanChill"];
-                    if (value <= 1)
-                    {
-                        Worlds.Instance.GetWorld().ModifyState("cleanChill", 0);
-                        Debug.Log("cleanChill wurde zu WorldStates entfernt.");
-                    }
-                }
+            yield return new WaitForSeconds(5f);
+        }
+    }
 
-                ResetPlanner();
-                noticeChill = false;
-
+    private void ResetShower()
+    {
+        if (triggerPurity)
+        {
+            if (currentAction is AA_CleanAction || currentAction is GA_MoveAround)
+            {
+                noticePurity = true;
+                currentRunningAction = currentAction;
+                Debug.Log("ResetShower");
+                StartCoroutine("WaitBeforeResetAngel");
             }
             else
             {
-                triggerChill = false;
+                triggerPurity = false;
             }
         }
-    }*/
+    }
+
+    private IEnumerator WaitBeforeResetAngel()
+    {
+        if (currentRunningAction == null)
+        {
+            Debug.LogError("[WaitBeforeResetAngel] Keine laufende Aktion gefunden!");
+            yield break;
+        }
+
+        while (currentRunningAction.running)
+        {
+            Debug.Log($"[WaitBeforeResetAngel] Waiting for action {currentRunningAction.actionName} to finish.");
+            yield return null;
+        }
+
+        Debug.Log($"[WaitBeforeResetAngel] Action {currentRunningAction.actionName} has completed. Proceeding to reset.");
+
+        Dictionary<string, int> relevantState = currentAction.GetRelevantAngelState();
+
+        if (relevantState.ContainsKey("cleanShower"))
+        {
+            int showerValue = relevantState["cleanShower"];
+
+            if (showerValue <= 1)
+            {
+                relevantState["cleanShower"] = 0;
+                Debug.Log("MonitorShowerKey: Key 'cleanShower' set to 0");
+            }
+
+            Debug.Log("Planner wird zurückgesetzt. Shower");
+            triggerPurity = false;
+            shower.done = false;
+            prepareAngelAction.doneShower = false;
+            cleanAngelAction.doneShower = false;
+            noticePurity = false;
+        }
+
+        ResetPlanner();
+    }
+
 
     private void ResetPlanner()
     {
@@ -609,21 +570,5 @@ public class Agents : MonoBehaviour
         {
             Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
         }
-    }
-
-
-    public void MonitorEvilKey()
-    {
-        if (currentAction != null)
-        {
-            Dictionary<string, int> relevantState = currentAction.GetRelevantDevilState();
-
-            if (relevantState.ContainsKey("evil"))
-            {
-                int evilValue = relevantState["evil"];
-                Debug.Log($"MonitorEvilKey: Current value of 'evil' is {evilValue}");
-            }
-        }
-
     }
 }

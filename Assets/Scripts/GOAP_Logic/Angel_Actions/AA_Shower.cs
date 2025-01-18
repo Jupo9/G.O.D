@@ -29,6 +29,26 @@ public class AA_Shower : Actions
 
     public override bool PrePerform()
     {
+        Dictionary<string, int> relevantState = GetRelevantAngelState();
+
+        if (relevantState.ContainsKey("cleanShower"))
+        {
+            int evilValue = relevantState["cleanShower"];
+
+            if (evilValue <= 1)
+            {
+                Debug.Log("Key 'cleanShower' has value 1. Action will be skipped.");
+                done = true;
+                ApplyAngelEffects();
+                return false;
+            }
+        }
+        else
+        {
+            Debug.Log("PrePerform Check: Key 'cleanShower' does not exist.");
+            return false;
+        }
+
         Invoke("CloseDoor", 2f);
 
         angel.isPurity = true;
@@ -81,6 +101,7 @@ public class AA_Shower : Actions
     public override bool PostPerform()
     {
         buildingShower.StopSteam();
+        ApplyAngelEffects();
         angel.isPurity = false;
         done = true;
         return true;

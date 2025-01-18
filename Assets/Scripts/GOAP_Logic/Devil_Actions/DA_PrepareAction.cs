@@ -46,23 +46,28 @@ public class DA_PrepareAction : Actions
 
     public override bool PrePerform()
     {
-        Dictionary<string, int> relevantState = GetRelevantDevilState();
+        foundBuilding = false;
 
-        if (relevantState.ContainsKey("cleanChill"))
+        if (targetTag == "WO_Iron")
         {
-            int evilValue = relevantState["cleanChill"];
+            Dictionary<string, int> relevantState = GetRelevantDevilState();
 
-            if (evilValue <= 1)
+            if (relevantState.ContainsKey("cleanChill"))
             {
-                Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
-                doneChill = true;
-                ApplyEffects();
-                return false;
+                int evilValue = relevantState["cleanChill"];
+
+                if (evilValue <= 1)
+                {
+                    Debug.Log("Key 'cleanChill' has value 1. Action will be skipped.");
+                    doneChill = true;
+                    ApplyDevilEffects();
+                    return false;
+                }
             }
-        }
-        else
-        {
-            Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
+            else
+            {
+                Debug.Log("PrePerform Check in Bully: Key 'cleanChill' does not exist.");
+            }
         }
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
@@ -92,7 +97,6 @@ public class DA_PrepareAction : Actions
                 else
                 {
                     Debug.Log("No building found");
-                    return false;
                 }
             }
 
@@ -149,6 +153,8 @@ public class DA_PrepareAction : Actions
                     foundBuilding = true;
                 }
             }
+
+
         }
 
         if (targetTag == "WO_Fire")
@@ -179,6 +185,8 @@ public class DA_PrepareAction : Actions
             doneWork = true;
         }
 
+
+        foundBuilding = false;
         return true;
     }
 
