@@ -11,7 +11,16 @@ public class Building_IronMaiden : MonoBehaviour
     public GameObject waypointOutside;
     public GameObject waypointInside;
 
+    private Dictionary<Renderer, Material[]> originalMaterials = new();
+    public bool isPreview = false;
+    private bool builded = false;
+
     private const string BuildingIronKey = "Build_iron";
+
+    private void Awake()
+    {
+        CacheOriginalMaterials();
+    }
 
     private void Start()
     {
@@ -26,14 +35,53 @@ public class Building_IronMaiden : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Update()
     {
-        AddBuilding();
+        if (isPreview)
+        {
+            isPreview = false;
+            builded = true;
+            AddBuilding();
+            RestoreOriginalMaterials();
+        }
     }
 
     private void OnDestroy()
     {
-        RemoveBuilding();
+        if (builded)
+        {
+            RemoveBuilding();
+        }
+    }
+
+    private void CacheOriginalMaterials()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            if (!originalMaterials.ContainsKey(renderer))
+            {
+                originalMaterials[renderer] = renderer.materials;
+            }
+        }
+    }
+
+    private void RestoreOriginalMaterials()
+    {
+        foreach (var entry in originalMaterials)
+        {
+            Renderer renderer = entry.Key;
+            Material[] materials = entry.Value;
+
+            if (renderer != null && materials != null && materials.Length == renderer.materials.Length)
+            {
+                renderer.materials = materials;
+            }
+            else
+            {
+                Debug.LogWarning($"Mismatch in material count or missing renderer on {renderer.gameObject.name}");
+            }
+        }
     }
 
     public void AddBuilding()

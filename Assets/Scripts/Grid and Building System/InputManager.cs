@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
 
     public event Action OnClicked;
     public event Action OnExit;
+    public event Action OnRotate;
 
     private Vector3 lastPosition;
 
@@ -22,6 +23,12 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
             OnExit?.Invoke();
+        }
+
+        if (Input.GetMouseButtonDown(2)) 
+        {
+            Debug.Log("notice Rotation");
+            OnRotate?.Invoke();
         }
     }
 

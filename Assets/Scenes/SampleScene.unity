@@ -212,6 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placedGameObjects: []
+  previewMaterialPrefab: {fileID: 2100000, guid: 373b872bea21ff343b19a7c4d5c32b05, type: 2}
 --- !u!1001 &26609910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4614,6 +4615,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 678011373621352159, guid: c915f7ca82096394789f33945851e017, type: 3}
+      propertyPath: previewMaterialPrefab
+      value: 
+      objectReference: {fileID: 2100000, guid: a6bc417468abd7f4bab617b55a81a974, type: 2}
     - target: {fileID: 1259606297831886261, guid: c915f7ca82096394789f33945851e017, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.34

@@ -14,7 +14,6 @@ public class Building_Fire : MonoBehaviour
     public bool minusOne = false;
 
     private bool fullBuilding = false;
-    //private bool preview = false;
 
     [Header("Fire Inputs")]
     public float maxAmount = 4f;
@@ -26,9 +25,17 @@ public class Building_Fire : MonoBehaviour
     public GameObject waypointOutside;
     public GameObject waypointInside;
 
+    private Dictionary<Renderer, Material[]> originalMaterials = new();
+    public bool isPreview = false;
+    private bool builded = false;
 
     private const string BuildingFireKey = "Build_fire";
     private const string FireRessource = "Res_fire";
+
+    private void Awake()
+    {
+        CacheOriginalMaterials();
+    }
 
     private void Update()
     {
@@ -84,16 +91,52 @@ public class Building_Fire : MonoBehaviour
             NoKeyFixer();
         }
 
-    }
+        if (isPreview)
+        {
+            isPreview = false;
+            builded = true;
+            AddBuilding();
+            RestoreOriginalMaterials();
+        }
 
-    private void OnEnable()
-    {
-        AddBuilding();
     }
 
     private void OnDestroy()
     {
-        RemoveBuilding();
+        if (builded)
+        {
+            RemoveBuilding();
+        }
+    }
+
+    private void CacheOriginalMaterials()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            if (!originalMaterials.ContainsKey(renderer))
+            {
+                originalMaterials[renderer] = renderer.materials;
+            }
+        }
+    }
+
+    private void RestoreOriginalMaterials()
+    {
+        foreach (var entry in originalMaterials)
+        {
+            Renderer renderer = entry.Key;
+            Material[] materials = entry.Value;
+
+            if (renderer != null && materials != null && materials.Length == renderer.materials.Length)
+            {
+                renderer.materials = materials;
+            }
+            else
+            {
+                Debug.LogWarning($"Mismatch in material count or missing renderer on {renderer.gameObject.name}");
+            }
+        }
     }
 
     public void AddBuilding()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlacementState : IBuildingState
 {
     private int selectedObjectIndex = -1;
+    private Quaternion currentRotation = Quaternion.identity;
     int ID;
     Grid grid;
     PreviewSystem previewSystem;
@@ -49,7 +50,11 @@ public class PlacementState : IBuildingState
             return;
         }
 
-        int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
+        int index = objectPlacer.PlaceObject(
+                    database.objectsData[selectedObjectIndex].Prefab,
+                    grid.CellToWorld(gridPosition),
+                    currentRotation,
+                    true);
 
         GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildingData;
 
@@ -59,6 +64,12 @@ public class PlacementState : IBuildingState
             index);
 
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
+    }
+
+    public void RotatePreview()
+    {
+        currentRotation *= Quaternion.Euler(0, 90, 0);
+        previewSystem.UpdateRotation(currentRotation);
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)

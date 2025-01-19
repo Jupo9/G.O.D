@@ -74,6 +74,15 @@ public class PreviewSystem : MonoBehaviour
         ApplyFeedbackToCursor(validity);
     }
 
+    public void UpdateRotation(Quaternion rotation)
+    {
+        if (previewObject != null)
+        {
+            previewObject.transform.rotation = rotation;
+        }
+        cellIndicator.transform.rotation = rotation;
+    }
+
     private void ApplyFeedbackToPreview(bool validity)
     {
         Color c = validity ? Color.white : Color.red;

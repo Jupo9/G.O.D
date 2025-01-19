@@ -44,6 +44,7 @@ public class PlacementSystem : MonoBehaviour
 
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
+        inputManager.OnRotate += RotatePreview;
     }
 
     public void StartRemoving()
@@ -89,6 +90,15 @@ public class PlacementSystem : MonoBehaviour
         buildingState = null;
     }
 
+    private void RotatePreview()
+    {
+        if (buildingState != null && buildingState is PlacementState placementState)
+        {
+            placementState.RotatePreview();
+        }
+    }
+
+
     private void Update()
     {
         if (buildingState == null)
@@ -105,3 +115,4 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 }
+
