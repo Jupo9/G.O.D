@@ -14,6 +14,7 @@ public class Building_Fire : MonoBehaviour
     public bool minusOne = false;
 
     private bool fullBuilding = false;
+    //private bool preview = false;
 
     [Header("Fire Inputs")]
     public float maxAmount = 4f;

@@ -4,7 +4,7 @@ public class PreviewSystem : MonoBehaviour
 {
     [SerializeField] private float previewOffset = 0.06f;
 
-    [SerializeField] private GameObject cellIndicator; 
+    [SerializeField] private GameObject cellIndicator;
     private GameObject previewObject;
 
     [SerializeField] private Material previewMaterialPrefab;
@@ -27,7 +27,7 @@ public class PreviewSystem : MonoBehaviour
         cellIndicator.SetActive(true);
     }
 
-        private void PrepareCursor(Vector2Int size)
+    private void PrepareCursor(Vector2Int size)
     {
         if (size.x > 0 || size.y > 0)
         {
@@ -42,8 +42,8 @@ public class PreviewSystem : MonoBehaviour
 
         foreach (Renderer renderer in renderers)
         {
-            Material[] materials = renderer.materials; 
-            
+            Material[] materials = renderer.materials;
+
             for (int i = 0; i < materials.Length; i++)
             {
                 materials[i] = previewMaterialInstance;
