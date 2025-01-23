@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -45,7 +44,7 @@ public class GA_MoveAround : Actions
         if (NavMesh.SamplePosition(randomDirection, out hit, moveRadius, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
-            Debug.Log($"Neues Ziel: {hit.position}");
+            //Debug.Log($"Neues Ziel: {hit.position}");
         }
         else
         {

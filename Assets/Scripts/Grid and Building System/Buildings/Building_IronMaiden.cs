@@ -1,19 +1,27 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Building_IronMaiden : MonoBehaviour
 {
-    public bool isAvailable = true;
+    public bool test = false;
+
+    public bool isAvailable = false;
 
     public Animator doubleDoors;
 
     public GameObject waypointOutside;
     public GameObject waypointInside;
+    public int requiredFire = 0;
+
+    // startBuilding is for Building that exist in the scene when the game starts, so basically start buildings, set bool = true only for them!
+    [Tooltip("This bool needs to be true if the buidling exist in the scene before the game starts!")]
+    public bool startBuilding = false; 
 
     private Dictionary<Renderer, Material[]> originalMaterials = new();
     public bool isPreview = false;
     private bool builded = false;
+
+    private Devil assignedDevil;
 
     private const string BuildingIronKey = "Build_iron";
 
@@ -41,8 +49,42 @@ public class Building_IronMaiden : MonoBehaviour
         {
             isPreview = false;
             builded = true;
+            isAvailable = true;
             AddBuilding();
             RestoreOriginalMaterials();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (!isAvailable) 
+        {
+            Devil[] allDevils = FindObjectsByType<Devil>(FindObjectsSortMode.None);
+            foreach (Devil devil in allDevils)
+            {
+                if (devil.choosenOne)
+                {
+                    assignedDevil = devil;
+                    break;
+                }
+            }
+
+            if (assignedDevil != null)
+            {
+                assignedDevil.choosenOne = false;
+                assignedDevil.buildingAction = true;
+                assignedDevil.isBuilding = true;
+                Debug.Log($"Building assigned to {assignedDevil.name}.");
+            }
+            else
+            {
+                Debug.LogWarning("No Devil selected to assign the building task.");
+            }
+        }
+
+        if (startBuilding)
+        {
+            isPreview = true;
         }
     }
 
@@ -52,6 +94,15 @@ public class Building_IronMaiden : MonoBehaviour
         {
             RemoveBuilding();
         }
+    }
+
+    /// <summary>
+    /// Change State when building was build, as long as "isPreview = false" the building can't be used by Devils
+    /// </summary>
+    public void ChangePreviewState()
+    {
+        Debug.Log("Methode X in Script1 wurde aufgerufen.");
+        isPreview = true;
     }
 
     private void CacheOriginalMaterials()
@@ -99,6 +150,66 @@ public class Building_IronMaiden : MonoBehaviour
             Debug.Log($"Building_IronMaiden added. Current count: {worldStates.GetStates()[BuildingIronKey]}");
         }
     }
+
+    private void BuildingCosts()
+    {
+        int remainingFireToSubtract = requiredFire;
+ 
+        GameObject[] storageBuildings = GameObject.FindGameObjectsWithTag("Storage");
+        foreach (GameObject storageBuilding in storageBuildings)
+        {
+            Building_Storage buildingStorage = storageBuilding.GetComponentInChildren<Building_Storage>();
+            if (buildingStorage != null && remainingFireToSubtract > 0)
+            {
+                int availableFire = buildingStorage.fireCounter;
+
+                if (availableFire > 0)
+                {
+                    int fireToSubtract = Mathf.Min(availableFire, remainingFireToSubtract);
+                    for (int i = 0; i < fireToSubtract; i++)
+                    {
+                        buildingStorage.DecreaseFireCounter();
+                    }
+
+                    remainingFireToSubtract -= fireToSubtract;
+                }
+            }
+        }
+
+        if (remainingFireToSubtract > 0)
+        {
+            GameObject[] fireBuildings = GameObject.FindGameObjectsWithTag("Devil_WorkBuilding");
+            foreach (GameObject fireBuilding in fireBuildings)
+            {
+                Building_Fire buildingFire = fireBuilding.GetComponentInChildren<Building_Fire>();
+                if (buildingFire != null && remainingFireToSubtract > 0)
+                {
+                    int availableFire = buildingFire.fireAmount;
+
+                    if (availableFire > 0)
+                    {
+                        int fireToSubtract = Mathf.Min(availableFire, remainingFireToSubtract);
+                        for (int i = 0; i < fireToSubtract; i++)
+                        {
+                            buildingFire.DecreaseFireAmount();
+                        }
+
+                        remainingFireToSubtract -= fireToSubtract;
+                    }
+                }
+            }
+        }
+
+        if (remainingFireToSubtract > 0)
+        {
+            Debug.LogWarning("Not enough ressources!");
+        }
+        else
+        {
+            Debug.Log("Building Complete!");
+        }
+    }
+
 
     public void RemoveBuilding()
     {

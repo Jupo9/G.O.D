@@ -136,7 +136,7 @@ public class DA_ChillComplete : Actions
 
         yield return new WaitForSeconds(5);
 
-        if (targetTag == "WO_Iron" && buildingIronMaiden != null)
+        if (targetTag == "WI_Iron" && buildingIronMaiden != null)
         {
             buildingIronMaiden.CloseDoubleDoors();
         }

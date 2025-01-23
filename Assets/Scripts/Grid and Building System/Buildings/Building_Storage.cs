@@ -1,7 +1,4 @@
-using Autodesk.Fbx;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Building_Storage : MonoBehaviour
@@ -9,11 +6,12 @@ public class Building_Storage : MonoBehaviour
     public GameObject fireRessource;
     public GameObject lightRessource;
 
-    public float fireCounter = 0f;
-    public float lightCounter = 0f;
-    public float maxFireCounter = 10f;
-    public float maxLightCounter = 10f;
+    public int fireCounter = 0;
+    public int lightCounter = 0;
+    public int maxFireCounter = 10;
+    public int maxLightCounter = 10;
 
+    public bool isAvailable = false;
     public bool calculate = false;
     public bool oneFire = false;
     public bool oneLight = false;
@@ -29,6 +27,14 @@ public class Building_Storage : MonoBehaviour
     private Dictionary<Renderer, Material[]> originalMaterials = new();
     public bool isPreview = false;
     private bool builded = false;
+
+    // startBuilding is for Building that exist in the scene when the game starts, so basically start buildings, set bool = true only for them!
+    [Tooltip("This bool needs to be true if the buidling exist in the scene before the game starts!")]
+    public bool startBuilding = false;
+
+    private Angel assignedAngel;
+
+    public int requiredLight = 0;
 
     private const string BuildingStorageKey = "Build_storage";
 
@@ -152,12 +158,110 @@ public class Building_Storage : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (!isAvailable)
+        {
+            Angel[] allAngels = FindObjectsByType<Angel>(FindObjectsSortMode.None);
+            foreach (Angel angel in allAngels)
+            {
+                if (angel.choosenOne)
+                {
+                    assignedAngel = angel;
+                    break;
+                }
+            }
+
+            if (assignedAngel != null)
+            {
+                assignedAngel.choosenOne = false;
+                assignedAngel.buildingAction = true;
+                assignedAngel.isBuilding = true;
+                Debug.Log($"Building assigned to {assignedAngel.name}.");
+            }
+            else
+            {
+                Debug.LogWarning("No Devil selected to assign the building task.");
+            }
+        }
+
+        if (startBuilding)
+        {
+            isPreview = true;
+        }
+    }
+
     private void OnDestroy()
     {
         if (builded)
         {
             RemoveBuilding();
         }
+    }
+
+    private void BuildingCosts()
+    {
+        int remainingLightToSubtract = requiredLight;
+
+        GameObject[] storageBuildings = GameObject.FindGameObjectsWithTag("Storage");
+        foreach (GameObject storageBuilding in storageBuildings)
+        {
+            Building_Storage buildingStorage = storageBuilding.GetComponentInChildren<Building_Storage>();
+            if (buildingStorage != null && remainingLightToSubtract > 0)
+            {
+                int availableLight = buildingStorage.lightCounter;
+
+                if (availableLight > 0)
+                {
+                    int lightToSubtract = Mathf.Min(availableLight, remainingLightToSubtract);
+                    for (int i = 0; i < lightToSubtract; i++)
+                    {
+                        buildingStorage.DecreaseLightCounter();
+                    }
+
+                    remainingLightToSubtract -= lightToSubtract;
+                }
+            }
+        }
+
+        if (remainingLightToSubtract > 0)
+        {
+            GameObject[] lightBuildings = GameObject.FindGameObjectsWithTag("Angel_WorkBuilding");
+            foreach (GameObject lightBuilding in lightBuildings)
+            {
+                Building_Light buildingLight = lightBuilding.GetComponentInChildren<Building_Light>();
+                if (buildingLight != null && remainingLightToSubtract > 0)
+                {
+                    int availableLight = buildingLight.lightAmount;
+
+                    if (availableLight > 0)
+                    {
+                        int lightToSubtract = Mathf.Min(availableLight, remainingLightToSubtract);
+                        for (int i = 0; i < lightToSubtract; i++)
+                        {
+                            buildingLight.DecreaseLightAmount();
+                        }
+
+                        remainingLightToSubtract -= lightToSubtract;
+                    }
+                }
+            }
+        }
+
+        if (remainingLightToSubtract > 0)
+        {
+            Debug.LogWarning("Not enough ressources!");
+        }
+        else
+        {
+            Debug.Log("Building Complete!");
+        }
+    }
+
+    public void ChangePreviewState()
+    {
+        Debug.Log("Methode X in Script1 wurde aufgerufen.");
+        isPreview = true;
     }
 
     private void CacheOriginalMaterials()
@@ -327,5 +431,4 @@ public class Building_Storage : MonoBehaviour
         }
 
     }
-
 }

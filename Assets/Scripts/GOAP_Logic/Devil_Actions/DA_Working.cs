@@ -8,11 +8,11 @@ public class DA_Working : Actions
 
     private void Start()
     {
-        GameObject lightParent = GameObject.FindWithTag("FIRE");
+        GameObject fireParent = GameObject.FindWithTag("Devil_WorkBuilding");
 
-        if (lightParent != null)
+        if (fireParent != null)
         {
-            buildingFire = lightParent.GetComponentInParent<Building_Fire>();
+            buildingFire = fireParent.GetComponentInParent<Building_Fire>();
         }
 
         /*if (buildingFire == null)

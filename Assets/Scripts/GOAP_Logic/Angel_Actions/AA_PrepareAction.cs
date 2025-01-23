@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -135,7 +134,7 @@ public class AA_PrepareAction : Actions
             {
                 Building_Light buildingLightScript = build.GetComponentInParent<Building_Light>();
 
-                if (buildingLightScript != null && buildingLightScript.lightIsOpen)
+                if (buildingLightScript != null && buildingLightScript.isAvailable)
                 {
                     float distance = Vector3.Distance(this.transform.position, build.transform.position);
                     if (distance < closestDistance)
@@ -177,7 +176,7 @@ public class AA_PrepareAction : Actions
             }
 
             buildingLight.angelInside = true;
-            buildingLight.lightIsOpen = false;
+            buildingLight.isAvailable = false;
         }
 
         return true;

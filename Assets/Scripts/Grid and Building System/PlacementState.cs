@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlacementState : IBuildingState
@@ -45,16 +43,23 @@ public class PlacementState : IBuildingState
     {
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
 
-        if (placementValidity == false)
+        if (!placementValidity)
         {
             return;
         }
 
-        int index = objectPlacer.PlaceObject(
-                    database.objectsData[selectedObjectIndex].Prefab,
-                    grid.CellToWorld(gridPosition),
-                    currentRotation,
-                    true);
+        GameObject placedObject = previewSystem.CurrentPreviewObject;
+
+        if (placedObject == null)
+        {
+            throw new System.Exception("Preview object is not available.");
+        }
+
+        previewSystem.StopShowingPreview(); 
+        placedObject.transform.position = grid.CellToWorld(gridPosition);
+        placedObject.transform.rotation = currentRotation;
+
+        int index = objectPlacer.RegisterPlacedObject(placedObject);
 
         GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildingData;
 
@@ -63,7 +68,7 @@ public class PlacementState : IBuildingState
             database.objectsData[selectedObjectIndex].ID,
             index);
 
-        previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
+        PlacementSystem.Instance.StopPlacement();
     }
 
     public void RotatePreview()

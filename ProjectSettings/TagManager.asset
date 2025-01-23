@@ -26,6 +26,10 @@ TagManager:
   - WO_Fire
   - WI_Fire
   - FireStore
+  - Devil_Building
+  - Devil_WorkBuilding
+  - Angel_WorkBuilding
+  - Angel_Building
   layers:
   - Default
   - TransparentFX

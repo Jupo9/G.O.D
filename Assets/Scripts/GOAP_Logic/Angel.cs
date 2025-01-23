@@ -1,11 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class Angel : Agents
 {
+    [Header("UI")]
+    public GameObject objectCanvas;
+    public GameObject targetRendererObject;
+    public GameObject targetBuildUI;
+    public GameObject targetNeedUI;
+    public string targetMaterialName = "Outline_1";
+
+    public GameObject targetUIForBuildings;
+    public GameObject targetUIForNeeds;
+    public GameObject targetUIForTransport;
+
+    private MeshRenderer targetMeshRenderer;
+    private int targetMaterialIndex = -1;
+
     [Header("Believes")]
     public float needEnjoy = 100f;
     public float needBelieve = 100f;
@@ -28,8 +39,24 @@ public class Angel : Agents
 
     public GameObject lightResource;
 
+    public WorldStates localStates;
+
+    private static Angel activeAngel;
+
+    [Header("BuildingStates")]
+    public bool isBuilding = false;
+    public bool choosenOne = false;
+    public bool buildingAction = false;
+
+    private bool checkAction = false;
+
     private const string AvialableAngelKey = "Avail_angel"; 
     private const string UIAvialableAngelKey = "UI_Avail_angel";
+
+    void Awake()
+    {
+        localStates = new WorldStates();
+    }
 
     protected override void Start()
     {
@@ -38,6 +65,95 @@ public class Angel : Agents
         goals.Add(s1, 3);
 
         StartCoroutine("LostOverTime");
+
+        if (targetRendererObject == null)
+        {
+            Debug.LogError("Kein Zielobjekt für den MeshRenderer zugewiesen!");
+            return;
+        }
+
+        targetMeshRenderer = targetRendererObject.GetComponent<MeshRenderer>();
+        if (targetMeshRenderer == null)
+        {
+            Debug.LogError($"Kein MeshRenderer im Zielobjekt '{targetRendererObject.name}' gefunden!");
+            return;
+        }
+
+        Material[] materials = targetMeshRenderer.materials;
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if (materials[i].name.Contains(targetMaterialName))
+            {
+                targetMaterialIndex = i;
+                break;
+            }
+        }
+
+        if (targetMaterialIndex == -1)
+        {
+            Debug.LogWarning($"Kein Material mit dem Namen '{targetMaterialName}' gefunden!");
+        }
+    }
+
+    private void Update()
+    {
+        if (needEnjoy > 100)
+        {
+            needEnjoy = 100;
+        }
+
+        if (needBelieve > 100)
+        {
+            needBelieve = 100;
+        }
+
+        if (needPower > 100)
+        {
+            needPower = 100;
+        }
+
+        if (needPurity > 100)
+        {
+            needPurity = 100;
+        }
+
+        if (Input.GetMouseButtonDown(0) && !buildingAction)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    SetActiveAngel(this);
+                }
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1) && !buildingAction)
+        {
+            if (!isBuilding)
+            {
+                targetBuildUI.SetActive(false);
+            }
+
+            targetNeedUI.SetActive(false);
+
+            ToggleCanvas(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !buildingAction)
+        {
+            DisableUI();
+        }
+
+        if (buildingAction && !checkAction)
+        {
+            checkAction = true;
+            DisableUI();
+            ToggleCanvas(false);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -66,6 +182,99 @@ public class Angel : Agents
     {
         RemoveAngelState();
         RemoveUIAngelState();
+    }
+
+    public void ActivateUIForBuildings()
+    {
+        ActivateUIElement(targetUIForBuildings);
+    }
+
+    public void ActivateUIForNeeds()
+    {
+        ActivateUIElement(targetUIForNeeds);
+    }
+
+    public void ActivateUIForTransport()
+    {
+        ActivateUIElement(targetUIForTransport);
+    }
+
+    private void ActivateUIElement(GameObject uiElement)
+    {
+        if (uiElement == null)
+        {
+            Debug.LogError("UI-Element ist null.");
+            return;
+        }
+
+        DeactivateAllUIElements();
+
+        uiElement.SetActive(true);
+    }
+
+    private void DeactivateAllUIElements()
+    {
+        if (targetUIForBuildings != null)
+        {
+            targetUIForBuildings.SetActive(false);
+        }
+        if (targetUIForNeeds != null)
+        {
+            targetUIForNeeds.SetActive(false);
+        }
+        if (targetUIForTransport != null)
+        {
+            targetUIForTransport.SetActive(false);
+        }
+    }
+
+    public static void SetActiveAngel(Angel newActiveAngel)
+    {
+        if (activeAngel != null && activeAngel != newActiveAngel)
+        {
+            activeAngel.Deactivate();
+        }
+
+        activeAngel = newActiveAngel;
+        newActiveAngel.Activate();
+    }
+
+    private void Activate()
+    {
+        choosenOne = true;
+
+        if (targetMeshRenderer != null && targetMaterialIndex != -1)
+        {
+            Material[] materials = targetMeshRenderer.materials;
+            materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f);
+            targetMeshRenderer.materials = materials;
+        }
+
+        ToggleCanvas(true);
+
+        Debug.Log($"{name} is active.");
+    }
+
+    private void Deactivate()
+    {
+        choosenOne = false;
+
+        if (targetMeshRenderer != null && targetMaterialIndex != -1)
+        {
+            Material[] materials = targetMeshRenderer.materials;
+            materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f);
+            targetMeshRenderer.materials = materials;
+        }
+
+        ToggleCanvas(false);
+
+        Debug.Log($"{name} was deactivate.");
+    }
+
+    private void DisableUI()
+    {
+        targetBuildUI.SetActive(false);
+        targetNeedUI.SetActive(false);
     }
 
     /// <summary>
@@ -171,6 +380,34 @@ public class Angel : Agents
         {
             currentAction.agent.isStopped = false;
         }
+    }
+
+    private void ToggleCanvas(bool state)
+    {
+        if (objectCanvas != null)
+        {
+            objectCanvas.SetActive(state);
+        }
+
+        if (targetMeshRenderer != null && targetMaterialIndex != -1)
+        {
+            Material[] materials = targetMeshRenderer.materials;
+
+            if (state)
+            {
+                materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f);
+            }
+            else
+            {
+                materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f);
+            }
+            targetMeshRenderer.materials = materials;
+        }
+    }
+
+    public void StartBuilding()
+    {
+        isBuilding = true;
     }
 }
 

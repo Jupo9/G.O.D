@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Building_Light : MonoBehaviour
 {
     [Header("Conditions")]
-    public bool lightIsOpen = true;
+    public bool isAvailable = false;
     public bool angelInside = false;
     public bool calculate = false;
     public bool empty = false;
@@ -15,8 +14,8 @@ public class Building_Light : MonoBehaviour
     private bool fullBuilding = false;
 
     [Header("Light Inputs")]
-    public float maxAmount = 4f;
-    public float lightAmount = 0f;
+    public int maxAmount = 4;
+    public int lightAmount = 0;
 
     public GameObject lightResource;
 
@@ -24,9 +23,17 @@ public class Building_Light : MonoBehaviour
     public GameObject waypointOutside;
     public GameObject waypointInside;
 
+    // startBuilding is for Building that exist in the scene when the game starts, so basically start buildings, set bool = true only for them!
+    [Tooltip("This bool needs to be true if the buidling exist in the scene before the game starts!")]
+    public bool startBuilding = false;
+
+    private Angel assignedAngel;
+
     private Dictionary<Renderer, Material[]> originalMaterials = new();
     public bool isPreview = false;
     private bool builded = false;
+
+    public int requiredLight = 0;
 
     private const string BuildingLightKey = "Build_light";
     private const string LightRessource = "Res_light";
@@ -53,7 +60,7 @@ public class Building_Light : MonoBehaviour
 
         if (lightAmount == maxAmount && !fullBuilding)
         {
-            lightIsOpen = false;
+            isAvailable = false;
             fullBuilding = true;
             RemoveBuilding();
             NoKeyFixer();
@@ -69,7 +76,7 @@ public class Building_Light : MonoBehaviour
         {
             if (lightAmount < maxAmount)
             {
-                lightIsOpen = true;
+                isAvailable = true;
             }
         }
 
@@ -101,12 +108,110 @@ public class Building_Light : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (!isAvailable)
+        {
+            Angel[] allAngels = FindObjectsByType<Angel>(FindObjectsSortMode.None);
+            foreach (Angel angel in allAngels)
+            {
+                if (angel.choosenOne)
+                {
+                    assignedAngel = angel;
+                    break;
+                }
+            }
+
+            if (assignedAngel != null)
+            {
+                assignedAngel.choosenOne = false;
+                assignedAngel.buildingAction = true;
+                assignedAngel.isBuilding = true;
+                Debug.Log($"Building assigned to {assignedAngel.name}.");
+            }
+            else
+            {
+                Debug.LogWarning("No Devil selected to assign the building task.");
+            }
+        }
+
+        if (startBuilding)
+        {
+            isPreview = true;
+        }
+    }
+
     private void OnDestroy()
     {
         if (builded)
         {
             RemoveBuilding();
         }
+    }
+
+    private void BuildingCosts()
+    {
+        int remainingLightToSubtract = requiredLight;
+
+        GameObject[] storageBuildings = GameObject.FindGameObjectsWithTag("Storage");
+        foreach (GameObject storageBuilding in storageBuildings)
+        {
+            Building_Storage buildingStorage = storageBuilding.GetComponentInChildren<Building_Storage>();
+            if (buildingStorage != null && remainingLightToSubtract > 0)
+            {
+                int availableLight = buildingStorage.lightCounter;
+
+                if (availableLight > 0)
+                {
+                    int lightToSubtract = Mathf.Min(availableLight, remainingLightToSubtract);
+                    for (int i = 0; i < lightToSubtract; i++)
+                    {
+                        buildingStorage.DecreaseLightCounter();
+                    }
+
+                    remainingLightToSubtract -= lightToSubtract;
+                }
+            }
+        }
+
+        if (remainingLightToSubtract > 0)
+        {
+            GameObject[] lightBuildings = GameObject.FindGameObjectsWithTag("Angel_WorkBuilding");
+            foreach (GameObject lightBuilding in lightBuildings)
+            {
+                Building_Light buildingLight = lightBuilding.GetComponentInChildren<Building_Light>();
+                if (buildingLight != null && remainingLightToSubtract > 0)
+                {
+                    int availableLight = buildingLight.lightAmount;
+
+                    if (availableLight > 0)
+                    {
+                        int lightToSubtract = Mathf.Min(availableLight, remainingLightToSubtract);
+                        for (int i = 0; i < lightToSubtract; i++)
+                        {
+                            buildingLight.DecreaseLightAmount();
+                        }
+
+                        remainingLightToSubtract -= lightToSubtract;
+                    }
+                }
+            }
+        }
+
+        if (remainingLightToSubtract > 0)
+        {
+            Debug.LogWarning("Not enough ressources!");
+        }
+        else
+        {
+            Debug.Log("Building Complete!");
+        }
+    }
+
+    public void ChangePreviewState()
+    {
+        Debug.Log("Methode X in Script1 wurde aufgerufen.");
+        isPreview = true;
     }
 
     private void CacheOriginalMaterials()
@@ -202,14 +307,14 @@ public class Building_Light : MonoBehaviour
 
     public void IncreaseLightAmount()
     {
-        lightAmount += 1f;
+        lightAmount += 1;
         AddLight();
 
     }
 
     public void DecreaseLightAmount()
     {
-        lightAmount -= 1f;
+        lightAmount -= 1;
         RemoveLight();
     }
 

@@ -233,6 +233,53 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0.05, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &4057242214779648304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3924229583842300980}
+  - component: {fileID: 1205305670313640257}
+  m_Layer: 0
+  m_Name: Angel_Building
+  m_TagString: Angel_Building
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3924229583842300980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057242214779648304}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: -0.00012195113, y: 0.00007035965, z: -0.01006098}
+  m_LocalScale: {x: 0.018292673, y: 0.021556886, z: 0.018292682}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 933513599977787521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1205305670313640257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057242214779648304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847f7fec48002f040acac54219364d0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingManagerObject: {fileID: 791416703526018704}
+  changeBuildingState: 0
+  buildingIsComplete: 0
 --- !u!1 &5468502704688439952
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,7 +757,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       propertyPath: m_Name
-      value: Shower_ver0.1
+      value: Shower_Manager
       objectReference: {fileID: 0}
     - target: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       propertyPath: m_TagString
@@ -780,6 +827,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5632757772617344777}
+    - targetCorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3924229583842300980}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       insertIndex: -1
@@ -826,11 +876,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1abe8eec4af65b044bcf3820710bfa71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAvailable: 1
+  isAvailable: 0
   particleSystem: {fileID: 4055977048694973881}
   openDoor: {fileID: 4579197052335604178}
   waypointOutside: {fileID: 8468711415221155749}
   waypointInside: {fileID: 6916836039928550523}
+  startBuilding: 0
+  isPreview: 0
+  requiredLight: 0
 --- !u!4 &933513599977787521 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}

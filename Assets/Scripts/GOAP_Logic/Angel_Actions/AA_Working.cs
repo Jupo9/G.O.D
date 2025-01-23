@@ -8,7 +8,7 @@ public class AA_Working : Actions
 
     private void Start()
     {
-        GameObject lightParent = GameObject.FindWithTag("LIGHT");
+        GameObject lightParent = GameObject.FindWithTag("Angel_WorkBuilding");
 
         if (lightParent != null)
         {
@@ -17,7 +17,7 @@ public class AA_Working : Actions
 
         if (buildingLight == null)
         {
-            Debug.LogWarning("Building_Light script not found on LightBuilding.");
+            Debug.LogWarning("Angel_WorkBuilding script not found on LightBuilding.");
         }
     }
 

@@ -80,6 +80,7 @@ public class Agents : MonoBehaviour
         {
             actions.Add(a);
         }
+
         if (CompareTag("Angel"))
         {
             shower = GetComponent<AA_Shower>();
@@ -122,8 +123,27 @@ public class Agents : MonoBehaviour
     {
         if (CompareTag("Angel"))
         {
+            if (((Angel)this).isBuilding)
+            {
+                if (currentAction != null && currentAction.running)
+                {
+                    Debug.Log("Abbruch der aktuellen Aktion für Build-Modus.");
+                    CompleteAction();
+                }
+
+                ResetPlanner();
+                ((Angel)this).isBuilding = false;
+                SubGoal buildGoal = new SubGoal("Build", 1, false);
+                goals.Add(buildGoal, 5);
+            }
+
             if (currentAction != null && currentAction.running)
             {
+                if (currentAction is AA_Building)
+                {
+                    currentAction.agent.SetDestination(currentAction.target.transform.position);
+                }
+
                 if (currentAction != null && currentAction.running)
                 {
                     float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
@@ -189,7 +209,6 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                Debug.Log("Paaain");
                 ResetPlanner();
             }
 
@@ -198,6 +217,20 @@ public class Agents : MonoBehaviour
 
         if (CompareTag("Devil"))
         {
+            if (((Devil)this).isBuilding)
+            {
+                if (currentAction != null && currentAction.running)
+                {
+                    Debug.Log("Abbruch der aktuellen Aktion für Build-Modus.");
+                    CompleteAction();
+                }
+
+                ResetPlanner();
+                ((Devil)this).isBuilding = false; 
+                SubGoal buildGoal = new SubGoal("Build", 1, false);
+                goals.Add(buildGoal, 5);
+            }
+
             if (currentAction != null && currentAction.running)
             {
                 if (currentAction is DA_BullyAngel)
@@ -210,38 +243,43 @@ public class Agents : MonoBehaviour
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-               /* if (currentAction is DA_Working)
+                if (currentAction is DA_Building)
                 {
-                    if (worldStates.HasState("Build_iron"))
-                    {
-                        int buildIronValue = worldStates.GetStates()["Build_iron"];
-
-                        if (buildIronValue == 0)
-                        {
-                            currentAction.running = false;
-                            currentAction = null;
-                            currentAction.priorityValue += 1;
-                            return;
-                        }
-                    }
+                    currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if ((currentAction is DA_PrepareAction && !prepareDevilAction.doneWork) ||
-                    (currentAction is DA_CleanAction && !cleanDevilAction.doneWork))
-                {
-                    if (worldStates.HasState("Build_fire"))
-                    {
-                        int buildFireValue = worldStates.GetStates()["Build_fire"];
+                /* if (currentAction is DA_Working)
+                 {
+                     if (worldStates.HasState("Build_iron"))
+                     {
+                         int buildIronValue = worldStates.GetStates()["Build_iron"];
 
-                        if (buildFireValue == 0)
-                        {
-                            currentAction.running = false;
-                            currentAction = null;
-                            currentAction.priorityValue += 1;
-                            return;
-                        }
-                    }
-                }*/
+                         if (buildIronValue == 0)
+                         {
+                             currentAction.running = false;
+                             currentAction = null;
+                             currentAction.priorityValue += 1;
+                             return;
+                         }
+                     }
+                 }
+
+                 if ((currentAction is DA_PrepareAction && !prepareDevilAction.doneWork) ||
+                     (currentAction is DA_CleanAction && !cleanDevilAction.doneWork))
+                 {
+                     if (worldStates.HasState("Build_fire"))
+                     {
+                         int buildFireValue = worldStates.GetStates()["Build_fire"];
+
+                         if (buildFireValue == 0)
+                         {
+                             currentAction.running = false;
+                             currentAction = null;
+                             currentAction.priorityValue += 1;
+                             return;
+                         }
+                     }
+                 }*/
 
                 if (currentAction != null && currentAction.running)
                 {

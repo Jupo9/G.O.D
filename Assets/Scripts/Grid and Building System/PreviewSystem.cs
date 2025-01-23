@@ -19,6 +19,11 @@ public class PreviewSystem : MonoBehaviour
         cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
 
+    public GameObject CurrentPreviewObject
+    {
+        get { return previewObject; }
+    }
+
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
         previewObject = Instantiate(prefab);
@@ -58,7 +63,22 @@ public class PreviewSystem : MonoBehaviour
 
         if (previewObject != null)
         {
-            Destroy(previewObject);
+            ResetPreviewMaterial(previewObject);
+            previewObject = null; 
+        }
+    }
+
+    private void ResetPreviewMaterial(GameObject obj)
+    {
+        Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                materials[i] = new Material(renderer.sharedMaterials[i]);
+            }
+            renderer.materials = materials;
         }
     }
 
@@ -115,4 +135,5 @@ public class PreviewSystem : MonoBehaviour
         PrepareCursor(Vector2Int.one);
         ApplyFeedbackToCursor(false);
     }
+
 }

@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Devil : Agents
 {
@@ -8,12 +10,14 @@ public class Devil : Agents
     public GameObject targetRendererObject;
     public GameObject targetBuildUI;
     public GameObject targetNeedUI;
-    public string targetMaterialName = "Outline_1"; 
+    public string targetMaterialName = "Outline_1";
+
+    public GameObject targetUIForBuildings;
+    public GameObject targetUIForNeeds;
+    public GameObject targetUIForTransport;
 
     private MeshRenderer targetMeshRenderer;
     private int targetMaterialIndex = -1;
-
-    private bool isBuilding = false;
 
     [Header("Believes")]
     public float needEvil = 100f;
@@ -41,6 +45,16 @@ public class Devil : Agents
 
     public WorldStates localStates;
 
+    [Header("BuildingStates")]
+    public bool isBuilding = false;
+    public bool choosenOne = false;
+    public bool buildingAction = false;
+
+    private bool checkAction = false;
+
+    private static Devil activeDevil;
+
+
     private const string AvialableDevilKey = "Avail_devil";
     private const string UIAvialableDevilKey = "UI_Avail_devil";
 
@@ -48,7 +62,6 @@ public class Devil : Agents
     {
         localStates = new WorldStates();
     }
-
 
     protected override void Start()
     {
@@ -109,7 +122,7 @@ public class Devil : Agents
             needPower = 100;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !buildingAction)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -118,12 +131,12 @@ public class Devil : Agents
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    ToggleCanvas(true); 
+                    SetActiveDevil(this);
                 }
             }
         }
 
-        if (Input.GetMouseButtonDown(1)) 
+        if (Input.GetMouseButtonDown(1) && !buildingAction) 
         {
             if (!isBuilding) 
             {
@@ -135,10 +148,16 @@ public class Devil : Agents
             ToggleCanvas(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !buildingAction)
         {
-            targetBuildUI.SetActive(false);
-            targetNeedUI.SetActive(false);
+            DisableUI();
+        }
+
+        if (buildingAction && !checkAction)
+        {
+            checkAction = true;
+            DisableUI();
+            ToggleCanvas(false);
         }
     }
 
@@ -153,6 +172,104 @@ public class Devil : Agents
         RemoveDevilState();
         RemoveUIDevilState();
     }
+
+    public void ActivateUIForBuildings()
+    {
+        ActivateUIElement(targetUIForBuildings);
+    }
+
+    public void ActivateUIForNeeds()
+    {
+        ActivateUIElement(targetUIForNeeds);
+    }
+
+    public void ActivateUIForTransport()
+    {
+        ActivateUIElement(targetUIForTransport);
+    }
+
+    private void ActivateUIElement(GameObject uiElement)
+    {
+        if (uiElement == null)
+        {
+            Debug.LogError("UI-Element ist null.");
+            return;
+        }
+
+        DeactivateAllUIElements();
+
+        uiElement.SetActive(true);
+    }
+
+    private void DeactivateAllUIElements()
+    {
+        if (targetUIForBuildings != null)
+        {
+            targetUIForBuildings.SetActive(false);
+        }
+        if (targetUIForNeeds != null)
+        {
+            targetUIForNeeds.SetActive(false);
+        }
+        if (targetUIForTransport != null)
+        {
+            targetUIForTransport.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Activate and Deactivate choosen Devil UI and Shader, so that only one Devil can be selected 
+    /// </summary>
+
+    public static void SetActiveDevil(Devil newActiveDevil)
+    {
+        if (activeDevil != null && activeDevil != newActiveDevil)
+        {
+            activeDevil.Deactivate();
+        }
+
+        activeDevil = newActiveDevil; 
+        newActiveDevil.Activate(); 
+    }
+
+    private void Activate()
+    {
+        choosenOne = true;
+
+        if (targetMeshRenderer != null && targetMaterialIndex != -1)
+        {
+            Material[] materials = targetMeshRenderer.materials;
+            materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f);
+            targetMeshRenderer.materials = materials;
+        }
+
+        ToggleCanvas(true);
+
+        Debug.Log($"{name} is active.");
+    }
+
+    private void Deactivate()
+    {
+        choosenOne = false;
+
+        if (targetMeshRenderer != null && targetMaterialIndex != -1)
+        {
+            Material[] materials = targetMeshRenderer.materials;
+            materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f); 
+            targetMeshRenderer.materials = materials;
+        }
+
+        ToggleCanvas(false);
+
+        Debug.Log($"{name} was deactivate.");
+    }
+
+    private void DisableUI()
+    {
+        targetBuildUI.SetActive(false);
+        targetNeedUI.SetActive(false);
+    }
+
 
     /// <summary>
     /// UI States are there for the visibility for the Player, because the other State will be removed when the Devil is not available
@@ -219,7 +336,6 @@ public class Devil : Agents
             }
         }
     }
-
     IEnumerator LostOverTimeDevil()
     {
         while (true)
@@ -272,5 +388,10 @@ public class Devil : Agents
             }
             targetMeshRenderer.materials = materials;
         }
+    }
+
+    public void StartBuilding()
+    {
+        isBuilding = true;
     }
 }

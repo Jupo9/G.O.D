@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(2)) 
         {
-            Debug.Log("notice Rotation");
+           //Debug.Log("notice Rotation");
             OnRotate?.Invoke();
         }
     }

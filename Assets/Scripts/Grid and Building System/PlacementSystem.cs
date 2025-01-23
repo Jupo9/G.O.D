@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
 {
+    public static PlacementSystem Instance { get; private set; }
+
     [SerializeField] private InputManager inputManager;
     [SerializeField] private Grid grid;
 
@@ -27,6 +26,18 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private ObjectPlacer objectPlacer;
 
     IBuildingState buildingState;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -58,7 +69,7 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        if(inputManager.IsPointerOverUI()) 
+        if (inputManager.IsPointerOverUI())
         {
             return;
         }
@@ -70,8 +81,7 @@ public class PlacementSystem : MonoBehaviour
 
     }
 
-
-    private void StopPlacement()
+    public void StopPlacement()
     {
         if (buildingState == null)
         {
@@ -79,8 +89,9 @@ public class PlacementSystem : MonoBehaviour
         }
 
         gridVisualization.SetActive(false);
-       
+
         buildingState.EndState();
+        previewSystem.StopShowingPreview();
 
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
@@ -98,7 +109,6 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (buildingState == null)
@@ -115,4 +125,3 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 }
-

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,7 +27,7 @@ public class ObjectPlacer : MonoBehaviour
             Material[] materials = renderer.materials;
             for (int i = 0; i < materials.Length; i++)
             {
-                materials[i] = new Material(previewMaterialPrefab); 
+                materials[i] = new Material(previewMaterialPrefab);
             }
             renderer.materials = materials;
         }
@@ -37,11 +35,18 @@ public class ObjectPlacer : MonoBehaviour
 
     internal void RemoveObjectAt(int gameObjectIndex)
     {
-        if (placedGameObjects.Count <= gameObjectIndex || placedGameObjects[gameObjectIndex] == null) 
+        if (placedGameObjects.Count <= gameObjectIndex || placedGameObjects[gameObjectIndex] == null)
         {
             return;
         }
         Destroy(placedGameObjects[gameObjectIndex]);
         placedGameObjects[gameObjectIndex] = null;
     }
+
+    public int RegisterPlacedObject(GameObject placedObject)
+    {
+        objectsInScene.Add(placedObject);
+        return objectsInScene.Count - 1;
+    }
 }
+

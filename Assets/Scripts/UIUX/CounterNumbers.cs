@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class CounterNumbers : MonoBehaviour
 {
@@ -58,7 +54,6 @@ public class CounterNumbers : MonoBehaviour
             return worldStates.GetStates()["Res_fire"];
         }
 
-        Debug.LogWarning("State 'UI_Avail_devil' does not exist in WorldStates.");
         return 0;
     }
 
@@ -71,7 +66,6 @@ public class CounterNumbers : MonoBehaviour
             return worldStates.GetStates()["Res_light"];
         }
 
-        Debug.LogWarning("State 'UI_Avail_devil' does not exist in WorldStates.");
         return 0;
     }
 
@@ -84,7 +78,6 @@ public class CounterNumbers : MonoBehaviour
             return worldStates.GetStates()["UI_Avail_angel"];
         }
 
-        Debug.LogWarning("State 'UI_Avail_angel' does not exist in WorldStates.");
         return 0; 
     }
 
@@ -97,7 +90,6 @@ public class CounterNumbers : MonoBehaviour
             return worldStates.GetStates()["UI_Avail_devil"];
         }
 
-        Debug.LogWarning("State 'UI_Avail_devil' does not exist in WorldStates.");
         return 0;
     }
 }

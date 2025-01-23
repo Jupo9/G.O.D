@@ -85,6 +85,53 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &121509021450548938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5794838467869354909}
+  - component: {fileID: 6480320639351634435}
+  m_Layer: 0
+  m_Name: Angel_Building
+  m_TagString: Angel_Building
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5794838467869354909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121509021450548938}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.443, z: 0}
+  m_LocalScale: {x: 1.5, y: 3.5353281, z: 1.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6599591021473920095}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6480320639351634435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121509021450548938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847f7fec48002f040acac54219364d0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingManagerObject: {fileID: 2448057355718456091}
+  changeBuildingState: 0
+  buildingIsComplete: 0
 --- !u!1 &847406913447947973
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,7 +984,7 @@ GameObject:
   - component: {fileID: 1259606297831886261}
   m_Layer: 0
   m_Name: LightFarm
-  m_TagString: LIGHT
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1148,7 +1195,7 @@ GameObject:
   - component: {fileID: 2448057355718456091}
   m_Layer: 0
   m_Name: LightBuildingManager
-  m_TagString: Untagged
+  m_TagString: Angel_WorkBuilding
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1171,6 +1218,7 @@ Transform:
   - {fileID: 2580440974302410696}
   - {fileID: 3043046648381300301}
   - {fileID: 5968982451089119022}
+  - {fileID: 5794838467869354909}
   m_Father: {fileID: 1259606297831886261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1843866105396698992
@@ -1206,14 +1254,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8481df7d17195d14a85fb8ede18d327c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAvailable: 1
+  lightIsOpen: 1
   angelInside: 0
   calculate: 0
+  empty: 0
+  addOne: 0
+  minusOne: 0
   maxAmount: 4
   lightAmount: 0
   lightResource: {fileID: 1835842436952301108}
   waypointOutside: {fileID: 5541647326792044970}
   waypointInside: {fileID: 2185453957677954939}
+  isPreview: 0
 --- !u!1 &7426086118967487406
 GameObject:
   m_ObjectHideFlags: 0
