@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class Node
 {
@@ -68,38 +70,58 @@ public class Planner
         return queue.Count > 0 ? queue : null;
     }
 
-    private bool BuildGraph(Node parent, List<Node> leaves, List<Actions> usableActions, Dictionary<string, int> goal)
+    private bool BuildGraph(Node start, List<Node> leaves, List<Actions> usableActions, Dictionary<string, int> goal)
     {
-        bool foundPath = false;
+        PriorityQueue<Node> openList = new PriorityQueue<Node>();
+        openList.Enqueue(start, 0);
 
-        foreach(Actions action in usableActions)
+        while (openList.Count > 0)
         {
-            if(action.IsArchievableGiven(parent.state))
+            Node currentNode = openList.Dequeue();
+
+            if (GoalAchieved(goal, currentNode.state))
             {
-                Dictionary<string, int> currentState = new Dictionary<string, int>(parent.state);
-                foreach(KeyValuePair<string, int> eff in action.effect)
-                {
-                    currentState[eff.Key] = eff.Value;
-                }
+                leaves.Add(currentNode);
+                return true;
+            }
 
-                Node node = new Node(parent, parent.cost + action.priorityValue, currentState, action);
-
-                if (GoalAchieved(goal, currentState))
+            foreach (Actions action in usableActions)
+            {
+                if (action.IsArchievableGiven(currentNode.state))
                 {
-                    leaves.Add(node);
-                    foundPath = true;
-                }
-                else
-                {
-                    List<Actions> subset = ActionSubset(usableActions, action);
-                    if (BuildGraph(node, leaves, subset, goal))
+                    Dictionary<string, int> currentState = new Dictionary<string, int>(currentNode.state);
+                    foreach (KeyValuePair<string, int> eff in action.effect)
                     {
-                        foundPath = true;
+                        currentState[eff.Key] = eff.Value;
                     }
+
+                    Node child = new Node(currentNode, currentNode.cost + action.priorityValue, currentState, action);
+                    openList.Enqueue(child, child.cost);
                 }
             }
         }
-        return foundPath;
+
+        return false;
+    }
+
+    public class PriorityQueue<T>
+    {
+        private List<(T item, float priority)> elements = new List<(T, float)>();
+
+        public int Count => elements.Count;
+
+        public void Enqueue(T item, float priority)
+        {
+            elements.Add((item, priority));
+            elements.Sort((a, b) => a.priority.CompareTo(b.priority)); 
+        }
+
+        public T Dequeue()
+        {
+            var item = elements[0];
+            elements.RemoveAt(0);
+            return item.item;
+        }
     }
 
     private bool GoalAchieved(Dictionary<string, int> goal, Dictionary<string, int> state)
@@ -119,4 +141,3 @@ public class Planner
         return actions.Where(a => !a.Equals(removeMe)).ToList();
     }
 }
-

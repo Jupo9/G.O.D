@@ -20,7 +20,7 @@ public class Building_Storage : MonoBehaviour
     public bool emptyFire  = false;
     public bool emptyLight = false;
 
-    private bool fullFire = false;
+    public bool fullFire = false;
     private bool fullLight = false;
     private bool storageIsFull = false;
 
@@ -43,12 +43,6 @@ public class Building_Storage : MonoBehaviour
     private void Awake()
     {
         CacheOriginalMaterials();
-    }
-
-    private void Start()
-    {
-        fireRessource.SetActive(false);
-        lightRessource.SetActive(false);
     }
 
     private void Update()
@@ -118,13 +112,14 @@ public class Building_Storage : MonoBehaviour
 
         if (fireCounter > 0 && emptyFire)
         {
-            fireRessource.SetActive(true);
             emptyFire = false;
+            fireRessource.SetActive(true);
+
         }
         if (lightCounter > 0 && emptyLight) 
         {
-            lightRessource.SetActive(true);
             emptyLight = false;
+            lightRessource.SetActive(true);
         }
         if (fireCounter == 0 && !emptyFire)
         {

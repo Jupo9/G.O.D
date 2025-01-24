@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Screenshots : MonoBehaviour
 {
-    private static readonly string screenshotFolder = "Assets/Screenshots";
+    /*private static readonly string screenshotFolder = "Assets/Screenshots";
     private static bool firstScreenshotTaken = false;
     private static double nextScreenshotTime;
 
@@ -55,5 +55,5 @@ public class Screenshots : MonoBehaviour
 
         // Aktualisiere die Asset-Datenbank, damit der Screenshot im Editor sichtbar ist
         AssetDatabase.Refresh();
-    }
+    }*/
 }

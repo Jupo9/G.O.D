@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Devil : Agents
 {
@@ -14,7 +15,7 @@ public class Devil : Agents
 
     public GameObject targetUIForBuildings;
     public GameObject targetUIForNeeds;
-    public GameObject targetUIForTransport;
+    //public GameObject targetUIForTransport;
 
     private MeshRenderer targetMeshRenderer;
     private int targetMaterialIndex = -1;
@@ -58,6 +59,7 @@ public class Devil : Agents
 
     private static Devil activeDevil;
 
+    public GameObject grave;
 
     private const string AvialableDevilKey = "Avail_devil";
     private const string UIAvialableDevilKey = "UI_Avail_devil";
@@ -126,6 +128,12 @@ public class Devil : Agents
             needPower = 100;
         }
 
+        if (needEvil <= 0 || needChill <= 0 || needJoy <= 0 || needPower <= 0)
+        {
+            Instantiate(grave, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
+
         if (Input.GetMouseButtonDown(0) && !buildingAction)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -169,6 +177,7 @@ public class Devil : Agents
     {
         AddDevilState();
         AddUIDevilState();
+        AssignUIReferences();
     }
 
     private void OnDestroy()
@@ -187,10 +196,10 @@ public class Devil : Agents
         ActivateUIElement(targetUIForNeeds);
     }
 
-    public void ActivateUIForTransport()
+    /*public void ActivateUIForTransport()
     {
         ActivateUIElement(targetUIForTransport);
-    }
+    }*/
 
     private void ActivateUIElement(GameObject uiElement)
     {
@@ -215,10 +224,10 @@ public class Devil : Agents
         {
             targetUIForNeeds.SetActive(false);
         }
-        if (targetUIForTransport != null)
+        /*if (targetUIForTransport != null)
         {
             targetUIForTransport.SetActive(false);
-        }
+        }*/
     }
 
     /// <summary>
@@ -278,6 +287,24 @@ public class Devil : Agents
     {
         targetBuildUI.SetActive(false);
         targetNeedUI.SetActive(false);
+    }
+
+    public void AssignUIReferences()
+    {
+        GameObject canvas = GameObject.Find("MainCanvas");
+        if (canvas != null)
+        {
+
+            targetBuildUI = canvas.transform.Find("DevilBuidlings").gameObject;
+            targetNeedUI = canvas.transform.Find("ShowDevilUINeeds").gameObject;
+            targetUIForBuildings = canvas.transform.Find("DevilBuidlings").gameObject;
+            targetUIForNeeds = canvas.transform.Find("ShowDevilUINeeds").gameObject;
+            //targetUIForTransport = canvas.transform.Find("Timer").gameObject;
+        }
+        else
+        {
+            Debug.LogError("Canvas nicht gefunden!");
+        }
     }
 
 

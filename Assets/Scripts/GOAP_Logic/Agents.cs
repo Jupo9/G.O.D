@@ -353,17 +353,10 @@ public class Agents : MonoBehaviour
 
             if (currentAction != null && currentAction.running)
             {
-                if (currentAction is DA_BullyAngel)
-                {
-                    currentAction.agent.SetDestination(currentAction.target.transform.position);
-                }
-
-                if (currentAction is DA_PunshAngel)
-                {
-                    currentAction.agent.SetDestination(currentAction.target.transform.position);
-                }
-
-                if (currentAction is DA_Building)
+                if (currentAction is DA_BullyAngel ||
+                    currentAction is DA_PunshAngel || 
+                    currentAction is DA_Building ||
+                    currentAction is DA_TransportLogic)
                 {
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }

@@ -30,6 +30,11 @@ TagManager:
   - Devil_WorkBuilding
   - Angel_WorkBuilding
   - Angel_Building
+  - AngelBuildUI
+  - AngelNeedUI
+  - DevilNeedUI
+  - DevilBuildUI
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

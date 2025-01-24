@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    [Header("SpawnArea")]
     public GameObject DevilPrefab;
     public GameObject AngelPrefab;
 
@@ -66,3 +67,5 @@ public class Spawner : MonoBehaviour
         Invoke("ChooseCreature", spawnTimer);
     }
 }
+
+

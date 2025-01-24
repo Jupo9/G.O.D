@@ -12,7 +12,6 @@ public class Angel : Agents
 
     public GameObject targetUIForBuildings;
     public GameObject targetUIForNeeds;
-    public GameObject targetUIForTransport;
 
     private MeshRenderer targetMeshRenderer;
     private int targetMaterialIndex = -1;
@@ -40,6 +39,8 @@ public class Angel : Agents
     public GameObject lightResource;
 
     public WorldStates localStates;
+
+    public GameObject revive;
 
     private static Angel activeAngel;
 
@@ -122,6 +123,12 @@ public class Angel : Agents
             needPurity = 100;
         }
 
+        if (needBelieve <= 0 || needEnjoy <= 0 || needPower <= 0 || needPurity <= 0)
+        {
+            Instantiate(revive, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
+
         if (Input.GetMouseButtonDown(0) && !buildingAction)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -181,6 +188,7 @@ public class Angel : Agents
     {
         AddAngelState();
         AddUIAngelState();
+        AssignUIReferences();
     }
 
     private void OnDestroy()
@@ -197,11 +205,6 @@ public class Angel : Agents
     public void ActivateUIForNeeds()
     {
         ActivateUIElement(targetUIForNeeds);
-    }
-
-    public void ActivateUIForTransport()
-    {
-        ActivateUIElement(targetUIForTransport);
     }
 
     private void ActivateUIElement(GameObject uiElement)
@@ -226,10 +229,6 @@ public class Angel : Agents
         if (targetUIForNeeds != null)
         {
             targetUIForNeeds.SetActive(false);
-        }
-        if (targetUIForTransport != null)
-        {
-            targetUIForTransport.SetActive(false);
         }
     }
 
@@ -288,10 +287,27 @@ public class Angel : Agents
         targetNeedUI.SetActive(false);
     }
 
+    public void AssignUIReferences()
+    {
+        GameObject canvas = GameObject.Find("MainCanvas"); 
+        if (canvas != null)
+        {
+
+            targetBuildUI = canvas.transform.Find("AngelBuildings").gameObject; 
+            targetNeedUI = canvas.transform.Find("ShowAngelUINeeds").gameObject; 
+            targetUIForBuildings = canvas.transform.Find("AngelBuildings").gameObject; 
+            targetUIForNeeds = canvas.transform.Find("ShowAngelUINeeds").gameObject;
+        }
+        else
+        {
+            Debug.LogError("Canvas nicht gefunden!");
+        }
+    }
+
     /// <summary>
-    /// UI States are there for the visibility for the Player, because the other State will be removed when the Angel is not available
-    /// So the UI shows always the current count of Angels and the normal Angel State is hidden for the player and only important for the System
-    /// </summary>
+        /// UI States are there for the visibility for the Player, because the other State will be removed when the Angel is not available
+        /// So the UI shows always the current count of Angels and the normal Angel State is hidden for the player and only important for the System
+        /// </summary>
 
     public void AddAngelState()
     {

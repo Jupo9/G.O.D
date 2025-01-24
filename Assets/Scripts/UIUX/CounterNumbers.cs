@@ -21,28 +21,28 @@ public class CounterNumbers : MonoBehaviour
     {
         int angelCount = ShowCurrentAngelNumb();
 
-        angelCountText.text = "Angels: " + angelCount;
+        angelCountText.text = "" + angelCount;
     }
 
     private void ShowCurrentDevilCount()
     {
         int devilCount = ShowCurrentDevilNumb();
 
-        devilCountText.text = "Devils: " + devilCount;
+        devilCountText.text = "" + devilCount;
     }
 
     private void ShowCurrentFireCount()
     {
         int fireCount = ShowCurrentFireNumb();
 
-        fireCountText.text = "Fire: " + fireCount;
+        fireCountText.text = "" + fireCount;
     }
 
     private void ShowCurrentLightCount()
     {
         int lightCount = ShowCurrentLightNumb();
 
-        lightCountText.text = "Light: " + lightCount;
+        lightCountText.text = "" + lightCount;
     }
 
     int ShowCurrentFireNumb()

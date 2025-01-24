@@ -279,7 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingManagerObject: {fileID: 791416703526018704}
   changeBuildingState: 0
-  buildingIsComplete: 0
+  buildingIsComplete: 1
 --- !u!1 &5468502704688439952
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,7 +883,7 @@ MonoBehaviour:
   waypointInside: {fileID: 6916836039928550523}
   startBuilding: 0
   isPreview: 0
-  requiredLight: 0
+  requiredLight: 2
 --- !u!4 &933513599977787521 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8829874019343170053, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}

@@ -11,7 +11,7 @@ public class Building_Light : MonoBehaviour
     public bool addOne = false;
     public bool minusOne = false;
 
-    private bool fullBuilding = false;
+    public bool fullBuilding = false;
 
     [Header("Light Inputs")]
     public int maxAmount = 4;

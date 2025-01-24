@@ -14,7 +14,7 @@ public class Building_Fire : MonoBehaviour
     [Tooltip("This bool needs to be true if the buidling exist in the scene before the game starts!")]
     public bool startBuilding = false;
 
-    private bool fullBuilding = false;
+    public bool fullBuilding = false;
 
     [Header("Fire Inputs")]
     public int maxAmount = 4;

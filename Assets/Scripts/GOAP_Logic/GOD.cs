@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GOD : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class GOD : MonoBehaviour
     private bool getFire = false;
     private bool getLight = false;
 
-    private int wantFire;
-    private int wantLight;
+    public int wantFire;
+    public int wantLight;
     private int chargeRes;
     private int currentFire;
     private int currentLight;
@@ -44,8 +45,8 @@ public class GOD : MonoBehaviour
 
     private void Update()
     {
-        needFire.text = "Fire: " + wantFire;
-        needLight.text = "Light: " + wantLight;
+        needFire.text = "" + wantFire;
+        needLight.text = "" + wantLight;
 
         if (plusFire)
         {
@@ -93,6 +94,11 @@ public class GOD : MonoBehaviour
         {
             HappyGOD();
         }
+
+        if (timer <= 0)
+        {
+            SceneManager.LoadScene("EndScreen");
+        }
     }
 
     IEnumerator TimerCountdown() 
@@ -136,7 +142,7 @@ public class GOD : MonoBehaviour
         currentLight = 0;
 
         waveCounter += 1;
-        waveCounterUI.text = "Wave: " + waveCounter;
+        waveCounterUI.text = "" + waveCounter;
 
         timer = 300f;
         chargeRes = waveCounter * needCounter;

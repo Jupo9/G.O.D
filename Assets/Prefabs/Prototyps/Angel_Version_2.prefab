@@ -15,17 +15,16 @@ GameObject:
   - component: {fileID: 4476324345949804156}
   - component: {fileID: 1065830434004837028}
   - component: {fileID: 4556308008246482643}
-  - component: {fileID: 7270355389145959950}
-  - component: {fileID: 4446689308834116406}
   - component: {fileID: 2941548391462389127}
+  - component: {fileID: 7270355389145959950}
   - component: {fileID: 4726739692746098611}
-  - component: {fileID: 3522610368839333905}
   - component: {fileID: 278199896622948803}
   - component: {fileID: 6385519363254567221}
   - component: {fileID: 647682414203118492}
   - component: {fileID: 6202026733891110634}
   - component: {fileID: 697570573677118167}
   - component: {fileID: 8011288270225797669}
+  - component: {fileID: 7416691067343400682}
   m_Layer: 0
   m_Name: AngelManager
   m_TagString: Angel
@@ -197,7 +196,6 @@ MonoBehaviour:
   targetMaterialName: Outline_1
   targetUIForBuildings: {fileID: 0}
   targetUIForNeeds: {fileID: 0}
-  targetUIForTransport: {fileID: 0}
   needEnjoy: 100
   needBelieve: 100
   needPower: 100
@@ -211,12 +209,37 @@ MonoBehaviour:
   isStunned: 0
   isPurity: 0
   lightResource: {fileID: 1152881604173560935}
+  revive: {fileID: 6227320924420593714, guid: 515defeebf35b734ebbd5cf5946d6dcf, type: 3}
   isWorking: 0
   isTransporting: 0
   isBuilding: 0
   choosenOne: 0
   buildingAction: 0
   isSpawning: 0
+--- !u!114 &2941548391462389127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958509112980816348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6382b742c2b0fba49884b5a387bbbeb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Spawning
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: SpawnPoint
+  duration: 10
+  preConditions: []
+  afterEffects:
+  - key: spawn
+    value: 0
+  agent: {fileID: 0}
+  running: 0
 --- !u!114 &7270355389145959950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,56 +264,6 @@ MonoBehaviour:
     value: 0
   agent: {fileID: 0}
   running: 0
---- !u!114 &4446689308834116406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1608013e3a891f64caec6a167a9da446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: transport light to god
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: GOD_WO
-  duration: 2
-  preConditions:
-  - key: pickStoreLight
-    value: 0
-  afterEffects:
-  - key: deliverGOD
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &2941548391462389127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6382b742c2b0fba49884b5a387bbbeb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: Spawning
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Respawn
-  duration: 10
-  preConditions: []
-  afterEffects:
-  - key: Spawn
-    value: 0
-  agent: {fileID: 0}
-  running: 0
 --- !u!114 &4726739692746098611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,9 +281,9 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 4078678870744755525}
   targetTag: 
-  duration: 2000
+  duration: 1e+12
   preConditions:
-  - key: Spawn
+  - key: spawn
     value: 0
   afterEffects:
   - key: Survive
@@ -320,30 +293,6 @@ MonoBehaviour:
   moveRadius: 50
   minMovementTime: 1
   maxMovementTime: 5
---- !u!114 &3522610368839333905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 434fcd12874142e4bab272a889cccbf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: pick up fire form storage
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Store
-  duration: 1
-  preConditions: []
-  afterEffects:
-  - key: pickStoreLight
-    value: 0
-  agent: {fileID: 0}
-  running: 0
 --- !u!114 &278199896622948803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +450,30 @@ MonoBehaviour:
     value: 0
   afterEffects:
   - key: Build
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &7416691067343400682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958509112980816348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbba6df8a7488b549bfc78cd1aa9a5aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Transport
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Angel
+  duration: 60
+  preConditions: []
+  afterEffects:
+  - key: deliverGOD
     value: 0
   agent: {fileID: 0}
   running: 0
@@ -1016,7 +989,7 @@ GameObject:
   - component: {fileID: 1434384901653282320}
   m_Layer: 0
   m_Name: Angel_Version_2
-  m_TagString: Devil
+  m_TagString: Angel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1484,14 +1457,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9780209, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -479009284, guid: af1a9dff96bee8740935722a6ec4993b, type: 3}
+  m_Sprite: {fileID: 1219649660, guid: 112af82e63b565d49882a2604724328f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

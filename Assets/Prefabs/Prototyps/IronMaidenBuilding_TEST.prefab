@@ -959,9 +959,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8621987d6785fbc40ad500cb45e72013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  test: 0
   isAvailable: 0
   doubleDoors: {fileID: 408633179327547679}
   waypointOutside: {fileID: 7667443547151077304}
   waypointInside: {fileID: 738612762937690515}
+  requiredFire: 2
   startBuilding: 0
   isPreview: 0

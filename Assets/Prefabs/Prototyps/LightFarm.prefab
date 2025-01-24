@@ -1254,18 +1254,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8481df7d17195d14a85fb8ede18d327c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightIsOpen: 1
+  isAvailable: 0
   angelInside: 0
   calculate: 0
   empty: 0
   addOne: 0
   minusOne: 0
+  fullBuilding: 0
   maxAmount: 4
   lightAmount: 0
   lightResource: {fileID: 1835842436952301108}
   waypointOutside: {fileID: 5541647326792044970}
   waypointInside: {fileID: 2185453957677954939}
+  startBuilding: 0
   isPreview: 0
+  requiredLight: 4
 --- !u!1 &7426086118967487406
 GameObject:
   m_ObjectHideFlags: 0
