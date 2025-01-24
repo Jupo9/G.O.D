@@ -14,11 +14,6 @@ public class AA_CleanAction : Actions
 
     private void Start()
     {
-        if (targetTag == "WO_Light")
-        {
-
-        }
-
         angelScript = GetComponent<Angel>();
 
         if (angelScript == null)
@@ -35,10 +30,10 @@ public class AA_CleanAction : Actions
                 buildingShower = showerParent.GetComponentInChildren<Building_Shower>();
             }
 
-            if (buildingShower == null)
+            /*if (buildingShower == null)
             {
                 Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
-            }
+            }*/
         }
 
         if (targetTag == "WO_Light")
@@ -50,16 +45,16 @@ public class AA_CleanAction : Actions
                 buildingLight = lightParent.GetComponentInParent<Building_Light>();
             }
 
-            if (buildingLight == null)
+            /*if (buildingLight == null)
             {
                 Debug.LogWarning("Building_Light script not found on LightBuilding.");
-            }
+            }*/
         }
     }
 
     public override bool PrePerform()
     {
-        if (targetTag == "WO_Light")
+        if (targetTag == "WO_Shower")
         {
             Dictionary<string, int> relevantState = GetRelevantAngelState();
 
@@ -82,19 +77,25 @@ public class AA_CleanAction : Actions
             }
         }
 
+        foundBuilding = true;
         agent.isStopped = true;
 
         if (targetTag == "WO_Shower")
         {
             StartCoroutine(WaitBeforeActionShower());
+            return true;
         }
 
         if (targetTag == "WO_Light")
         {
             StartCoroutine(WaitBeforeActionLight());
+            return true;
         }
 
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     public override bool PostPerform()
@@ -109,6 +110,11 @@ public class AA_CleanAction : Actions
         {
             doneShower = true;
             ApplyAngelEffects();
+        }
+
+        if (targetTag == "WO_Light")
+        {
+            doneWork = true;
         }
 
         return true;

@@ -31,10 +31,10 @@ public class AA_PrepareAction : Actions
                 buildingShower = showerParent.GetComponentInChildren<Building_Shower>();
             }
 
-            if (buildingShower == null)
+            /*if (buildingShower == null)
             {
                 Debug.LogWarning("Building_Shower script not found on ShowerBuilding.");
-            }
+            }*/
         }
 
         if (targetTag == "WO_Light")
@@ -46,10 +46,10 @@ public class AA_PrepareAction : Actions
                 buildingLight = lightParent.GetComponentInParent<Building_Light>();
             }
 
-            if (buildingLight == null)
+            /*if (buildingLight == null)
             {
                 Debug.LogWarning("Building_Light script not found on LightBuilding.");
-            }
+            }*/
         }
 
     }
@@ -71,7 +71,7 @@ public class AA_PrepareAction : Actions
 
     public override bool PrePerform()
     {
-        if (targetTag == "WO_Light")
+        if (targetTag == "WO_Shower")
         {
             Dictionary<string, int> relevantState = GetRelevantAngelState();
 
@@ -102,7 +102,6 @@ public class AA_PrepareAction : Actions
         {
             wantShower = true;
         }
-
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
         if (buildings.Length == 0)
@@ -192,7 +191,6 @@ public class AA_PrepareAction : Actions
             wantShower = false;
             doneShower = true;
         }
-
         return true;
     }
 }

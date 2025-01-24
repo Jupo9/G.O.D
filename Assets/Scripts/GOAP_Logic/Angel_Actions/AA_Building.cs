@@ -59,7 +59,6 @@ public class AA_Building : Actions
         changeBuildState.changeBuildingState = true;
         Debug.Log("changeBuildingState set to true.");
         Debug.Log("Finished Building");
-        Destroy(gameObject);
         return true;
     }
 }

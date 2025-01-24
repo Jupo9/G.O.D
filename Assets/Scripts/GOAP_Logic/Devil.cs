@@ -45,8 +45,12 @@ public class Devil : Agents
 
     public WorldStates localStates;
 
-    [Header("BuildingStates")]
+    [Header("SubGoalsBools")]
+    public bool isWorking = false;
+    public bool isTransporting = false;
     public bool isBuilding = false;
+
+    [Header("BuildingStates")]
     public bool choosenOne = false;
     public bool buildingAction = false;
 
@@ -228,6 +232,11 @@ public class Devil : Agents
             activeDevil.Deactivate();
         }
 
+        foreach (Angel angel in FindObjectsByType<Angel>(FindObjectsSortMode.None))
+        {
+            angel.Deactivate();
+        }
+
         activeDevil = newActiveDevil; 
         newActiveDevil.Activate(); 
     }
@@ -248,9 +257,10 @@ public class Devil : Agents
         Debug.Log($"{name} is active.");
     }
 
-    private void Deactivate()
+    public void Deactivate()
     {
         choosenOne = false;
+        DisableUI();
 
         if (targetMeshRenderer != null && targetMaterialIndex != -1)
         {
@@ -393,5 +403,15 @@ public class Devil : Agents
     public void StartBuilding()
     {
         isBuilding = true;
+    }
+
+    public void StartWorking()
+    {
+        isWorking = true;
+    }
+
+    public void StartTransporting()
+    {
+        isTransporting = true;
     }
 }

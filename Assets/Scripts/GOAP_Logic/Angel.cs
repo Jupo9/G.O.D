@@ -43,12 +43,17 @@ public class Angel : Agents
 
     private static Angel activeAngel;
 
-    [Header("BuildingStates")]
+    [Header("SubGoalsBools")]
+    public bool isWorking = false;
+    public bool isTransporting = false;
     public bool isBuilding = false;
+
+    [Header("BuildingStates")]
     public bool choosenOne = false;
     public bool buildingAction = false;
 
     private bool checkAction = false;
+    public bool isSpawning = true;
 
     private const string AvialableAngelKey = "Avail_angel"; 
     private const string UIAvialableAngelKey = "UI_Avail_angel";
@@ -235,6 +240,11 @@ public class Angel : Agents
             activeAngel.Deactivate();
         }
 
+        foreach (Devil devil in FindObjectsByType<Devil>(FindObjectsSortMode.None))
+        {
+            devil.Deactivate();
+        }
+
         activeAngel = newActiveAngel;
         newActiveAngel.Activate();
     }
@@ -255,9 +265,10 @@ public class Angel : Agents
         Debug.Log($"{name} is active.");
     }
 
-    private void Deactivate()
+    public void Deactivate()
     {
         choosenOne = false;
+        DisableUI();
 
         if (targetMeshRenderer != null && targetMaterialIndex != -1)
         {
@@ -408,6 +419,16 @@ public class Angel : Agents
     public void StartBuilding()
     {
         isBuilding = true;
+    }
+
+    public void StartWorking()
+    {
+        isWorking = true;
+    }
+
+    public void StartTransporting()
+    {
+        isTransporting = true;
     }
 }
 

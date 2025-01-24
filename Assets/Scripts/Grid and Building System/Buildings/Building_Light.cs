@@ -131,7 +131,7 @@ public class Building_Light : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("No Devil selected to assign the building task.");
+                Debug.LogWarning("No Angel selected to assign the building task.");
             }
         }
 

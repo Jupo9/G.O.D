@@ -15,10 +15,10 @@ public class AA_Working : Actions
             buildingLight = lightParent.GetComponentInParent<Building_Light>();
         }
 
-        if (buildingLight == null)
+        /*if (buildingLight == null)
         {
             Debug.LogWarning("Angel_WorkBuilding script not found on LightBuilding.");
-        }
+        }*/
     }
 
     public override bool PrePerform()

@@ -29,7 +29,7 @@ public class Agents : MonoBehaviour
     private Actions currentRunningAction;
 
     public bool playersWish = false;
-    //private bool idleAction = false;
+    private bool idleAction = false;
 
     /// <summary>
     /// Devil Area
@@ -123,13 +123,22 @@ public class Agents : MonoBehaviour
     {
         if (CompareTag("Angel"))
         {
+
             if (((Angel)this).isBuilding)
             {
                 if (currentAction != null && currentAction.running)
                 {
                     Debug.Log("Abbruch der aktuellen Aktion für Build-Modus.");
                     CompleteAction();
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
                 }
+
+                idleAction = true;
 
                 ResetPlanner();
                 ((Angel)this).isBuilding = false;
@@ -137,11 +146,74 @@ public class Agents : MonoBehaviour
                 goals.Add(buildGoal, 5);
             }
 
+            if (((Angel)this).isWorking)
+            {
+                if (currentAction != null && currentAction.running)
+                {
+                    Debug.Log("Abbruch der aktuellen Aktion für Work-Modus.");
+                    CompleteAction();
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
+                }
+
+                idleAction = true;
+
+                ResetPlanner();
+                ((Angel)this).isWorking = false;
+                SubGoal workGoal = new SubGoal("Work", 1, false);
+                goals.Add(workGoal, 5);
+            }
+
+            if (((Angel)this).isTransporting)
+            {
+                if (currentAction != null && currentAction.running)
+                {
+                    Debug.Log("Abbruch der aktuellen Aktion für Transport-Modus.");
+                    CompleteAction();
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
+                }
+
+                idleAction = true;
+
+                ResetPlanner();
+                ((Angel)this).isTransporting = false;
+                SubGoal transportGoal = new SubGoal("Transport", 1, false);
+                goals.Add(transportGoal, 5);
+            }
+
+
             if (currentAction != null && currentAction.running)
             {
                 if (currentAction is AA_Building)
                 {
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
+                }
+
+                if (currentAction is AA_IDLEFinish && idleAction)
+                {
+                    ((Angel)this).buildingAction = false;
+
+                    idleAction = false;
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
+
+                    SubGoal s1 = new SubGoal("Survive", 1, false);
+                    goals.Add(s1, 5);
+                    Debug.Log("Ziel 'Survive' hinzugefügt.");
+                    ResetPlanner();
                 }
 
                 if (currentAction != null && currentAction.running)
@@ -211,8 +283,6 @@ public class Agents : MonoBehaviour
             {
                 ResetPlanner();
             }
-
-
         }
 
         if (CompareTag("Devil"))
@@ -223,12 +293,62 @@ public class Agents : MonoBehaviour
                 {
                     Debug.Log("Abbruch der aktuellen Aktion für Build-Modus.");
                     CompleteAction();
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
                 }
 
                 ResetPlanner();
                 ((Devil)this).isBuilding = false; 
                 SubGoal buildGoal = new SubGoal("Build", 1, false);
                 goals.Add(buildGoal, 5);
+            }
+
+            if (((Devil)this).isWorking)
+            {
+                if (currentAction != null && currentAction.running)
+                {
+                    Debug.Log("Abbruch der aktuellen Aktion für Work-Modus.");
+                    CompleteAction();
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
+                }
+
+                idleAction = true;
+
+                ResetPlanner();
+                ((Devil)this).isWorking = false;
+                SubGoal workGoal = new SubGoal("Work", 1, false);
+                goals.Add(workGoal, 5);
+            }
+
+            if (((Devil)this).isTransporting)
+            {
+                if (currentAction != null && currentAction.running)
+                {
+                    Debug.Log("Abbruch der aktuellen Aktion für Transport-Modus.");
+                    CompleteAction();
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
+                }
+
+                idleAction = true;
+
+                ResetPlanner();
+                ((Devil)this).isTransporting = false;
+                SubGoal transportGoal = new SubGoal("Transport", 1, false);
+                goals.Add(transportGoal, 5);
             }
 
             if (currentAction != null && currentAction.running)
@@ -246,6 +366,22 @@ public class Agents : MonoBehaviour
                 if (currentAction is DA_Building)
                 {
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
+                }
+
+                if (currentAction is DA_IDLEFinish && idleAction)
+                {
+                    idleAction = false;
+
+                    foreach (var goal in goals.Keys.ToList())
+                    {
+                        Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                        goals.Remove(goal);
+                    }
+
+                    SubGoal s1 = new SubGoal("Survive", 1, false);
+                    goals.Add(s1, 5);
+                    Debug.Log("Ziel 'Survive' hinzugefügt.");
+                    ResetPlanner();
                 }
 
                 /* if (currentAction is DA_Working)
