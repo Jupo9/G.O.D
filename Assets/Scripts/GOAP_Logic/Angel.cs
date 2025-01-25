@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Angel : Agents
 {
+    //same as in Devil
     [Header("UI")]
     public GameObject objectCanvas;
     public GameObject targetRendererObject;

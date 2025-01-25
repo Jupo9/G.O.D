@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class NeedBars : MonoBehaviour
 {
+    /// <summary>
+    /// current State of connection with Angel and Devil needs
+    /// </summary>
     [SerializeField] private RectTransform needBarRect;
     [SerializeField] private float duration = 100f;
 

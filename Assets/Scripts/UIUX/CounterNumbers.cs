@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CounterNumbers : MonoBehaviour
 {
+    // count Angel, Fire, Devil and lights 
     public TextMeshProUGUI angelCountText;
     public TextMeshProUGUI devilCountText;
     public TextMeshProUGUI fireCountText;
@@ -17,6 +18,7 @@ public class CounterNumbers : MonoBehaviour
         ShowCurrentLightCount();
     }
 
+    //show in UI counts 
     private void ShowCurrentAngelCount()
     {
         int angelCount = ShowCurrentAngelNumb();
@@ -45,6 +47,7 @@ public class CounterNumbers : MonoBehaviour
         lightCountText.text = "" + lightCount;
     }
 
+    //Ask for World State and count them
     int ShowCurrentFireNumb()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();

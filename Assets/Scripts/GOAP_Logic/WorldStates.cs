@@ -13,7 +13,9 @@ public class WorldState
     public string key;
     public int value;
 }
-
+/// <summary>
+/// Add, change, controll the States of the World, these mostly global states and are used for buidlings, npc counts or ressourcs
+/// </summary>
 public class WorldStates
 {
     public Dictionary<string, int> states;

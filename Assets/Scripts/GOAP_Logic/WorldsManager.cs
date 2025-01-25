@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class WorldsManager : MonoBehaviour
 {
+    /// <summary>
+    /// add at the beginning all existing states that were implimentet in the scene 
+    /// </summary>
     [System.Serializable]
     public struct StateDefinition
     {

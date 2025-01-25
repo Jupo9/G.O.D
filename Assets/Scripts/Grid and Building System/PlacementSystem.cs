@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
 {
+    /// <summary>
+    /// Starts, adjust, place, remove logic for the placment 
+    /// </summary>
     public static PlacementSystem Instance { get; private set; }
 
     [SerializeField] private InputManager inputManager;
@@ -46,6 +49,7 @@ public class PlacementSystem : MonoBehaviour
         buildingData = new();
     }
 
+    //Starts Placements and input system
     public void StartPlacement(int ID)
     {
         StopPlacement();

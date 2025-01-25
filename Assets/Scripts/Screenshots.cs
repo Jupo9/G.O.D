@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class Screenshots : MonoBehaviour
 {
+    ///This Script is for Screenshots, to see the process of the game, is not very optimised but fulfils its purpose.
+    /// Deactivate this for Builds and Performance test!
+
+
     /*private static readonly string screenshotFolder = "Assets/Screenshots";
     private static bool firstScreenshotTaken = false;
     private static double nextScreenshotTime;

@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class PlacementState : IBuildingState
 {
+    /// <summary>
+    /// Represents the placement state of the building system. Handles the logic for 
+    /// previewing and placing objects within the grid, ensuring valid placement, that obejects follow the grid, 
+    /// and managing object registration in the grid data.
+    /// </summary
     private int selectedObjectIndex = -1;
     private Quaternion currentRotation = Quaternion.identity;
     int ID;
@@ -12,6 +17,7 @@ public class PlacementState : IBuildingState
     GridData buildingData;
     ObjectPlacer objectPlacer;
 
+    //check if placement is okay
     public PlacementState(int iD, Grid grid, PreviewSystem previewSystem, BuidlingDatabase database, GridData floorData, GridData buildingData, ObjectPlacer objectPlacer)
     {
         ID = iD;
@@ -59,6 +65,7 @@ public class PlacementState : IBuildingState
         placedObject.transform.position = grid.CellToWorld(gridPosition);
         placedObject.transform.rotation = currentRotation;
 
+        // Register the placed object
         int index = objectPlacer.RegisterPlacedObject(placedObject);
 
         GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildingData;
@@ -68,15 +75,18 @@ public class PlacementState : IBuildingState
             database.objectsData[selectedObjectIndex].ID,
             index);
 
+        // End the placement process, Trouble with preview System and buidling cost,
+        // also there need to be a funciton that the player can swtich back to "not building" (break)
         PlacementSystem.Instance.StopPlacement();
     }
-
+    // rotate but with the wrong pivot because the orientation is not on the building, it is left in the corner for all buildings
     public void RotatePreview()
     {
         currentRotation *= Quaternion.Euler(0, 90, 0);
         previewSystem.UpdateRotation(currentRotation);
     }
 
+    //check position and give feedback
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
         GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildingData;

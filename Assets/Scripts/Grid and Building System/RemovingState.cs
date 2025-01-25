@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RemovingState : IBuildingState
 {
+    //removing and updaeting States also good to place here sounds
     private int gameObjectIndex = -1;
     Grid grid;
     PreviewSystem previewSystem;

@@ -4,6 +4,10 @@ using UnityEngine.AI;
 
 public abstract class Actions : MonoBehaviour
 {
+    /// <summary>
+    /// this is the ground contruct of all actions
+    /// every Action will have access to this informations for example the target or costs
+    /// </summary>
     public string actionName = "Action";
     public float priorityValue = 1f;
     public float timeCosts = 2f;
@@ -53,6 +57,9 @@ public abstract class Actions : MonoBehaviour
         }
     }
 
+    //Releventstates are states thats only count for the Individual, there is no share with others or World States
+    // A example would be the State of chilling, when one Devil is chilling no other devil will get the same State
+    // with that there all are individiuals
     public Dictionary<string, int> GetRelevantDevilState()
     {
         Devil devil = GetComponentInParent<Devil>();
@@ -90,6 +97,7 @@ public abstract class Actions : MonoBehaviour
         return true;
     }
 
+    //Applys effect, States for the Individual
     public void ApplyDevilEffects()
     {
         Dictionary<string, int> relevantState = GetRelevantDevilState();
@@ -110,6 +118,22 @@ public abstract class Actions : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// PrePerform and PostPerform are there for the precondissions and effect
+    /// all Actions have the same logic, they lock for the goal for example "Survive"
+    /// then all Actions that brings the NPC to his Goal will be prepared.
+    /// the Goal is an effect that the NPC will try to reached as fast and effectiv as possibel
+    /// Preconditiions say if the the NPC need a other effect or can use them freely.
+    /// So for example there are 3 Actions chill, shower and work
+    /// chill ( has "clean" as precondition and "Survive" as effect)
+    /// shower( has "dirty" as preconidition and "clean" as effect)
+    /// work ( has no precondition and "dirty" as effect)
+    /// the Action and Planner will sort them like that [Goal "Survive" for that need "clean" and "clean" must be "dirty" before]
+    /// so the plan would be work - shower - chill
+    /// What happens in the precondition is not important for the system only the effect is that what the planner want to reache the next
+    /// to the goal. That's how all Actions will work, in the easiest way to explain
+    /// </summary>
+    /// <returns></returns>
     public abstract bool PrePerform();
     public abstract bool PostPerform();
 }

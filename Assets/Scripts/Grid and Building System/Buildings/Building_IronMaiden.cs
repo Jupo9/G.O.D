@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Building_IronMaiden : MonoBehaviour
 {
+    //near the same as Shower but the animation here don't work that good like in shower. they look a bit buggy
     public bool test = false;
 
     public bool isAvailable = false;

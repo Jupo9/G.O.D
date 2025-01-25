@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GOD : MonoBehaviour
 {
+    /// <summary>
+    /// This Script represent the all mighty GOD with too many variables and if statements
+    /// The idea here is that the GOD will give the player 5 minutes per wave, start with 4 ressources
+    /// but the ressources get 4 higher with every wave so after. I tried 3 minutes ones but this was nearly impossible
+    /// with the building logic because the angels and devils are to slow at the begin. espacially when they get more Action to care about
+    /// </summary>
     public bool plusFire = false;
     public bool plusLight = false;
     public bool fullFire = false;
@@ -101,6 +107,7 @@ public class GOD : MonoBehaviour
         }
     }
 
+
     IEnumerator TimerCountdown() 
     {
         while(timer > 0)
@@ -133,6 +140,12 @@ public class GOD : MonoBehaviour
         wantLight -= 1;
     }
 
+    /// <summary>
+    /// i tried to balance the amount of lights and fire ressources that the GOD wants and also make it a little bit random
+    /// i feels nice by the short test i did.
+    /// the waveCounter provides at the beginning of the game that fire is 0, and if light get to high it will be less in the next wave.
+    /// </summary>
+    /// <returns></returns>
     private void HappyGOD()
     {
         fullFire = false;

@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
+    /// <summary>
+    /// Input System for keyboard and mouse logics
+    /// </summary>
     [SerializeField] private Camera sceneCamera;
     [SerializeField] private LayerMask placementLayermask;
 

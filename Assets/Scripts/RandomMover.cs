@@ -3,6 +3,9 @@ using UnityEngine.AI;
 
 public class RandomMover : MonoBehaviour 
 {
+    /// <summary>
+    /// Test Script for moving on Nav mesh, early Script for testing how many NPC can exist without performance issues
+    /// </summary>
     private NavMeshAgent agent;
 
     [SerializeField] public float moveRadius = 10f;

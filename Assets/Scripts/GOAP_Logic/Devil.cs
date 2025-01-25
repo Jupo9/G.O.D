@@ -6,6 +6,16 @@ using UnityEngine.UIElements;
 
 public class Devil : Agents
 {
+    /// <summary>
+    /// the Devil and the Angel works pretty much the same with some diffrents for example the angel can be stunned
+    /// the most part of the script is about the UI and how it can work with everything. The reason why UI sometimes get used
+    /// twice in the inspector ist because how i want that a UI closed. For Example, the player should choose between diffrent Devils or Angels
+    /// but there shouldn't be two at the same time, but when the player clicks on a Devil to build something and want to find the Devil with
+    /// the lower needs to sacrifice this one it would be anyoing to activate always the UI, so the Idea is here that the UI only complete 
+    /// close when the player choose between angel/devil. i also want to add a feature that the player can find the happiest and the lowest
+    /// with just a button. Also as many of this script,they need a clean up, for a better and faster perspective
+    /// without my notice i would fall lost sometimes 
+    /// </summary>
     [Header("UI")]
     public GameObject objectCanvas;
     public GameObject targetRendererObject;

@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class PreviewSystem : MonoBehaviour
 {
+    /// <summary>
+    /// set preview material, this get overwrite by the object placer, that after the building get placed there will be still a preview
+    /// until a devil or angel build it
+    /// </summary>
+
     [SerializeField] private float previewOffset = 0.06f;
 
     [SerializeField] private GameObject cellIndicator;

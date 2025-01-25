@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu]
 public class BuidlingDatabase : ScriptableObject
 {
+    /// <summary>
+    /// store information for buildings, like size, name, ID or the prefab
+    /// for the placement system, only buildings that get in the DataBase can be placed
+    /// </summary>
     public List<ObjectData> objectsData;
 }
 

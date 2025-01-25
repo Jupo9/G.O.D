@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Building_Fire : MonoBehaviour
 {
+    //near the same as light building
     [Header("Conditions")]
     public bool isAvailable = false;
     public bool devilInside = false;

@@ -1,6 +1,7 @@
 
 public sealed class Worlds
 {
+    //Set Global states and give them to worldstates
     private static readonly Worlds instance = new Worlds();
     private static WorldStates world;
 

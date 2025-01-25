@@ -5,6 +5,19 @@ using System.Linq;
 
 public class SubGoal
 {
+    /// <summary>
+    /// the Agent is the one of the most importants script in this game
+    /// it controlls a lot of the actions and resets the planner
+    /// also add new goals and switched between them.
+    /// The reason why the Angel and Devil use the same Agents is pretty easy.
+    /// using the same script make the script bigger but also make it easy to copy and read
+    /// the problem with 2 main Agents could be performance and misleadings when it comes to
+    /// interactions between angels and devils but using both here also can caused errors
+    /// The Idea here is that the planner get a reset when a need is to low. Needs that doesn't get a reset will be ignored
+    /// but the Planner is not that optimised yet. So many Action caused still problem but this can be surely solved
+    /// this script was one of the Script that get somehow corrupted and i couldn't be opend. Still not sure how this could happen but maybe
+    /// two diffrent sub agent could make some trouble if the reset at the same time
+    /// </summary>
     public Dictionary<string, int> subGoals;
     public bool remove;
 
@@ -72,7 +85,7 @@ public class Agents : MonoBehaviour
     private AA_CleanAction cleanAngelAction;
     private AA_Shower shower;
 
-
+    //find all Actions
     protected virtual void Start()
     {
         Actions[] acts = this.GetComponents<Actions>();
@@ -101,7 +114,7 @@ public class Agents : MonoBehaviour
             StartCoroutine("DevilBeliefs");
         }
     }
-
+    //when a task is completed or should be finished it jumps to there preperform
     bool invoked = false;
     void CompleteAction()
     {
@@ -119,6 +132,9 @@ public class Agents : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// In Late Update is the most
+    /// </summary>
     private void LateUpdate()
     {
         if (CompareTag("Angel"))
@@ -287,6 +303,7 @@ public class Agents : MonoBehaviour
 
         if (CompareTag("Devil"))
         {
+            //controll if a bool is true and would switch the goal if it is so
             if (((Devil)this).isBuilding)
             {
                 if (currentAction != null && currentAction.running)
@@ -301,6 +318,7 @@ public class Agents : MonoBehaviour
                     }
                 }
 
+                // reset planner means restart the planner with the first action or calculate new and order the actions new
                 ResetPlanner();
                 ((Devil)this).isBuilding = false; 
                 SubGoal buildGoal = new SubGoal("Build", 1, false);
@@ -429,6 +447,7 @@ public class Agents : MonoBehaviour
             {
                 planner = new Planner();
 
+                //sort goals when a new Planner was choosed
                 var sortedGoals = from entry in goals orderby entry.Value descending select entry;
 
                 foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
@@ -446,6 +465,7 @@ public class Agents : MonoBehaviour
 
             if (actionQueue != null && actionQueue.Count > 0)
             {
+                //queue prepares the next actions
                 currentAction = actionQueue.Dequeue();
                 Debug.Log("Assigned Action: " + currentAction.actionName);
                 if (currentAction.PrePerform())
@@ -463,6 +483,9 @@ public class Agents : MonoBehaviour
                 }
                 else
                 {
+                    //when an actions failed is cost get higher, higher cost means that the action will sort on a other position with
+                    //the next planner reset, this is used for dynamics and unpredictible moves but also means that actions need always
+                    //recalculate and this caused a lot of performance
                     Debug.Log($"Action {currentAction.actionName} failed in PrePerform.");
 
                     if (currentAction is DA_PrepareAction && !prepareDevilAction.foundBuilding ||
@@ -483,6 +506,15 @@ public class Agents : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Devil Beliefs works very simple a bool get activated when the current need if a devil is fine
+    /// as lower as the need falls over time, that so higher is the chance for a reset. when a need resets
+    /// it clean his own states other needs and their action will be ignored if they are fine. in the later process this
+    /// should work more unpredictabel and more actions will have the same keys so the devil can choose between diffrent opition like the
+    /// example of bully angel and punsh angel
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator DevilBeliefs()
     {
         Devil devil = GetComponent<Devil>();

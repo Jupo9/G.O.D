@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GridData 
 {
+    /// <summary>
+    /// in this script, placed building get placed and also calculate how they can placed on the grid.
+    /// this makes placing and also deleting a lot easier
+    /// </summary>
+
     Dictionary<Vector3Int, PlacementData> placedObjects = new();
 
     public void AddObjectAt(Vector3Int gridPosition, Vector2Int objectSize, int ID, int placedObjectIndex)
@@ -69,6 +74,9 @@ public class GridData
     }
 }
 
+/// <summary>
+/// controll the BuildingDatabas informations for the correct placement
+/// </summary>
 public class PlacementData
 {
     public List<Vector3Int> occupiedPositions;

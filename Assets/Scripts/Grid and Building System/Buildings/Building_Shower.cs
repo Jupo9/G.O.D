@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class Building_Shower : MonoBehaviour
 {
+    /// <summary>
+    /// The Shower building for Angel
+    /// has an cost int as buidling price (requiredLight)
+    /// waypoints on buildings fixed an issues, for a long time the agent didn't change the target.
+    /// For this i needed a solution and thats why the buildings get always a outside and inside object as a waypoint
+    /// </summary>
+
     public bool isAvailable = false;
 
     public new ParticleSystem particleSystem;
@@ -95,7 +102,15 @@ public class Building_Shower : MonoBehaviour
             RemoveBuilding();
         }
     }
-
+    /// <summary>
+    /// BuildingCosts is a method in many buildings. it works like that
+    /// It looks for enough ressource in the scene. first for all lights in Storage, if there isn't enough then also in 
+    /// the light building. The idea is that it first removed from storage and then from the working place because for the efficie 
+    /// the angels and devil look first on working buildings if there are ressourcem when they need to give the GOD tribute. So that
+    /// the wotking area is faster empty and can be faster reused. if both building and cost would be focus the same building first, then
+    /// the storage would be kinda useless in the beginnig and also there could be faster narrow passes as nothing is ever stored. 
+    /// The final idear is that a building that cost to much is automatic grey in the UI and can not be build
+    /// </summary>
     private void BuildingCosts()
     {
         int remainingLightToSubtract = requiredLight;
@@ -190,7 +205,9 @@ public class Building_Shower : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// World States so every NPC can see if there are enough buildings
+    /// </summary>
     public void AddBuilding()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Building_Light : MonoBehaviour
 {
+    //the buildings that stores or produce ressources have a lot of Coniditions, if statements and they kinda overwhelming. 
+    //they need a enum, for the if's as soon as the actions work probably
+    //many of the thinks from the shower building is repeating here
     [Header("Conditions")]
     public bool isAvailable = false;
     public bool angelInside = false;
@@ -318,6 +321,8 @@ public class Building_Light : MonoBehaviour
         RemoveLight();
     }
 
+    //this fixed an error mesage that cames when a state falls to 0, the error message self was not a problem
+    //but because of the World States it cames to strange interaction where two npc didn't find any building or go together in one
     private void NoKeyFixer()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();

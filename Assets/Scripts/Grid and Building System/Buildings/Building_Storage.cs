@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Building_Storage : MonoBehaviour
 {
+    //pretty much a merge between light and fire building
     public GameObject fireRessource;
     public GameObject lightRessource;
 
