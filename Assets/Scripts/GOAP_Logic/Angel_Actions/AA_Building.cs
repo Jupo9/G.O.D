@@ -41,6 +41,8 @@ public class AA_Building : Actions
         target = closestBuilding;
         agent.SetDestination(target.transform.position);
 
+        duration = 30;
+
         changeBuildState = closestBuilding.GetComponentInChildren<ChangeBuildState>();
         if (changeBuildState == null)
         {
@@ -49,7 +51,9 @@ public class AA_Building : Actions
         }
 
         changeBuildState.buildingIsComplete = true;
+
         Debug.Log($"Building '{closestBuilding.name}' aktivate");
+
 
         return true;
     }

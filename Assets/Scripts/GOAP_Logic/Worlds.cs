@@ -1,7 +1,7 @@
 
+
 public sealed class Worlds
 {
-    //Set Global states and give them to worldstates
     private static readonly Worlds instance = new Worlds();
     private static WorldStates world;
 
@@ -34,7 +34,7 @@ public sealed class Worlds
 
     public void InitializeStates()
     {
-        world.ModifyState("evil", 1);
+        //world.ModifyState("evil", 1);
     }
 
     private static void HandleStateChange(string stateKey, int valueChange)
@@ -42,4 +42,3 @@ public sealed class Worlds
         world.UpdateStateBasedOnEvent(stateKey, valueChange);
     }
 }
-

@@ -46,7 +46,6 @@ public class GOD : MonoBehaviour
 
         fireRessource.SetActive(false);
         lightRessource.SetActive(false);
-
     }
 
     private void Update()

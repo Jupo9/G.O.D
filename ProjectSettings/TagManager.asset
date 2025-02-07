@@ -35,6 +35,8 @@ TagManager:
   - DevilNeedUI
   - DevilBuildUI
   - SpawnPoint
+  - WO_Pray
+  - PrayStatue
   layers:
   - Default
   - TransparentFX

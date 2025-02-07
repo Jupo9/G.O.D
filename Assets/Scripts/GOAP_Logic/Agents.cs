@@ -42,7 +42,6 @@ public class Agents : MonoBehaviour
     private Actions currentRunningAction;
 
     public bool playersWish = false;
-    private bool idleAction = false;
 
     /// <summary>
     /// Devil Area
@@ -63,9 +62,7 @@ public class Agents : MonoBehaviour
 
     private DA_BullyAngel bullyAngel;
     private DA_PunshAngel punshAngel;
-    private DA_Chilling chilling;
-    private DA_PrepareAction prepareDevilAction;
-    private DA_CleanAction cleanDevilAction;
+    private DA_ChillComplete chilling;
 
     /// <summary>
     /// Angel Area
@@ -74,16 +71,15 @@ public class Agents : MonoBehaviour
     private bool noticePurity = false;
     //private bool noticeEnjoy = false;
     //private bool noticePowerAngel = false;
-    //private bool noticeBelieve = false;
+    private bool noticeBelieve = false;
 
     private bool triggerPurity = false;
     //private bool triggerEnjoy = false;
     //private bool triggerPowerAngel = false;
-    //private bool triggerBelieve = false;
+    private bool triggerBelieve = false;
 
-    private AA_PrepareAction prepareAngelAction;
-    private AA_CleanAction cleanAngelAction;
-    private AA_Shower shower;
+    private AA_ShowerComplete shower;
+    private AA_PrayComplete prayComplete;
 
     //find all Actions
     protected virtual void Start()
@@ -96,9 +92,8 @@ public class Agents : MonoBehaviour
 
         if (CompareTag("Angel"))
         {
-            shower = GetComponent<AA_Shower>();
-            prepareAngelAction = GetComponent<AA_PrepareAction>();
-            cleanAngelAction = GetComponent<AA_CleanAction>();
+            shower = GetComponent<AA_ShowerComplete>();
+            prayComplete = GetComponent<AA_PrayComplete>();
 
             StartCoroutine("AngelBeliefs");
         }
@@ -107,9 +102,7 @@ public class Agents : MonoBehaviour
         {
             bullyAngel = GetComponent<DA_BullyAngel>();
             punshAngel = GetComponent<DA_PunshAngel>();
-            chilling = GetComponent<DA_Chilling>();
-            prepareDevilAction = GetComponent<DA_PrepareAction>();
-            cleanDevilAction = GetComponent<DA_CleanAction>();
+            chilling = GetComponent<DA_ChillComplete>();
 
             StartCoroutine("DevilBeliefs");
         }
@@ -130,10 +123,30 @@ public class Agents : MonoBehaviour
             }
             currentGoal = null;
         }
+
+        if (currentAction is DA_WorkingComplete ||
+            currentAction is DA_TransportLogic ||
+            currentAction is AA_WorkingComplete ||
+            currentAction is AA_TransportLogic ||
+            currentAction is AA_Building)
+        {
+            foreach (var goal in goals.Keys.ToList())
+            {
+                Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                goals.Remove(goal);
+            }
+
+            ResetPlanner();
+            SubGoal MainGoal = new SubGoal("Survive", 1, false);
+            goals.Add(MainGoal, 5);
+            Debug.Log("Survive Goal startet neu");
+        }
     }
 
     /// <summary>
-    /// In Late Update is the most
+    /// In Late Update is the most important Part, and cost a lot of performance
+    /// here the devils and angels get specific orders what they have to do and how they get new actions or goals
+    /// also the planner and actions are checked and get input the current states 
     /// </summary>
     private void LateUpdate()
     {
@@ -153,8 +166,6 @@ public class Agents : MonoBehaviour
                         goals.Remove(goal);
                     }
                 }
-
-                idleAction = true;
 
                 ResetPlanner();
                 ((Angel)this).isBuilding = false;
@@ -176,8 +187,6 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                idleAction = true;
-
                 ResetPlanner();
                 ((Angel)this).isWorking = false;
                 SubGoal workGoal = new SubGoal("Work", 1, false);
@@ -198,8 +207,6 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                idleAction = true;
-
                 ResetPlanner();
                 ((Angel)this).isTransporting = false;
                 SubGoal transportGoal = new SubGoal("Transport", 1, false);
@@ -209,12 +216,16 @@ public class Agents : MonoBehaviour
 
             if (currentAction != null && currentAction.running)
             {
-                if (currentAction is AA_Building)
+                if (currentAction is AA_Building ||
+                    currentAction is AA_PrayComplete ||
+                    currentAction is AA_TransportLogic ||
+                    currentAction is AA_ShowerComplete ||
+                    currentAction is AA_WorkingComplete)
                 {
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if (currentAction is AA_IDLEFinish && idleAction)
+                /*if (currentAction is AA_IDLEFinish && idleAction)
                 {
                     ((Angel)this).buildingAction = false;
 
@@ -230,7 +241,7 @@ public class Agents : MonoBehaviour
                     goals.Add(s1, 5);
                     Debug.Log("Ziel 'Survive' hinzugefügt.");
                     ResetPlanner();
-                }
+                }*/
 
                 if (currentAction != null && currentAction.running)
                 {
@@ -287,11 +298,25 @@ public class Agents : MonoBehaviour
                 {
                     Debug.Log($"Action {currentAction.actionName} failed in PrePerform.");
 
-                    if (currentAction is AA_PrepareAction && !prepareAngelAction.foundBuilding ||
-                        currentAction is AA_Shower ||
-                        currentAction is AA_CleanAction && !cleanAngelAction.foundBuilding )
+                    if (currentAction is AA_ShowerComplete ||
+                        currentAction is AA_PrayComplete)
                     {
-                        currentAction.priorityValue += 1;
+                        currentAction.priorityValue += 0.01f;
+                    }
+
+                    if (currentAction is AA_TransportLogic || 
+                        currentAction is AA_WorkingComplete)
+                    {
+                        foreach (var goal in goals.Keys.ToList())
+                        {
+                            Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                            goals.Remove(goal);
+                        }
+
+                        ResetPlanner();
+                        SubGoal MainGoal = new SubGoal("Survive", 1, false);
+                        goals.Add(MainGoal, 5);
+                        Debug.Log("Survive Goal starts new");
                     }
                 }
             }
@@ -306,7 +331,9 @@ public class Agents : MonoBehaviour
             //controll if a bool is true and would switch the goal if it is so
             if (((Devil)this).isBuilding)
             {
-                if (currentAction != null && currentAction.running)
+                if (currentAction is DA_ChillComplete ||
+                    currentAction is DA_BullyAngel ||
+                    currentAction is GA_MoveAround)
                 {
                     Debug.Log("Abbruch der aktuellen Aktion für Build-Modus.");
                     CompleteAction();
@@ -339,8 +366,6 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                idleAction = true;
-
                 ResetPlanner();
                 ((Devil)this).isWorking = false;
                 SubGoal workGoal = new SubGoal("Work", 1, false);
@@ -361,8 +386,6 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                idleAction = true;
-
                 ResetPlanner();
                 ((Devil)this).isTransporting = false;
                 SubGoal transportGoal = new SubGoal("Transport", 1, false);
@@ -372,15 +395,18 @@ public class Agents : MonoBehaviour
             if (currentAction != null && currentAction.running)
             {
                 if (currentAction is DA_BullyAngel ||
-                    currentAction is DA_PunshAngel || 
+                    currentAction is DA_PunshAngel ||
+                    currentAction is DA_Spawning ||
                     currentAction is DA_Building ||
+                    currentAction is DA_ChillComplete ||
                     currentAction is DA_TransportLogic)
                 {
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
                 }
 
-                if (currentAction is DA_IDLEFinish && idleAction)
+                /*if (currentAction is DA_IDLEFinish && idleAction)
                 {
+                    ((Devil)this).isWorking = false;
                     idleAction = false;
 
                     foreach (var goal in goals.Keys.ToList())
@@ -393,8 +419,9 @@ public class Agents : MonoBehaviour
                     goals.Add(s1, 5);
                     Debug.Log("Ziel 'Survive' hinzugefügt.");
                     ResetPlanner();
-                }
+                }*/
 
+                //WICHTIG FÜR PRIOR CHANGE + und - !!!
                 /* if (currentAction is DA_Working)
                  {
                      if (worldStates.HasState("Build_iron"))
@@ -462,7 +489,7 @@ public class Agents : MonoBehaviour
 
                 Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
             }
-
+            
             if (actionQueue != null && actionQueue.Count > 0)
             {
                 //queue prepares the next actions
@@ -481,20 +508,36 @@ public class Agents : MonoBehaviour
                         currentAction.agent.SetDestination(currentAction.target.transform.position);
                     }
                 }
+                
                 else
                 {
-                    //when an actions failed is cost get higher, higher cost means that the action will sort on a other position with
-                    //the next planner reset, this is used for dynamics and unpredictible moves but also means that actions need always
-                    //recalculate and this caused a lot of performance
+                    /// <summary>
+                    /// when an actions failed is cost get higher, higher cost means that the action will sort on a other position with
+                    ///the next planner reset, this is used for dynamics and unpredictible moves but also means that actions need always
+                    ///recalculate and this caused a lot of performance
+                    /// </summary>
                     Debug.Log($"Action {currentAction.actionName} failed in PrePerform.");
-
-                    if (currentAction is DA_PrepareAction && !prepareDevilAction.foundBuilding ||
-                        currentAction is DA_Chilling ||
-                        currentAction is DA_CleanAction && !cleanDevilAction.foundBuilding ||
+                    
+                    if (currentAction is DA_ChillComplete ||
                         currentAction is DA_BullyAngel ||
                         currentAction is DA_PunshAngel)
                     {
-                        currentAction.priorityValue += 1;
+                        currentAction.priorityValue += 0.01f;
+                    }
+
+                    if (currentAction is DA_TransportLogic ||
+                        currentAction is DA_WorkingComplete)
+                    {
+                        foreach (var goal in goals.Keys.ToList())
+                        {
+                            Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
+                            goals.Remove(goal);
+                        }
+
+                        ResetPlanner();
+                        SubGoal MainGoal = new SubGoal("Survive", 1, false);
+                        goals.Add(MainGoal, 5);
+                        Debug.Log("Survive Goal starts new");
                     }
                 }
             }
@@ -505,7 +548,6 @@ public class Agents : MonoBehaviour
 
         }
     }
-
 
     /// <summary>
     /// Devil Beliefs works very simple a bool get activated when the current need if a devil is fine
@@ -563,7 +605,7 @@ public class Agents : MonoBehaviour
                 }*/
             }
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(10f);
         }
     }
 
@@ -571,7 +613,7 @@ public class Agents : MonoBehaviour
     {
         if (triggerEvil)
         {
-            if (currentAction is DA_CleanAction || currentAction is DA_Transport || currentAction is GA_MoveAround)
+            if (currentAction is GA_MoveAround || currentAction is DA_ChillComplete)
             {
                 noticeEvil = true;
                 currentRunningAction = currentAction;
@@ -587,9 +629,9 @@ public class Agents : MonoBehaviour
 
     private void ResetChill()
     {
-        if (triggerChill)
+        if (triggerChill && !(currentAction is DA_ChillComplete))
         {
-            if (currentAction is DA_BullyAngel || currentAction is GA_MoveAround)
+            if (currentAction is GA_MoveAround || currentAction is DA_BullyAngel)
             {
                 noticeChill = true;
                 currentRunningAction = currentAction;
@@ -608,11 +650,11 @@ public class Agents : MonoBehaviour
     {
         if (currentRunningAction == null)
         {
-            Debug.LogError("[WaitBeforeResetDevil] Keine laufende Aktion gefunden!");
+            Debug.LogError("[WaitBeforeResetDevil] no current Action is running!");
             yield break;
         }
 
-        while (currentRunningAction.running)
+        while (currentRunningAction.running && !(currentRunningAction is GA_MoveAround))
         {
             Debug.Log($"[WaitBeforeResetDevil] Waiting for action {currentRunningAction.actionName} to finish.");
             yield return null;
@@ -624,36 +666,23 @@ public class Agents : MonoBehaviour
 
         if (relevantState.ContainsKey("evil"))
         {
-            int evilValue = relevantState["evil"];
+            relevantState["evil"] = 0;
+            Debug.Log("MonitorEvilKey: Key 'evil' set to 0");
 
-            if (evilValue <= 1)
-            {
-                relevantState["evil"] = 0;
-                Debug.Log("MonitorEvilKey: Key 'evil' set to 0");
-            }
-
-            Debug.Log("Planner wird zurückgesetzt. Evil");
+            Debug.Log("Planner reset because Evil");
             triggerEvil = false;
             bullyAngel.done = false;
             //punshAngel.done = false;
             noticeEvil = false;
         }
 
-        if (relevantState.ContainsKey("cleanChill"))
+        if (relevantState.ContainsKey("chilling"))
         {
-            int chillValue = relevantState["cleanChill"];
+            relevantState["chilling"] = 0;
+            Debug.Log("MonitorChillKey: Key 'chilling' set to " + relevantState["chilling"]);
 
-            if (chillValue <= 1)
-            {
-                relevantState["cleanChill"] = 0;
-                Debug.Log("MonitorChillKey: Key 'cleanChill' set to 0");
-            }
-
-            Debug.Log("Planner wird zurückgesetzt. cleanChill");
+            Debug.Log("Planner reset because chilling");
             triggerChill = false;
-            prepareDevilAction.doneChill = false;
-            cleanDevilAction.doneChill = false;
-            chilling.done = false;
             noticeChill = false;
         }
 
@@ -679,23 +708,32 @@ public class Agents : MonoBehaviour
                     }
                 }
 
-                //Add more notices
+                if (!noticeBelieve)
+                {
+                    float prayIndicator = Random.Range(20f, 70f);
+
+                    if (prayIndicator > angel.needBelieve)
+                    {
+                        triggerBelieve = true;
+                        ResetPray();
+                    }
+                }
             }
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(10f);
         }
     }
 
     private void ResetShower()
     {
-        if (triggerPurity)
+        if (triggerPurity && !(currentAction is AA_ShowerComplete))
         {
-            if (currentAction is AA_CleanAction || currentAction is GA_MoveAround)
+            if (currentAction is GA_MoveAround || currentAction is AA_PrayComplete)
             {
                 noticePurity = true;
                 currentRunningAction = currentAction;
                 Debug.Log("ResetShower");
-                StartCoroutine("WaitBeforeResetAngel");
+                StartCoroutine("WaitBeforeResetAngelShower");
             }
             else
             {
@@ -704,17 +742,35 @@ public class Agents : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitBeforeResetAngel()
+    private void ResetPray()
+    {
+        if (triggerBelieve && !(currentAction is AA_PrayComplete))
+        {
+            if (currentAction is GA_MoveAround || currentAction is AA_ShowerComplete)
+            {
+                noticeBelieve = true;
+                currentRunningAction = currentAction;
+                Debug.Log("ResetPray");
+                StartCoroutine("WaitBeforeResetAngelPray");
+            }
+            else
+            {
+                triggerBelieve = false;
+            }
+        }
+    }
+
+    private IEnumerator WaitBeforeResetAngelShower()
     {
         if (currentRunningAction == null)
         {
-            Debug.LogError("[WaitBeforeResetAngel] Keine laufende Aktion gefunden!");
+            Debug.LogError("[WaitBeforeResetAngel] no current Action is running!");
             yield break;
         }
 
-        while (currentRunningAction.running)
+        while (currentRunningAction.running && !(currentRunningAction is GA_MoveAround))
         {
-            Debug.Log($"[WaitBeforeResetAngel] Waiting for action {currentRunningAction.actionName} to finish.");
+            //Debug.Log($"[WaitBeforeResetAngel] Waiting for action {currentRunningAction.actionName} to finish.");
             yield return null;
         }
 
@@ -722,22 +778,45 @@ public class Agents : MonoBehaviour
 
         Dictionary<string, int> relevantState = currentAction.GetRelevantAngelState();
 
-        if (relevantState.ContainsKey("cleanShower"))
+        if (relevantState.ContainsKey("shower"))
         {
-            int showerValue = relevantState["cleanShower"];
+            relevantState["shower"] = 0;
+            Debug.Log("MonitorShowerKey: Key 'shower' set to " + relevantState["shower"]);
 
-            if (showerValue <= 1)
-            {
-                relevantState["cleanShower"] = 0;
-                Debug.Log("MonitorShowerKey: Key 'cleanShower' set to 0");
-            }
-
-            Debug.Log("Planner wird zurückgesetzt. Shower");
+            Debug.Log("Planner reset because shower");
             triggerPurity = false;
-            shower.done = false;
-            prepareAngelAction.doneShower = false;
-            cleanAngelAction.doneShower = false;
             noticePurity = false;
+        }
+
+        ResetPlanner();
+    }
+
+    private IEnumerator WaitBeforeResetAngelPray()
+    {
+        if (currentRunningAction == null)
+        {
+            Debug.LogError("[WaitBeforeResetAngel] no current Action is running!");
+            yield break;
+        }
+
+        while (currentRunningAction.running && !(currentRunningAction is GA_MoveAround))
+        {
+            //Debug.Log($"[WaitBeforeResetAngel] Waiting for action {currentRunningAction.actionName} to finish.");
+            yield return null;
+        }
+
+        Debug.Log($"[WaitBeforeResetAngel] Action {currentRunningAction.actionName} has completed. Proceeding to reset.");
+
+        Dictionary<string, int> relevantState = currentAction.GetRelevantAngelState();
+
+        if (relevantState.ContainsKey("pray"))
+        {
+            relevantState["pray"] = 0;
+            Debug.Log("MonitorPrayKey: Key 'pray' set to " + relevantState["pray"]);
+
+            Debug.Log("Planner reset because pray");
+            triggerBelieve = false;
+            noticeBelieve = false;
         }
 
         ResetPlanner();
@@ -760,14 +839,14 @@ public class Agents : MonoBehaviour
             if (actionQueue != null)
             {
                 currentGoal = sg.Key;
-                Debug.Log("Neuer Plan erstellt mit Ziel: " + sg.Key.subGoals.Keys.First());
+                Debug.Log("New plan with goal: " + sg.Key.subGoals.Keys.First());
                 break;
             }
         }
 
         if (actionQueue == null)
         {
-            Debug.LogWarning("Planung fehlgeschlagen: Kein Plan gefunden.");
+            Debug.LogWarning("new planning failed!");
         }
     }
 }

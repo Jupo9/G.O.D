@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 6f0e037a4735edc4881eed18416dc004, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -158,7 +158,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3286501365698743448}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 3924229583842300980}
   - component: {fileID: 1205305670313640257}
   m_Layer: 0
-  m_Name: Angel_Building
+  m_Name: Angel_Building (Don't Overrides!)
   m_TagString: Angel_Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingManagerObject: {fileID: 791416703526018704}
   changeBuildingState: 0
-  buildingIsComplete: 1
+  buildingIsComplete: 0
 --- !u!1 &5468502704688439952
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +429,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7922151266981640712}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -585,7 +585,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8995843350765704012}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -755,6 +755,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1259606297831886261}
     m_Modifications:
+    - target: {fileID: 7692481864832483690, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 516fca0345d90b140aa49039e03f34c0, type: 2}
     - target: {fileID: 8197064861739786431, guid: 38163fd011b021a4ea2b63bf5110da7b, type: 3}
       propertyPath: m_Name
       value: Shower_Manager

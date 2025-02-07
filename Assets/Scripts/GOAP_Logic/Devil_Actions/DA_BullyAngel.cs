@@ -40,7 +40,7 @@ public class DA_BullyAngel : Actions
         {
             int evilValue = relevantState["evil"];
 
-            if (evilValue <= 1)
+            if (evilValue >= 1)
             {
                 Debug.Log("Key 'evil' has value 1. Action will be skipped.");
                 done = true;
@@ -77,6 +77,8 @@ public class DA_BullyAngel : Actions
 
         target = closestAngel;
         agent.SetDestination(target.transform.position);
+
+        duration = 10f;
 
         return true;
     }

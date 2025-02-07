@@ -13,6 +13,11 @@ public abstract class Actions : MonoBehaviour
     public float timeCosts = 2f;
     public GameObject target;
     public string targetTag;
+    /// <summary>
+    /// duration caused some issues with running corountines, to fix this in some action the duration get overide for now
+    /// to fix this with corountines always calculate how much time the corountine need to success
+    /// else the States will not apply correct because the PostPerform will be scipped!
+    /// </summary>
     public float duration = 0f;
     public WorldState[] preConditions;
     public WorldState[] afterEffects;
@@ -72,10 +77,10 @@ public abstract class Actions : MonoBehaviour
 
     public Dictionary<string, int> GetRelevantAngelState()
     {
-        Devil devil = GetComponentInParent<Devil>();
-        if (devil != null && devil.localStates != null)
+        Angel angel = GetComponentInParent<Angel>();
+        if (angel != null && angel.localStates != null)
         {
-            return devil.localStates.GetStates();
+            return angel.localStates.GetStates();
         }
         return Worlds.Instance.GetWorld().GetStates();
     }
@@ -110,7 +115,7 @@ public abstract class Actions : MonoBehaviour
 
     public void ApplyAngelEffects()
     {
-        Dictionary<string, int> relevantState = GetRelevantDevilState();
+        Dictionary<string, int> relevantState = GetRelevantAngelState();
 
         foreach (KeyValuePair<string, int> eff in effect)
         {

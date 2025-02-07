@@ -29,7 +29,11 @@ MonoBehaviour:
     <ID>k__BackingField: 4
     <Size>k__BackingField: {x: 4, y: 4}
     <Prefab>k__BackingField: {fileID: 5468502704688439952, guid: 4af04e9b975dd9a4f927cec06d3344c4, type: 3}
-  - <Name>k__BackingField: LightBuilding
+  - <Name>k__BackingField: Storage_AngelVersion
     <ID>k__BackingField: 5
-    <Size>k__BackingField: {x: 4, y: 4}
-    <Prefab>k__BackingField: {fileID: 5468502704688439952, guid: 4af04e9b975dd9a4f927cec06d3344c4, type: 3}
+    <Size>k__BackingField: {x: 3, y: 3}
+    <Prefab>k__BackingField: {fileID: 5468502704688439952, guid: 23136d495b4dd9c47b86223bbdc051e0, type: 3}
+  - <Name>k__BackingField: PrayBuilding
+    <ID>k__BackingField: 6
+    <Size>k__BackingField: {x: 5, y: 5}
+    <Prefab>k__BackingField: {fileID: 4633884049919900262, guid: df69f344e8068ed40a5af0eb7ca821fe, type: 3}

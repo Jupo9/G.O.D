@@ -3,6 +3,15 @@ using UnityEngine;
 
 public class DA_TransportLogic : Actions
 {
+    /// <summary>
+    /// Short explaination how this action works
+    /// First it looks if the GOD needs fire ressources, if this is the case then the devil search for the working buildings 
+    /// (else, the Devil search for working buildings and bring fire to storage)
+    /// if the working building has no ressources then it looks for the storage buildings
+    /// (if there is no building with ressources inside the action get skipped)
+    /// after found the right building the devil will go to the building and take one fire
+    /// then the devil bring the fire to the GOD
+    /// </summary>
     private GOD god;
 
     private GameObject fireResource;
@@ -11,10 +20,13 @@ public class DA_TransportLogic : Actions
 
     private bool transportToGOD = false;
     private bool workToStorage = false;
+    private bool transportDone = false;
 
 
     public override bool PrePerform()
     {
+        transportDone = false;
+
         devilScript = GetComponent<Devil>();
 
         if (devilScript == null)
@@ -86,9 +98,9 @@ public class DA_TransportLogic : Actions
                 target = fireTarget;
                 agent.SetDestination(target.transform.position);
 
-
                 StartCoroutine("PerformTargetActionWhenArrived");
-              
+
+                duration = 40f;
 
                 return true;
             }
@@ -118,21 +130,28 @@ public class DA_TransportLogic : Actions
 
                 StartCoroutine("PerformNormalTransportToStorage");
 
+                duration = 40f;
 
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     public override bool PostPerform()
     {
+        if (!transportDone)
+        {
+            return false;
+        }
+
+        Debug.Log("finishedTransport");
         return true;
     }
 
     IEnumerator PerformTargetActionWhenArrived()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null; 
         }
@@ -166,7 +185,7 @@ public class DA_TransportLogic : Actions
 
     IEnumerator PerformNormalTransportToStorage()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -255,7 +274,7 @@ public class DA_TransportLogic : Actions
 
     IEnumerator TransportToTargetGOD()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -265,6 +284,7 @@ public class DA_TransportLogic : Actions
             if (god != null)
             {
                 god.IncreaseFireRessource();
+                transportDone = true;
                 Debug.Log("Increased Fire Resource at GOD.");
             }
         }
@@ -272,7 +292,7 @@ public class DA_TransportLogic : Actions
 
     IEnumerator TransportToTargetStorage()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -283,7 +303,8 @@ public class DA_TransportLogic : Actions
 
             if (storageBuilding != null)
             {
-                storageBuilding.IncreaseFireCounter();  
+                storageBuilding.IncreaseFireCounter();
+                transportDone = true;
                 Debug.Log("Increased Fire Resource at Store.");
             }
             else

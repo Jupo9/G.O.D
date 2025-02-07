@@ -106,6 +106,7 @@ public class Building_Light : MonoBehaviour
         {
             isPreview = false;
             builded = true;
+            isAvailable = true;
             AddBuilding();
             RestoreOriginalMaterials();
         }
@@ -303,7 +304,7 @@ public class Building_Light : MonoBehaviour
             if (currentCount > 0) 
             {
                 worldStates.ModifyState(LightRessource, -1);
-                Debug.Log($"Light added. Current count: {worldStates.GetStates()[LightRessource]}");
+                //Debug.Log($"Light added. Current count: {worldStates.GetStates()[LightRessource]}");
             }
         }
     }

@@ -12,10 +12,13 @@ public class AA_TransportLogic : Actions
 
     private bool transportToGOD = false;
     private bool workToStorage = false;
+    private bool transportDone = false;
 
 
     public override bool PrePerform()
     {
+        transportDone = false;
+
         angelScript = GetComponent<Angel>();
 
         if (angelScript == null)
@@ -85,11 +88,13 @@ public class AA_TransportLogic : Actions
                 }
 
                 target = lightTarget;
+
                 agent.SetDestination(target.transform.position);
 
 
                 StartCoroutine("PerformTargetActionWhenArrived");
 
+                duration = 40f;
 
                 return true;
             }
@@ -115,25 +120,32 @@ public class AA_TransportLogic : Actions
                 }
 
                 target = lightStoreTarget;
+
                 agent.SetDestination(target.transform.position);
 
                 StartCoroutine("PerformNormalTransportToStorage");
 
+                duration = 40f;
 
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     public override bool PostPerform()
     {
+        if (!transportDone)
+        {
+            return false;
+        }
+
         return true;
     }
 
     IEnumerator PerformTargetActionWhenArrived()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -167,7 +179,7 @@ public class AA_TransportLogic : Actions
 
     IEnumerator PerformNormalTransportToStorage()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -256,7 +268,7 @@ public class AA_TransportLogic : Actions
 
     IEnumerator TransportToTargetGOD()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -266,6 +278,7 @@ public class AA_TransportLogic : Actions
             if (god != null)
             {
                 god.IncreaseLightRessource();
+                transportDone = true;
                 Debug.Log("Increased Light Resource at GOD.");
             }
         }
@@ -273,7 +286,7 @@ public class AA_TransportLogic : Actions
 
     IEnumerator TransportToTargetStorage()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.3f)
         {
             yield return null;
         }
@@ -285,6 +298,7 @@ public class AA_TransportLogic : Actions
             if (storageBuilding != null)
             {
                 storageBuilding.IncreaseLightCounter();
+                transportDone = true;
                 Debug.Log("Increased Light Resource at Store.");
             }
             else

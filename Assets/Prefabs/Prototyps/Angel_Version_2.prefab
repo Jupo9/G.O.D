@@ -16,15 +16,12 @@ GameObject:
   - component: {fileID: 1065830434004837028}
   - component: {fileID: 4556308008246482643}
   - component: {fileID: 2941548391462389127}
-  - component: {fileID: 7270355389145959950}
+  - component: {fileID: 8709039103091868103}
+  - component: {fileID: 9118556459695584882}
   - component: {fileID: 4726739692746098611}
-  - component: {fileID: 278199896622948803}
-  - component: {fileID: 6385519363254567221}
-  - component: {fileID: 647682414203118492}
-  - component: {fileID: 6202026733891110634}
-  - component: {fileID: 697570573677118167}
-  - component: {fileID: 8011288270225797669}
+  - component: {fileID: 7270355389145959950}
   - component: {fileID: 7416691067343400682}
+  - component: {fileID: 9122165721670218385}
   m_Layer: 0
   m_Name: AngelManager
   m_TagString: Angel
@@ -197,17 +194,19 @@ MonoBehaviour:
   targetUIForBuildings: {fileID: 0}
   targetUIForNeeds: {fileID: 0}
   needEnjoy: 100
-  needBelieve: 100
-  needPower: 100
-  needPurity: 100
-  decayEnjoy: 0.01
-  decayBelieve: 0.01
-  decayPower: 0.01
-  decayPurity: 0.01
-  purityCharge: 1
+  needBelieve: 80
+  needPower: 80
+  needPurity: 80
+  decayEnjoy: 0
+  decayBelieve: 0.3
+  decayPower: 0
+  decayPurity: 0.3
+  purityCharge: 10
+  believeCharge: 4
   available: 1
   isStunned: 0
   isPurity: 0
+  isBelieve: 0
   lightResource: {fileID: 1152881604173560935}
   revive: {fileID: 6227320924420593714, guid: 515defeebf35b734ebbd5cf5946d6dcf, type: 3}
   isWorking: 0
@@ -233,13 +232,96 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: SpawnPoint
-  duration: 10
+  duration: 100
   preConditions: []
   afterEffects:
   - key: spawn
     value: 0
   agent: {fileID: 0}
   running: 0
+--- !u!114 &8709039103091868103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958509112980816348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a480732052ae14e80a73323fba4332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Shower
+  priorityValue: 1.01
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Angel
+  duration: 100
+  preConditions:
+  - key: spawn
+    value: 0
+  afterEffects:
+  - key: shower
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &9118556459695584882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958509112980816348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733edef04ec16fd41b10e72e704e0c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Praying
+  priorityValue: 1.02
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Angel
+  duration: 100
+  preConditions:
+  - key: spawn
+    value: 0
+  afterEffects:
+  - key: pray
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &4726739692746098611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958509112980816348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c4c97236a05a34cb1945c2f89640ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Idle
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 4078678870744755525}
+  targetTag: 
+  duration: 1e+12
+  preConditions:
+  - key: shower
+    value: 0
+  - key: pray
+    value: 0
+  afterEffects:
+  - key: Survive
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  moveRadius: 50
+  minMovementTime: 1
+  maxMovementTime: 5
 --- !u!114 &7270355389145959950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,197 +339,8 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Angel_Building
-  duration: 10
+  duration: 100
   preConditions: []
-  afterEffects:
-  - key: preBuild
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &4726739692746098611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c4c97236a05a34cb1945c2f89640ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: Action
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 4078678870744755525}
-  targetTag: 
-  duration: 1e+12
-  preConditions:
-  - key: spawn
-    value: 0
-  afterEffects:
-  - key: Survive
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  moveRadius: 50
-  minMovementTime: 1
-  maxMovementTime: 5
---- !u!114 &278199896622948803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c91c8071da3d66f4e8eb37f77b4c290f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: IDLE
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Angel
-  duration: 10
-  preConditions:
-  - key: deliverGOD
-    value: 0
-  afterEffects:
-  - key: Transport
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &6385519363254567221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a535cf2a9e3c0744b8897c3cf9bf4a3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: prepare work
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: WO_Light
-  duration: 10
-  preConditions: []
-  afterEffects:
-  - key: preWork
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  foundBuilding: 0
-  doneShower: 0
-  doneWork: 0
---- !u!114 &647682414203118492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dbcbc4793885204494881fa7d6c7333, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: work
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: WI_Light
-  duration: 10
-  preConditions:
-  - key: preWork
-    value: 0
-  afterEffects:
-  - key: onWork
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &6202026733891110634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a6fc0fd552d36448351b4cf7f44d5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: clean work
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: WO_Light
-  duration: 10
-  preConditions:
-  - key: onWork
-    value: 0
-  afterEffects:
-  - key: cleanWork
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  foundBuilding: 0
-  doneShower: 0
-  doneWork: 0
---- !u!114 &697570573677118167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c91c8071da3d66f4e8eb37f77b4c290f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: IDLE
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Angel
-  duration: 10
-  preConditions:
-  - key: cleanWork
-    value: 0
-  afterEffects:
-  - key: Work
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &8011288270225797669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958509112980816348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c91c8071da3d66f4e8eb37f77b4c290f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: IDLE
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Angel
-  duration: 10
-  preConditions:
-  - key: preBuild
-    value: 0
   afterEffects:
   - key: Build
     value: 0
@@ -470,10 +363,34 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Angel
-  duration: 60
+  duration: 100
   preConditions: []
   afterEffects:
-  - key: deliverGOD
+  - key: Transport
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &9122165721670218385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958509112980816348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65da60930d727294caea3e79273775b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Working
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Angel
+  duration: 100
+  preConditions: []
+  afterEffects:
+  - key: Work
     value: 0
   agent: {fileID: 0}
   running: 0
@@ -489,6 +406,7 @@ GameObject:
   - component: {fileID: 2500222748499617021}
   - component: {fileID: 2947515484823918172}
   - component: {fileID: 3817510402424853330}
+  - component: {fileID: 4486597062888416733}
   m_Layer: 5
   m_Name: State_Button
   m_TagString: Untagged
@@ -610,6 +528,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4486597062888416733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099564173027250091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &1152881604173560935
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +638,7 @@ GameObject:
   - component: {fileID: 3019394699412113593}
   - component: {fileID: 4939930079729428742}
   - component: {fileID: 47081773213284850}
+  - component: {fileID: 8029174118727943210}
   m_Layer: 5
   m_Name: 'Transport_Button '
   m_TagString: Untagged
@@ -828,6 +760,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8029174118727943210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2314107824975067073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &3709778811882827369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +967,7 @@ GameObject:
   - component: {fileID: 2336483583672022087}
   - component: {fileID: 3319745986638946014}
   - component: {fileID: 1176961440905283888}
+  - component: {fileID: 3506359805751420143}
   m_Layer: 5
   m_Name: Work_Button
   m_TagString: Untagged
@@ -1143,6 +1089,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3506359805751420143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114030321624217260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &4197337256140022694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,6 +1445,7 @@ GameObject:
   - component: {fileID: 3427017839482306217}
   - component: {fileID: 7066038975371827633}
   - component: {fileID: 7996083539261047132}
+  - component: {fileID: 9019781946030174413}
   m_Layer: 5
   m_Name: Build_Button
   m_TagString: Untagged
@@ -1607,6 +1567,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9019781946030174413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8089597427272994833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &9068251297578220750
 GameObject:
   m_ObjectHideFlags: 0

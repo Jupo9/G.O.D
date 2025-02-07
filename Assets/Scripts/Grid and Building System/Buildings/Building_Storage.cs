@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ public class Building_Storage : MonoBehaviour
     public bool removeLight = false;
     public bool emptyFire  = false;
     public bool emptyLight = false;
+
+    public bool startRessources = false;
 
     public bool fullFire = false;
     private bool fullLight = false;
@@ -48,6 +51,12 @@ public class Building_Storage : MonoBehaviour
 
     private void Update()
     {
+        if (startRessources)
+        {
+            startRessources = false;
+            StartCoroutine("StartRessourcesRoutine");
+        }
+
         if (oneFire)
         {
             oneFire = false;
@@ -192,6 +201,16 @@ public class Building_Storage : MonoBehaviour
         if (builded)
         {
             RemoveBuilding();
+        }
+    }
+
+    private IEnumerator StartRessourcesRoutine()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            IncreaseFireCounter();
+            IncreaseLightCounter();
+            yield return new WaitForSeconds(0.1f); 
         }
     }
 
@@ -346,7 +365,7 @@ public class Building_Storage : MonoBehaviour
             if (currentCount > 0)
             {
                 worldStates.ModifyState(LightRessourceStorage, -1);
-                Debug.Log($"Light added. Current count: {worldStates.GetStates()[LightRessourceStorage]}");
+                //Debug.Log($"Light added. Current count: {worldStates.GetStates()[LightRessourceStorage]}");
             }
         }
     }
@@ -377,7 +396,7 @@ public class Building_Storage : MonoBehaviour
             if (currentCount > 0)
             {
                 worldStates.ModifyState(FireRessourceStorage, -1);
-                Debug.Log($"Fire added. Current count: {worldStates.GetStates()[FireRessourceStorage]}");
+                //Debug.Log($"Fire added. Current count: {worldStates.GetStates()[FireRessourceStorage]}");
             }
         }
     }

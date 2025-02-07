@@ -11,27 +11,31 @@ public class DA_Spawning : Actions
 
         if (relevantState.ContainsKey("spawn"))
         {
-            int evilValue = relevantState["spawn"];
+            int spawnValue = relevantState["spawn"];
 
-            if (evilValue <= 1)
+            if (spawnValue >= 1)
             {
-                Debug.Log("Key 'spawn' has value 1. Action will be skipped.");
+                Debug.Log("Key 'spawn' has value" + spawnValue + "Action will be skipped.");
                 ApplyDevilEffects();
                 return false;
             }
         }
         else
         {
-            Debug.Log("PrePerform Check in Bully: Key 'spawn' does not exist.");
+            Debug.Log("PrePerform Check in spawn: Key 'spawn' does not exist.");
         }
 
         StartCoroutine("SpawnDevil");
+
+
+        duration = 7f;
         return true;
     }
 
     public override bool PostPerform()
     {
         ApplyDevilEffects();
+        Debug.Log("PostPerformApplied");
         return true;
     }
 
@@ -39,7 +43,7 @@ public class DA_Spawning : Actions
     {
         agent.isStopped = true;
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
 
         agent.isStopped = false;
     }

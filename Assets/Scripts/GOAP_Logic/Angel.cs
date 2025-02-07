@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class Angel : Agents
 {
-    //same as in Devil
+    /// <summary>
+    /// same as in Devil with some other Methodes like behavior when get punshed by Devil
+    /// when Devil is Punshing Angel the Angel agent will stop for a few seconds and then continues
+    /// </summary>
+    /// 
     [Header("UI")]
     public GameObject objectCanvas;
     public GameObject targetRendererObject;
@@ -30,12 +34,14 @@ public class Angel : Agents
     public float decayPurity = 1.0f;
 
     [Header("Charge Power")]
-    public float purityCharge = 1f;
+    public float purityCharge = 1.0f;
+    public float believeCharge = 1.0f;
 
     [Header("Current State")]
     public bool available = true;
     public bool isStunned = false;
     public bool isPurity = false;
+    public bool isBelieve = false;
 
     public GameObject lightResource;
 
@@ -166,6 +172,7 @@ public class Angel : Agents
             checkAction = true;
             DisableUI();
             ToggleCanvas(false);
+            Invoke("SaveTime", 30f);
         }
     }
 
@@ -196,6 +203,12 @@ public class Angel : Agents
     {
         RemoveAngelState();
         RemoveUIAngelState();
+    }
+
+    //just a quick solution to
+    public void SaveTime()
+    {
+        buildingAction = false;
     }
 
     public void ActivateUIForBuildings()
@@ -378,6 +391,11 @@ public class Angel : Agents
             if (isPurity)
             {
                 needPurity += purityCharge;
+            }
+
+            if (isBelieve)
+            {
+                needBelieve += believeCharge;
             }
 
             yield return new WaitForSeconds(1f);

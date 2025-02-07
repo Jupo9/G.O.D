@@ -13,7 +13,6 @@ public class Spawner : MonoBehaviour
     private int createAngel = 0;
     private int createDevil = 0;
 
-
     private void Start()
     {
         Invoke("ChooseCreature", spawnTimer);

@@ -21,10 +21,12 @@ public class AA_Spawning : Actions
         }
         else
         {
-            Debug.Log("PrePerform Check in Bully: Key 'spawn' does not exist.");
+            Debug.Log("PrePerform Check in Spawn: Key 'spawn' does not exist.");
         }
 
         StartCoroutine("SpawnAngel");
+
+        duration = 7f;
         return true;
     }
 
@@ -38,7 +40,7 @@ public class AA_Spawning : Actions
     {
         agent.isStopped = true;
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
 
         agent.isStopped = false;
     }

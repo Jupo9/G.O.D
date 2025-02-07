@@ -51,7 +51,7 @@ public class Planner
 
         if(!success)
         {
-           /// Debug.Log("NO PLAN");
+           //NO PLAN
             return null;
         }
 

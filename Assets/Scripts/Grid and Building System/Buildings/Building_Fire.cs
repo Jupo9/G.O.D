@@ -306,7 +306,7 @@ public class Building_Fire : MonoBehaviour
             if (currentCount > 0)
             {
                 worldStates.ModifyState(FireRessource, -1);
-                Debug.Log($"Fire added. Current count: {worldStates.GetStates()[FireRessource]}");
+                //Debug.Log($"Fire added. Current count: {worldStates.GetStates()[FireRessource]}");
             }
         }
     }

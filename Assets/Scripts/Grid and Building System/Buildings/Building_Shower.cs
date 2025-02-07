@@ -57,6 +57,7 @@ public class Building_Shower : MonoBehaviour
         {
             isPreview = false;
             builded = true;
+            isAvailable = true;
             AddBuilding();
             RestoreOriginalMaterials();
         }

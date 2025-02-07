@@ -1,163 +1,214 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class DA_ChillComplete : Actions
 {
-    private Building_IronMaiden buildingIronMaiden;
-    [SerializeField] private Transform tempPosition;
-    private NavMeshAgent newAgent;
+    private Devil devil;
 
-    private enum ChillingState
+    private Building_IronMaiden targetBuilding;
+
+    public void Start()
     {
-        None,
-        Prepare,
-        Chilling,
-        Clean
-    }
-
-    private ChillingState currentState = ChillingState.None;
-
-    private void Start()
-    {
-        newAgent = GetComponentInParent<NavMeshAgent>();
-        if (newAgent == null)
-        {
-            Debug.LogError("NavMeshAgent not found on parent GameObject!");
-        }
-
-        if (targetTag == "WO_Iron")
-        {
-            GameObject ironParent = GameObject.FindWithTag("Iron");
-            if (ironParent != null)
-            {
-                buildingIronMaiden = ironParent.GetComponentInChildren<Building_IronMaiden>();
-            }
-        }
+        devil = GetComponent<Devil>();
     }
 
     public override bool PrePerform()
     {
-        currentState = ChillingState.Prepare;
-        StartCoroutine(HandleChillingAction());
-        return true;
-    }
+        Dictionary<string, int> relevantState = GetRelevantDevilState();
 
-    public override bool PostPerform()
-    {
-        currentState = ChillingState.None;
-        return true;
-    }
-
-    private IEnumerator HandleChillingAction()
-    {
-        while (currentState != ChillingState.None)
+        if (relevantState.ContainsKey("chilling"))
         {
-            switch (currentState)
+            int chillValue = relevantState["chilling"];
+
+            Debug.Log(chillValue);
+
+            if (chillValue >= 1)
             {
-                case ChillingState.Prepare:
-                    yield return PreparePhase();
-                    currentState = ChillingState.Chilling; 
-                    break;
-
-                case ChillingState.Chilling:
-                    yield return ChillingPhase();
-                    currentState = ChillingState.Clean; 
-                    break;
-
-                case ChillingState.Clean:
-                    yield return CleanPhase();
-                    currentState = ChillingState.None; 
-                    break;
+                Debug.Log("Key 'chilling' has value " + chillValue + " Action will be skipped.");
+                ApplyDevilEffects();
+                return false;
             }
         }
-    }
-
-    private IEnumerator PreparePhase()
-    {
-        Debug.Log("Prepare Chilling phase started.");
-
-        GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
-        if (buildings.Length == 0)
+        else
         {
-            Debug.LogWarning("No buildings found for the target tag.");
-            yield break;
+            Debug.Log("PrePerform Check in Chilling: Key 'chilling' does not exist.");
+        }
+
+    GameObject[] ironBuildings = GameObject.FindGameObjectsWithTag("WO_Iron");
+
+        if (ironBuildings.Length == 0)
+        {
+            Debug.LogWarning("No available Building_IronMaiden found.");
+            return false;
         }
 
         GameObject closestBuilding = null;
-        float closestDistance = Mathf.Infinity;
+        float minDistance = Mathf.Infinity;
 
-        foreach (GameObject build in buildings)
+        foreach (GameObject building in ironBuildings)
         {
-            float distance = Vector3.Distance(transform.position, build.transform.position);
-            if (distance < closestDistance)
+            Building_IronMaiden ironScript = building.GetComponentInParent<Building_IronMaiden>();
+
+            if (ironScript != null && ironScript.isAvailable)
             {
-                closestDistance = distance;
-                closestBuilding = build;
+                float distance = Vector3.Distance(transform.position, building.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestBuilding = building;
+                    targetBuilding = ironScript;
+                }
             }
         }
 
         if (closestBuilding == null)
         {
-            Debug.LogWarning("No suitable building found.");
-            yield break;
+            Debug.Log("No Building_IronMaiden is available.");
+            return false;
         }
 
         target = closestBuilding;
-        newAgent.SetDestination(target.transform.position);
+        targetBuilding.isAvailable = false;
+        targetTag = "WO_Iron";
 
-        while (newAgent.pathPending || newAgent.remainingDistance > newAgent.stoppingDistance)
+        agent.SetDestination(target.transform.position);
+
+        StartCoroutine("ChillingRoutine");
+
+        duration = 30f; 
+
+        return true;
+    }
+
+    public override bool PostPerform()
+    {
+        ApplyDevilEffects();
+        return true;
+    }
+
+    private IEnumerator ChillingRoutine()
+    {
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
         {
             yield return null;
         }
 
-        if (targetTag == "WO_Iron" && buildingIronMaiden != null)
+        agent.isStopped = true;
+        yield return new WaitForSeconds(5f);
+        agent.isStopped = false;
+
+        targetTag = "WI_Iron";
+        GameObject newTarget = FindClosestAvailableBuildingInside();
+
+        if (newTarget == null)
         {
-            buildingIronMaiden.isAvailable = false;
-        }
-
-        Debug.Log("Prepare phase completed.");
-    }
-
-    private IEnumerator ChillingPhase()
-    {
-        Debug.Log("Chilling phase started.");
-
-        if (tempPosition == null)
-        {
-            Debug.LogError("TempPosition is not assigned in the Inspector!");
+            Debug.LogWarning("No target found with tag WI_Iron.");
             yield break;
         }
 
-        while (newAgent.pathPending || newAgent.remainingDistance > newAgent.stoppingDistance)
+        target = newTarget;
+        agent.SetDestination(target.transform.position);
+
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
         {
             yield return null;
         }
 
-        yield return new WaitForSeconds(5);
-
-        if (targetTag == "WI_Iron" && buildingIronMaiden != null)
+        if (targetBuilding != null)
         {
-            buildingIronMaiden.CloseDoubleDoors();
+            targetBuilding.CloseDoubleDoors();
         }
 
-        yield return new WaitForSeconds(5);
+        devil.isChilled = true;
+        agent.isStopped = true;
 
-        Debug.Log("Chilling phase completed.");
+        yield return new WaitForSeconds(10f);
+
+        if (targetBuilding != null)
+        {
+            targetBuilding.OpenDoubleDoors();
+        }
+
+        yield return new WaitForSeconds(5f);
+
+        devil.isChilled = false;
+        agent.isStopped = false;
+
+        targetTag = "WO_Iron";
+        GameObject finalTarget = FindClosestAvailableBuilding();
+
+        if (finalTarget == null)
+        {
+            Debug.LogWarning("No target found with tag WO_Iron.");
+            yield break;
+        }
+
+        target = finalTarget;
+        agent.SetDestination(target.transform.position);
+
+        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        {
+            yield return null;
+        }
+
+        devil.isChilled = false;
+
+        targetBuilding.isAvailable = true;
     }
 
-    private IEnumerator CleanPhase()
+    private GameObject FindClosestAvailableBuilding()
     {
-        Debug.Log("Clean phase started.");
+        GameObject[] ironBuildings = GameObject.FindGameObjectsWithTag("WO_Iron");
 
-        yield return new WaitForSeconds(2);
+        GameObject closestBuilding = null;
+        float minDistance = Mathf.Infinity;
 
-        if (targetTag == "WO_Iron" && buildingIronMaiden != null)
+        foreach (GameObject building in ironBuildings)
         {
-            buildingIronMaiden.OpenDoubleDoors();
-            buildingIronMaiden.isAvailable = true;
+            Building_IronMaiden ironScript = building.GetComponentInParent<Building_IronMaiden>();
+
+            if (ironScript != null)
+            {
+                float distance = Vector3.Distance(transform.position, building.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestBuilding = building;
+                    targetBuilding = ironScript;
+                    targetBuilding.isAvailable = false;
+                }
+            }
         }
 
-        Debug.Log("Clean phase completed.");
+        return closestBuilding;
+    }
+
+    private GameObject FindClosestAvailableBuildingInside()
+    {
+        GameObject[] ironBuildings = GameObject.FindGameObjectsWithTag("WI_Iron");
+
+        GameObject closestBuilding = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject building in ironBuildings)
+        {
+            Building_IronMaiden ironScript = building.GetComponentInParent<Building_IronMaiden>();
+
+            if (ironScript != null)
+            {
+                float distance = Vector3.Distance(transform.position, building.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestBuilding = building;
+                    targetBuilding = ironScript;
+                    targetBuilding.isAvailable = false;
+                }
+            }
+        }
+
+        return closestBuilding;
     }
 }

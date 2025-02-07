@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 1326900195628881694}
   - component: {fileID: 1511961952740769445}
   - component: {fileID: 7055396789134710075}
+  - component: {fileID: 8846862559329151923}
   m_Layer: 5
   m_Name: 'Transport_Button '
   m_TagString: Untagged
@@ -208,6 +209,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8846862559329151923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549760444332878547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &2121163500008228017
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +234,7 @@ GameObject:
   - component: {fileID: 5174919402535642048}
   - component: {fileID: 2499325012539255906}
   - component: {fileID: 1276279324178630493}
+  - component: {fileID: 348011536125821582}
   m_Layer: 5
   m_Name: Work_Button
   m_TagString: Untagged
@@ -341,6 +356,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &348011536125821582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121163500008228017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &2620549128313064448
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,6 +381,7 @@ GameObject:
   - component: {fileID: 6731355865749269663}
   - component: {fileID: 7335190938534127732}
   - component: {fileID: 269393754208607757}
+  - component: {fileID: 4143771903211029320}
   m_Layer: 5
   m_Name: Build_Button
   m_TagString: Untagged
@@ -474,6 +503,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4143771903211029320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620549128313064448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &2967934354864613047
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +861,7 @@ GameObject:
   - component: {fileID: 8657301986731709039}
   - component: {fileID: 40854880256434565}
   - component: {fileID: 5633852839049276110}
+  - component: {fileID: 3546176215686039793}
   m_Layer: 5
   m_Name: State_Button
   m_TagString: Untagged
@@ -940,6 +983,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3546176215686039793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390742629520197188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ba6d1be67c914c93ce557678291e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.5
 --- !u!1 &7923714526833511084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,15 +1162,12 @@ GameObject:
   - component: {fileID: 5023708227131679947}
   - component: {fileID: 8875924175215642463}
   - component: {fileID: 6738736654691115746}
+  - component: {fileID: 7232165153209993097}
   - component: {fileID: 5056393492453252453}
   - component: {fileID: 9047594908188249712}
-  - component: {fileID: 7709120494659037782}
-  - component: {fileID: 8330635709179528525}
-  - component: {fileID: 4486044916386855121}
-  - component: {fileID: 5064872977295081546}
   - component: {fileID: 6347581546903836640}
-  - component: {fileID: 7441162443671323672}
-  - component: {fileID: 5060419166472106934}
+  - component: {fileID: 173526924862174201}
+  - component: {fileID: 5834921404515358902}
   m_Layer: 0
   m_Name: DevilManager
   m_TagString: Devil
@@ -1286,16 +1339,16 @@ MonoBehaviour:
   targetMaterialName: Outline_1
   targetUIForBuildings: {fileID: 0}
   targetUIForNeeds: {fileID: 0}
-  needEvil: 100
-  needChill: 100
-  needJoy: 100
-  needPower: 100
-  decayEvil: 0.2
-  decayChill: 0.2
-  decayJoy: 0.00000001
-  decayPower: 0.00000001
+  needEvil: 80
+  needChill: 80
+  needJoy: 80
+  needPower: 80
+  decayEvil: 0.3
+  decayChill: 0.3
+  decayJoy: 0
+  decayPower: 0
   bullyCharge: 20
-  chillCharge: 20
+  chillCharge: 10
   punshPoints: 30
   bullyActive: 0
   punshedAngel: 0
@@ -1324,10 +1377,36 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: SpawnPoint
-  duration: 10
+  duration: 100
   preConditions: []
   afterEffects:
   - key: spawn
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+--- !u!114 &7232165153209993097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8243437991349319323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82581ab64224c249b789dab64fd7a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Chilling
+  priorityValue: 1.02
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: WO_Iron
+  duration: 100
+  preConditions:
+  - key: spawn
+    value: 0
+  afterEffects:
+  - key: chilling
     value: 0
   agent: {fileID: 0}
   running: 0
@@ -1343,14 +1422,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c4c97236a05a34cb1945c2f89640ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: Action
+  actionName: Idle
   priorityValue: 1
   timeCosts: 2
   target: {fileID: 6227320924420593714}
   targetTag: 
   duration: 1e+11
   preConditions:
-  - key: spawn
+  - key: chilling
+    value: 0
+  - key: evil
     value: 0
   afterEffects:
   - key: Survive
@@ -1377,118 +1458,10 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil_Building
-  duration: 10
+  duration: 100
   preConditions: []
   afterEffects:
   - key: Build
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &7709120494659037782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8243437991349319323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2025c4a9da536b4fab5f42b3531177d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: prepare Work
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: WO_Fire
-  duration: 10
-  preConditions: []
-  afterEffects:
-  - key: preWork
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  doneChill: 0
-  doneWork: 0
-  foundBuilding: 0
---- !u!114 &8330635709179528525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8243437991349319323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53a62280389942242bd2475f34732d2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: work
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: WI_Fire
-  duration: 10
-  preConditions:
-  - key: preWork
-    value: 0
-  afterEffects:
-  - key: onWork
-    value: 0
-  agent: {fileID: 0}
-  running: 0
---- !u!114 &4486044916386855121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8243437991349319323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 200304ada01eedc4abe6a986a678816f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: clean work
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: WO_Fire
-  duration: 10
-  preConditions:
-  - key: onWork
-    value: 0
-  afterEffects:
-  - key: cleanWork
-    value: 0
-  agent: {fileID: 0}
-  running: 0
-  doneChill: 0
-  doneWork: 0
-  foundBuilding: 0
---- !u!114 &5064872977295081546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8243437991349319323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04db2cc3f8bbe514f8da5df861dda80d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: IDLETransport
-  priorityValue: 1
-  timeCosts: 2
-  target: {fileID: 0}
-  targetTag: Devil
-  duration: 10
-  preConditions:
-  - key: deliverGOD
-    value: 0
-  afterEffects:
-  - key: Transport
     value: 0
   agent: {fileID: 0}
   running: 0
@@ -1504,19 +1477,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c936a282183e72498932a3606bb6268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: Action
+  actionName: Transport
   priorityValue: 1
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
-  duration: 60
+  duration: 100
   preConditions: []
   afterEffects:
-  - key: deliverGOD
+  - key: Transport
     value: 0
   agent: {fileID: 0}
   running: 0
---- !u!114 &7441162443671323672
+--- !u!114 &173526924862174201
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1525,24 +1498,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 8243437991349319323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04db2cc3f8bbe514f8da5df861dda80d, type: 3}
+  m_Script: {fileID: 11500000, guid: acbf306aec8d7534f8164e1aea49d753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: IDLEWork
+  actionName: Working
   priorityValue: 1
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
-  duration: 10
-  preConditions:
-  - key: cleanWork
-    value: 0
+  duration: 100
+  preConditions: []
   afterEffects:
   - key: Work
     value: 0
   agent: {fileID: 0}
   running: 0
---- !u!114 &5060419166472106934
+--- !u!114 &5834921404515358902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1551,21 +1522,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8243437991349319323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c936a282183e72498932a3606bb6268, type: 3}
+  m_Script: {fileID: 11500000, guid: a586654843491f84881f99bc610de30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: Action
-  priorityValue: 1
+  actionName: Bully
+  priorityValue: 1.01
   timeCosts: 2
   target: {fileID: 0}
-  targetTag: Devil
-  duration: 60
-  preConditions: []
+  targetTag: Angel
+  duration: 5
+  preConditions:
+  - key: spawn
+    value: 0
   afterEffects:
-  - key: deliverGOD
+  - key: evil
     value: 0
   agent: {fileID: 0}
   running: 0
+  done: 0
 --- !u!1 &8956435707936611399
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,7 +1700,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6939575652958257371, guid: 25ef2462dfcf3034680a092e4c07d00d, type: 3}
   m_PrefabInstance: {fileID: 977765146250602187}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &9089751747121742518
+--- !u!1001 &4534199052241695553
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1734,71 +1708,47 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7484364107093595930}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.11380668
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.11380668
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.11380668
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.31200027
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.39599904
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.015999794
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.87187076
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalRotation.x
       value: 8.055993e-15
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.00000006580037
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.48973605
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8456e8d9a5cca0b45a4dbd98b9c8e5c9, type: 2}
-    - target: {fileID: -7511558181221131132, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2100000, guid: ca3dafde9488f3540bd8773bb63b4fa5, type: 2}
-    - target: {fileID: 919132149155446097, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+    - target: {fileID: 5478794834479664294, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
       propertyPath: m_Name
       value: Devil_v.03
       objectReference: {fileID: 0}
@@ -1806,14 +1756,14 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
 --- !u!1 &8278778144473792487 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-  m_PrefabInstance: {fileID: 9089751747121742518}
+  m_CorrespondingSourceObject: {fileID: 5478794834479664294, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
+  m_PrefabInstance: {fileID: 4534199052241695553}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8768491365774452061 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f065ef25c6fa9e448a0207df3558a812, type: 3}
-  m_PrefabInstance: {fileID: 9089751747121742518}
+  m_CorrespondingSourceObject: {fileID: 5135025461358204444, guid: 2988b10f9a3cda044be2b53949b07b5f, type: 3}
+  m_PrefabInstance: {fileID: 4534199052241695553}
   m_PrefabAsset: {fileID: 0}
