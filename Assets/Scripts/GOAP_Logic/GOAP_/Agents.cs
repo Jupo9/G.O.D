@@ -692,7 +692,7 @@ public class Agents : MonoBehaviour
     private IEnumerator AngelBeliefs()
     {
         Angel angel = GetComponent<Angel>();
-
+        
         while (true)
         {
             if (angel != null)
