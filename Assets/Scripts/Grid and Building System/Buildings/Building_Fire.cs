@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Building_Fire : MonoBehaviour
 {
-    //near the same as light building
     [Header("Conditions")]
     public bool isAvailable = false;
     public bool devilInside = false;
@@ -37,6 +36,10 @@ public class Building_Fire : MonoBehaviour
 
     private const string BuildingFireKey = "Build_fire";
     private const string FireRessource = "Res_fire";
+
+    //For Avialable State and Ressource Strucutre
+    public int storedLight = 0;
+    public int lockedLight = 0;
 
     private void Awake()
     {

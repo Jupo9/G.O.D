@@ -1,16 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GOD : MonoBehaviour
 {
-    /// <summary>
-    /// This Script represent the all mighty GOD with too many variables and if statements
-    /// The idea here is that the GOD will give the player 5 minutes per wave, start with 4 ressources
-    /// but the ressources get 4 higher with every wave so after. I tried 3 minutes ones but this was nearly impossible
-    /// with the building logic because the angels and devils are to slow at the begin. espacially when they get more Action to care about
-    /// </summary>
     public bool plusFire = false;
     public bool plusLight = false;
     public bool fullFire = false;
@@ -22,8 +17,7 @@ public class GOD : MonoBehaviour
     public TextMeshProUGUI needFire;
     public TextMeshProUGUI needLight;
     public TextMeshProUGUI waveCounterUI;
-    public GameObject fireRessource;
-    public GameObject lightRessource;
+
     [SerializeField] TextMeshProUGUI timerText;
 
     private bool getFire = false;
@@ -38,21 +32,26 @@ public class GOD : MonoBehaviour
     private int balanceFire = 0;
     private int waveCounter = 0;
 
+    public bool bugTest = false;
+    public int bugFire = 0;
+    public int bugLight = 0;
+
+    [Header("CheckoutPoint")]
+    [SerializeField] private Transform checkoutPoint;
+    public Transform GetCheckoutPoint() => checkoutPoint;
 
     private void Start()
     {
         HappyGOD();
         StartCoroutine(TimerCountdown());
-
-        fireRessource.SetActive(false);
-        lightRessource.SetActive(false);
     }
 
     private void Update()
     {
-        needFire.text = "" + wantFire;
-        needLight.text = "" + wantLight;
+        ShowCurrentState();
+        HappyGOD();
 
+        // Inspector Features
         if (plusFire)
         {
             plusFire = false;
@@ -64,25 +63,22 @@ public class GOD : MonoBehaviour
             IncreaseLightRessource();
         }
 
+        //Important Features
         if (currentFire >= 1 && getFire)
         {
             getFire = false;
-            fireRessource.SetActive(true);
         }
         if (currentLight >= 1 && getLight)
         {
             getLight = false;
-            lightRessource.SetActive(true);
         }
         if (currentFire == 0 && !getFire)
         {
             getFire = true;
-            fireRessource.SetActive(false);
         }
         if (currentLight == 0 && !getLight)
         {
             getLight = true;
-            lightRessource.SetActive(false);
         }
 
         if (wantFire == 0f && !fullFire)
@@ -94,18 +90,13 @@ public class GOD : MonoBehaviour
         {
             fullLight = true;
         }
-
-        if (fullFire && fullLight)
-        {
-            HappyGOD();
-        }
-
-        if (timer <= 0)
-        {
-            SceneManager.LoadScene("EndScreen");
-        }
     }
 
+    private void ShowCurrentState()
+    {
+        needFire.text = "" + wantFire;
+        needLight.text = "" + wantLight;
+    }
 
     IEnumerator TimerCountdown() 
     {
@@ -123,8 +114,9 @@ public class GOD : MonoBehaviour
 
         timerText.color = Color.red;
         timerText.text = "00:00";
+
         StopAllCoroutines();
-        ///Game OVER
+        SceneManager.LoadScene("EndScreen");
     }
 
     public void IncreaseFireRessource() 
@@ -139,31 +131,37 @@ public class GOD : MonoBehaviour
         wantLight -= 1;
     }
 
-    /// <summary>
-    /// i tried to balance the amount of lights and fire ressources that the GOD wants and also make it a little bit random
-    /// i feels nice by the short test i did.
-    /// the waveCounter provides at the beginning of the game that fire is 0, and if light get to high it will be less in the next wave.
-    /// </summary>
-    /// <returns></returns>
     private void HappyGOD()
     {
-        fullFire = false;
-        fullLight = false;
+        if (fullFire && fullLight)
+        {
+            fullFire = false;
+            fullLight = false;
 
-        currentFire = 0;
-        currentLight = 0;
+            currentFire = 0;
+            currentLight = 0;
 
-        waveCounter += 1;
-        waveCounterUI.text = "" + waveCounter;
+            waveCounter += 1;
+            waveCounterUI.text = "" + waveCounter;
 
-        timer = 300f;
-        chargeRes = waveCounter * needCounter;
+            timer = 300f;
+            chargeRes = waveCounter * needCounter;
 
-        int randomY = chargeRes / 2;
+            int randomY = chargeRes / 2;
 
-        wantFire = Random.Range(waveCounter + balanceFire, randomY + 2); 
-        wantLight = chargeRes - wantFire;
+            wantFire = Random.Range(waveCounter + balanceFire, randomY + 2);
+            wantLight = chargeRes - wantFire;
 
-        balanceFire = wantLight - waveCounter;
+            balanceFire = wantLight - waveCounter;
+
+            if (bugTest)
+            {
+                fullFire = false;
+                fullLight = false;
+
+                wantFire = bugFire;
+                wantLight = bugLight;
+            }
+        }
     }
 }

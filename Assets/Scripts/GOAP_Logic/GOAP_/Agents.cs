@@ -5,19 +5,6 @@ using System.Linq;
 
 public class SubGoal
 {
-    /// <summary>
-    /// the Agent is the one of the most importants script in this game
-    /// it controlls a lot of the actions and resets the planner
-    /// also add new goals and switched between them.
-    /// The reason why the Angel and Devil use the same Agents is pretty easy.
-    /// using the same script make the script bigger but also make it easy to copy and read
-    /// the problem with 2 main Agents could be performance and misleadings when it comes to
-    /// interactions between angels and devils but using both here also can caused errors
-    /// The Idea here is that the planner get a reset when a need is to low. Needs that doesn't get a reset will be ignored
-    /// but the Planner is not that optimised yet. So many Action caused still problem but this can be surely solved
-    /// this script was one of the Script that get somehow corrupted and i couldn't be opend. Still not sure how this could happen but maybe
-    /// two diffrent sub agent could make some trouble if the reset at the same time
-    /// </summary>
     public Dictionary<string, int> subGoals;
     public bool remove;
 
@@ -42,6 +29,7 @@ public class Agents : MonoBehaviour
     private Actions currentRunningAction;
 
     public bool playersWish = false;
+    public float spawnWaitingTime = 6f;
 
     /// <summary>
     /// Devil Area
@@ -81,9 +69,29 @@ public class Agents : MonoBehaviour
     private AA_ShowerComplete shower;
     private AA_PrayComplete prayComplete;
 
+    //Spawning logic
+    private bool getSpawned = true;
+    private Transform spawnTarget;
+
+    [Header("TargetArea")]
+    [SerializeField] private float targetRadius = 1.0f; 
+
     //find all Actions
     protected virtual void Start()
     {
+        string spawnName = CompareTag("Angel") ? "AngelSpawnPoint" : "DevilSpawnPoint";
+        GameObject spawnPoint = GameObject.Find(spawnName);
+
+        if (spawnPoint != null)
+        {
+            spawnTarget = spawnPoint.transform;
+            StartCoroutine(HandleInitialSpawn());
+        }
+        else
+        {
+            Debug.LogError("Spawn point not found: " + spawnName);
+        }
+
         Actions[] acts = this.GetComponents<Actions>();
         foreach (Actions a in acts)
         {
@@ -150,6 +158,12 @@ public class Agents : MonoBehaviour
     /// </summary>
     private void LateUpdate()
     {
+        // Denied Actions, 
+        if (getSpawned)
+        {
+            return; 
+        }
+
         if (CompareTag("Angel"))
         {
 
@@ -246,7 +260,7 @@ public class Agents : MonoBehaviour
                 if (currentAction != null && currentAction.running)
                 {
                     float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-                    if (currentAction.agent.hasPath && distanceToTarget < 2f) ///currentAction.agent.remainingDistance < 1f
+                    if (currentAction.agent.hasPath && distanceToTarget < targetRadius) ///currentAction.agent.remainingDistance < 1f
                     {
                         if (!invoked)
                         {
@@ -458,7 +472,7 @@ public class Agents : MonoBehaviour
                 if (currentAction != null && currentAction.running)
                 {
                     float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-                    if (currentAction.agent.hasPath && distanceToTarget < 2f) ///currentAction.agent.remainingDistance < 1f
+                    if (currentAction.agent.hasPath && distanceToTarget < targetRadius) ///currentAction.agent.remainingDistance < 1f
                     {
                         if (!invoked)
                         {
@@ -547,6 +561,27 @@ public class Agents : MonoBehaviour
             }
 
         }
+    }
+
+    private IEnumerator HandleInitialSpawn()
+    {
+        // moce to spawn location before action starts
+        if (spawnTarget != null)
+        {
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            agent.SetDestination(spawnTarget.position);
+
+            // Wait until unit reached destination
+            while (Vector3.Distance(transform.position, spawnTarget.position) > 1.5f)
+            {
+                yield return null;
+            }
+        }
+
+        // waiting before Action starts
+        yield return new WaitForSeconds(spawnWaitingTime);
+
+        getSpawned = false;
     }
 
     /// <summary>

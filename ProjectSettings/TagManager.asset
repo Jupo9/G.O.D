@@ -37,11 +37,13 @@ TagManager:
   - SpawnPoint
   - WO_Pray
   - PrayStatue
+  - Mine
+  - Mine_Store
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Devil
+  - Creature
   - Water
   - UI
   - Mouse

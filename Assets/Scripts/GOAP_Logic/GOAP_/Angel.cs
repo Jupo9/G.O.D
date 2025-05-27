@@ -1,13 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class Angel : Agents
+public class Angel : Agents, IUnitInterface
 {
-    /// <summary>
-    /// same as in Devil with some other Methodes like behavior when get punshed by Devil
-    /// when Devil is Punshing Angel the Angel agent will stop for a few seconds and then continues
-    /// </summary>
-    /// 
     [Header("UI")]
     public GameObject objectCanvas;
     public GameObject targetRendererObject;
@@ -60,8 +55,12 @@ public class Angel : Agents
     public bool choosenOne = false;
     public bool buildingAction = false;
 
+    //To choose if the unit search for farest or nearest Buildings when transport something 
+    public bool preferClosest = true;
+    public bool PreferClosest => preferClosest;
+
     private bool checkAction = false;
-    public bool isSpawning = true;
+    //public bool isSpawning = true;
 
     private const string AvialableAngelKey = "Avail_angel"; 
     private const string UIAvialableAngelKey = "UI_Avail_angel";

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building_Storage : MonoBehaviour
+public class Building_Storage : MonoBehaviour, IResourceManager
 {
     //pretty much a merge between light and fire building
     public GameObject fireRessource;
@@ -10,6 +10,8 @@ public class Building_Storage : MonoBehaviour
 
     public int fireCounter = 0;
     public int lightCounter = 0;
+    public int lockedLight = 0;
+    public int lockedFire = 0;
     public int maxFireCounter = 10;
     public int maxLightCounter = 10;
 
@@ -44,6 +46,11 @@ public class Building_Storage : MonoBehaviour
 
     private const string LightRessourceStorage = "Res_light";
     private const string FireRessourceStorage = "Res_fire";
+
+    [Header("CheckoutPoint")]
+    [SerializeField] private Transform checkoutPoint;
+    public Transform GetCheckoutPoint() => checkoutPoint;
+
     private void Awake()
     {
         CacheOriginalMaterials();
@@ -203,6 +210,76 @@ public class Building_Storage : MonoBehaviour
             RemoveBuilding();
         }
     }
+
+    // --- This Part Contains the new IResourceManager logic
+
+    public bool HasAvailableResource(string resourceType)
+    {
+        if (resourceType == "Light")
+        {
+            return lightCounter - lockedLight > 0;
+        }
+        else if (resourceType == "Fire")
+        {
+            return fireCounter - lockedFire > 0;
+        }
+
+        return false;
+    }
+
+    public bool LockResource(string resourceType)
+    {
+        if (!HasAvailableResource(resourceType))
+        {
+            return false;
+        }
+
+        if (resourceType == "Light")
+        {
+            lockedLight++;
+            return true;
+        }
+
+        if (resourceType == "Fire")
+        {
+            lockedFire++;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ReleaseLock(string resourceType)
+    {
+        if (resourceType == "Light" && lockedLight > 0)
+        {
+            lockedLight--;
+        }
+        else if (resourceType == "Fire" && lockedFire > 0)
+        {
+            lockedFire--;
+        }
+
+    }
+
+    public void ConsumeLockedRessource(string resourceType)
+    {
+        if (resourceType == "Light" && lightCounter > 0 && lockedLight > 0)
+        {
+            lightCounter--;
+            lockedLight--;
+            Debug.Log("picked up one light.");
+        }
+
+        if (resourceType == "Fire" && fireCounter > 0 && lockedFire > 0)
+        {
+            fireCounter--;
+            lockedFire--;
+            Debug.Log("picked up one Fire.");
+        }
+    }
+
+    // End of this Part ---
 
     private IEnumerator StartRessourcesRoutine()
     {

@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building_Light : MonoBehaviour
+public class Building_Light : MonoBehaviour, IResourceManager
 {
-    //the buildings that stores or produce ressources have a lot of Coniditions, if statements and they kinda overwhelming. 
-    //they need a enum, for the if's as soon as the actions work probably
-    //many of the thinks from the shower building is repeating here
     [Header("Conditions")]
     public bool isAvailable = false;
     public bool angelInside = false;
@@ -19,6 +16,7 @@ public class Building_Light : MonoBehaviour
     [Header("Light Inputs")]
     public int maxAmount = 4;
     public int lightAmount = 0;
+    public int lockedLight = 0;
 
     public GameObject lightResource;
 
@@ -152,6 +150,49 @@ public class Building_Light : MonoBehaviour
             RemoveBuilding();
         }
     }
+
+    // --- This Part Contains the new IResourceManager logic
+
+    public bool HasAvailableResource(string resourceType)
+    {
+        return resourceType == "Light" && lightAmount - lockedLight > 0;
+    }
+
+    public bool LockResource(string resourceType)
+    {
+        if (resourceType != "Light")
+        {
+            return false;
+        }
+
+        if (HasAvailableResource(resourceType))
+        {
+            lockedLight += 1;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ReleaseLock(string resourceType)
+    {
+        if (resourceType == "Light" && lockedLight > 0)
+        {
+            lockedLight -= 1;
+        }
+    }
+
+    public void ConsumeLockedRessource(string resourceType)
+    {
+        if (resourceType == "Light" && lightAmount > 0 && lockedLight > 0)
+        {
+            lightAmount--;
+            lockedLight--;
+            Debug.Log("picked up one light.");
+        }
+    }
+
+    // End of this Part ---
 
     private void BuildingCosts()
     {
