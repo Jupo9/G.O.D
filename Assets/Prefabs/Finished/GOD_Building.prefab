@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 946329220432164624}
   - component: {fileID: 961150119447293180}
   - component: {fileID: 7534199451064989325}
-  - component: {fileID: 2576626575407387056}
   m_Layer: 0
   m_Name: AngelSpawnArea
   m_TagString: Untagged
@@ -86,27 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2576626575407387056
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387620244805251375}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &434006798585337749
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +251,6 @@ GameObject:
   - component: {fileID: 7545201191885212853}
   - component: {fileID: 7784537480366686039}
   - component: {fileID: 6813573545787280330}
-  - component: {fileID: 1359914864780752022}
   m_Layer: 0
   m_Name: AngelSpawnPoint
   m_TagString: Untagged
@@ -348,27 +325,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1359914864780752022
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287352482900593682}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2701664354357175069
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +575,7 @@ GameObject:
   - component: {fileID: 2676157977210201277}
   - component: {fileID: 5785179869038548488}
   m_Layer: 0
-  m_Name: GOD_Building_Manager
+  m_Name: GOD_Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,7 +761,6 @@ GameObject:
   - component: {fileID: 4005361046924754982}
   - component: {fileID: 5581270638470494760}
   - component: {fileID: 3594305107690560857}
-  - component: {fileID: 6816356033795372787}
   m_Layer: 0
   m_Name: DevilSpawnPoint
   m_TagString: Untagged
@@ -880,27 +835,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6816356033795372787
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4661866558960511623}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5106974762748945569
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +846,6 @@ GameObject:
   - component: {fileID: 1795222925239176069}
   - component: {fileID: 1554468092402538049}
   - component: {fileID: 2965264351779852917}
-  - component: {fileID: 2398117813034561030}
   m_Layer: 0
   m_Name: CheckoutPoint
   m_TagString: Untagged
@@ -987,27 +920,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2398117813034561030
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5106974762748945569}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5445324695975024641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1339,7 +1251,6 @@ GameObject:
   - component: {fileID: 2072124263969036073}
   - component: {fileID: 5128154100380180046}
   - component: {fileID: 7142686938302105208}
-  - component: {fileID: 5948419398874074652}
   m_Layer: 0
   m_Name: DevilSpawnArea
   m_TagString: Untagged
@@ -1414,27 +1325,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5948419398874074652
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7338578442168867354}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7723097059935756529
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,7 +1577,6 @@ GameObject:
   - component: {fileID: 1681062959539282806}
   - component: {fileID: 2170602874976840574}
   - component: {fileID: 5341510827575340461}
-  - component: {fileID: 8342013731373492247}
   - component: {fileID: 4449806427175033806}
   m_Layer: 0
   m_Name: GODManager
@@ -1764,27 +1653,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8342013731373492247
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9066021275094726339}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4449806427175033806
 MonoBehaviour:
   m_ObjectHideFlags: 0

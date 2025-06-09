@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class Building_Altar : MonoBehaviour, IResourceManager
@@ -30,10 +31,16 @@ public class Building_Altar : MonoBehaviour, IResourceManager
     [SerializeField] private List<Building_Battery> fireBatteries;
     [SerializeField] private List<Building_Battery> lightBatteries;
 
+    [Header("NavMeshUpdate")]
+    public GameObject updateParts;
+    public NavMeshSurface navMeshManager;
+
     private void Start()
     {
         for (int i = 0; i < fireAmount; i++) AddVisualSlot("Fire");
         for (int i = 0; i < lightAmount; i++) AddVisualSlot("Light");
+
+        navMeshManager.BuildNavMesh();
     }
 
     // ------------- Interface (IResourceManager) -------------
