@@ -2,18 +2,12 @@ using UnityEngine;
 
 public class PreviewSystem : MonoBehaviour
 {
-    /// <summary>
-    /// set preview material, this get overwrite by the object placer, that after the building get placed there will be still a preview
-    /// until a devil or angel build it
-    /// </summary>
-
-    [SerializeField] private float previewOffset = 0.06f;
-
     [SerializeField] private GameObject cellIndicator;
     private GameObject previewObject;
 
     [SerializeField] private Material previewMaterialPrefab;
     private Material previewMaterialInstance;
+
 
     private Renderer cellIndicatorRenderer;
 
@@ -87,25 +81,22 @@ public class PreviewSystem : MonoBehaviour
         }
     }
 
-    public void UpdatePosition(Vector3 position, bool validity)
+    public void UpdatePosition(Vector3 position, Vector2Int size, bool validity)
     {
         if (previewObject != null)
         {
-            MovePreview(position);
+            MovePreview(position, size);
             ApplyFeedbackToPreview(validity);
         }
 
-        MoveCursor(position);
+        MoveCursor(position, size);
         ApplyFeedbackToCursor(validity);
     }
 
     public void UpdateRotation(Quaternion rotation)
     {
-        if (previewObject != null)
-        {
-            previewObject.transform.rotation = rotation;
-        }
-        cellIndicator.transform.rotation = rotation;
+        Debug.Log($"UpdateRotation called with rotation: {rotation.eulerAngles}");
+        previewObject.transform.rotation = rotation;
     }
 
     private void ApplyFeedbackToPreview(bool validity)
@@ -124,14 +115,17 @@ public class PreviewSystem : MonoBehaviour
         c.a = 0.5f;
     }
 
-    private void MoveCursor(Vector3 position)
+    // Show Cell Indicator (Outlines for Grid Size of an Object or in this case the Pentagram in the Preview for the grid size)
+
+    private void MoveCursor(Vector3 position, Vector2Int size)
     {
-        cellIndicator.transform.position = position;
+        cellIndicator.transform.position = new Vector3(position.x, 0f, position.z);
     }
 
-    private void MovePreview(Vector3 position)
+    private void MovePreview(Vector3 position, Vector2Int size)
     {
-        previewObject.transform.position = new Vector3(position.x, position.y + previewOffset, position.z);
+        Vector3 centeredPosition = new Vector3(position.x + size.x * 0.5f, 0.5f, position.z + size.y * 0.5f);
+        previewObject.transform.position = centeredPosition;
     }
 
     internal void StartShowingRemovePreview()

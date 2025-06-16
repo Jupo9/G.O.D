@@ -65,7 +65,7 @@ public class InputManager : MonoBehaviour
             OnExit?.Invoke();
         }
 
-        if (Input.GetMouseButtonDown(2)) 
+        if (Input.GetKeyDown(KeyCode.R))
         {
             OnRotate?.Invoke();
         }
@@ -74,6 +74,8 @@ public class InputManager : MonoBehaviour
 
         HandleCreatureSelection();
     }
+
+    // ------------- Building Grid Controll -------------
 
     public bool IsPointerOverUI()
         => EventSystem.current.IsPointerOverGameObject();
@@ -91,6 +93,9 @@ public class InputManager : MonoBehaviour
         }
         return lastPosition;
     }
+
+
+    // ------------- Camera Movement -------------
 
     // camera movement with WASD or Arrow-Keys
     private void MoveAround()
@@ -131,6 +136,8 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    // ------------- Pause Game -------------
+
     private void PauseGame()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -138,6 +145,8 @@ public class InputManager : MonoBehaviour
             Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
         }
     }
+
+    // ------------- Select Unit -------------
 
     private void HandleCreatureSelection()
     {

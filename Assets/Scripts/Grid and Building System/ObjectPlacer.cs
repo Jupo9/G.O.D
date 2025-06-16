@@ -3,12 +3,6 @@ using UnityEngine;
 
 public class ObjectPlacer : MonoBehaviour
 {
-    /// <summary>
-    /// In this Script the object will shown and placed
-    /// by using this the object get enabled, this can caused some isses!
-    /// also the roation need to be adjust and removing is obsolete after preview
-    /// or need to be changed to cancel building and get ressoruces back
-    /// </summary>
     [SerializeField] private List<GameObject> placedGameObjects = new();
     [SerializeField] private Material previewMaterialPrefab;
     private List<GameObject> objectsInScene = new List<GameObject>();
@@ -25,7 +19,6 @@ public class ObjectPlacer : MonoBehaviour
         return objectsInScene.Count - 1;
     }
 
-    //ApplyPreviewMaterial need to be active after placed, i think there is a better solution for this
     private void ApplyPreviewMaterial(GameObject obj)
     {
         Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
@@ -50,7 +43,6 @@ public class ObjectPlacer : MonoBehaviour
         placedGameObjects[gameObjectIndex] = null;
     }
 
-    //register object, good for a remove after build methode
     public int RegisterPlacedObject(GameObject placedObject)
     {
         objectsInScene.Add(placedObject);

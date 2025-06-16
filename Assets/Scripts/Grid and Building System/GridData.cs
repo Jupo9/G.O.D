@@ -2,15 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GridData 
 {
-    /// <summary>
-    /// in this script, placed building get placed and also calculate how they can placed on the grid.
-    /// this makes placing and also deleting a lot easier
-    /// </summary>
-
     Dictionary<Vector3Int, PlacementData> placedObjects = new();
+    private HashSet<Vector3Int> blockedCells = new();
+
+    public void BlockCell(Vector3Int gridPosition)
+    {
+        blockedCells.Add(gridPosition);
+    }
+
+    public void BlockCells(IEnumerable<Vector3Int> gridPositions)
+    {
+        foreach (var pos in gridPositions)
+            blockedCells.Add(pos);
+    }
+
+    public bool IsCellBlocked(Vector3Int pos)
+    {
+        return blockedCells.Contains(pos);
+    }
 
     public void AddObjectAt(Vector3Int gridPosition, Vector2Int objectSize, int ID, int placedObjectIndex)
     {
@@ -19,9 +32,9 @@ public class GridData
         
         foreach(var pos in positionToOccupy) 
         {
-            if (placedObjects.ContainsKey(pos))
+            if (placedObjects.ContainsKey(pos) || blockedCells.Contains(pos))
             {
-                throw new Exception($"Dictionary already contains this cell position {pos}");
+                throw new Exception($"Cell {pos} is either already placed or blocked.");
             }
             placedObjects[pos] = data;
         }
@@ -47,7 +60,7 @@ public class GridData
 
         foreach (var pos in positionToOccupy) 
         {
-            if (placedObjects.ContainsKey(pos))
+            if (placedObjects.ContainsKey(pos) || blockedCells.Contains(pos))
             {
                 return false;
             }
@@ -75,9 +88,7 @@ public class GridData
     }
 }
 
-/// <summary>
-/// controll the BuildingDatabas informations for the correct placement
-/// </summary>
+
 public class PlacementData
 {
     public List<Vector3Int> occupiedPositions;

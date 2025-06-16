@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 5149483047189268368}
   - component: {fileID: 881109568504978597}
   - component: {fileID: 8794823067698096892}
+  - component: {fileID: 7793379044468183175}
   - component: {fileID: 3040695652865304283}
   m_Layer: 3
   m_Name: DevilManager
@@ -344,7 +345,7 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   playersWish: 0
   spawnWaitingTime: 6
-  targetRadius: 0.5
+  targetRadius: 1
   objectCanvas: {fileID: 2586518235892426401}
   targetRendererObject: {fileID: 2486340727302649172}
   targetBuildUI: {fileID: 0}
@@ -372,7 +373,7 @@ MonoBehaviour:
   isBuilding: 0
   choosenOne: 0
   buildingAction: 0
-  preferClosest: 1
+  preferClosest: 0
   grave: {fileID: 1724823241412100497, guid: b68031f4a3a730549b3e392e0beb8e67, type: 3}
 --- !u!114 &8794823067698096892
 MonoBehaviour:
@@ -391,14 +392,41 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
-  duration: 0
+  duration: 10
   preConditions: []
   afterEffects:
   - key: transport
     value: 0
   agent: {fileID: 0}
   running: 0
-  targetDistance: 1.5
+  targetDistance: 1.1
+--- !u!114 &7793379044468183175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416235645599343849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5055ee57b60266047bcc8b77f0bfb588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Action
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Devil
+  duration: 12
+  preConditions:
+  - key: transport
+    value: 0
+  afterEffects:
+  - key: working
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  workingTime: 10
 --- !u!114 &3040695652865304283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,14 +439,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c4c97236a05a34cb1945c2f89640ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionName: Action
+  actionName: Move Around
   priorityValue: 1
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
   duration: 10000
   preConditions:
-  - key: transport
+  - key: working
     value: 0
   afterEffects:
   - key: Survive

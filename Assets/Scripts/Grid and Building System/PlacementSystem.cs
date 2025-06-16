@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
 {
-    /// <summary>
-    /// Starts, adjust, place, remove logic for the placment 
-    /// </summary>
     public static PlacementSystem Instance { get; private set; }
 
     [SerializeField] private InputManager inputManager;
@@ -16,12 +13,8 @@ public class PlacementSystem : MonoBehaviour
 
     [SerializeField] private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
-    /// <summary>
-    /// this GridDatas have two options
-    /// First, the floor is for placing other objects on it. You have to use the 0 as an ID or change the System here!
-    /// Second, buildings are here for placing on floor or ground but you can't place something on it right now. Use IDs > 0!
-    /// If you want to change this you need to change the logic "GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildingData;"
-    /// </summary>
+    [SerializeField] private ObstacleData obstacleData;
+
     private GridData floorData;
     private GridData buildingData;
 
@@ -47,19 +40,30 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(false);
         floorData = new();
         buildingData = new();
+
+        if (obstacleData != null)
+        {
+            floorData.BlockCells(obstacleData.GetAllBlockedCells());
+        }
     }
 
-    //Starts Placements and input system
     public void StartPlacement(int ID)
     {
         StopPlacement();
-        gridVisualization.SetActive(true);
 
-        buildingState = new PlacementState(ID, grid, previewSystem, database, floorData, buildingData, objectPlacer);
+        // to make sure that only one time the inputs are called and to avoid bugs,
+        // the inputManager will first get deselect(-) and than seleceted (+) -> alternative OnEnable and OnDisable
+        inputManager.OnClicked -= PlaceStructure;
+        inputManager.OnExit -= StopPlacement;
+        inputManager.OnRotate -= RotatePreview;
 
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
         inputManager.OnRotate += RotatePreview;
+
+        gridVisualization.SetActive(true);
+
+        buildingState = new PlacementState(ID, grid, previewSystem, database, floorData, buildingData, objectPlacer);
     }
 
     public void StartRemoving()
@@ -84,7 +88,6 @@ public class PlacementSystem : MonoBehaviour
         buildingState.OnAction(gridPosition);
 
     }
-
     public void StopPlacement()
     {
         if (buildingState == null)
