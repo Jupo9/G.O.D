@@ -14365,6 +14365,10 @@ PrefabInstance:
       propertyPath: waveCounterUI
       value: 
       objectReference: {fileID: 1131638918}
+    - target: {fileID: 5785179869038548488, guid: d48e71c47738b494688a98cfae83dac2, type: 3}
+      propertyPath: spawnTimer
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14421,6 +14425,26 @@ PrefabInstance:
     - target: {fileID: 953571370144740465, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040695652865304283, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
+      propertyPath: duration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040695652865304283, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
+      propertyPath: preConditions.Array.data[0].key
+      value: transport
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793379044468183175, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
+      propertyPath: preConditions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794823067698096892, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
+      propertyPath: preConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794823067698096892, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
+      propertyPath: preConditions.Array.data[0].key
+      value: working
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

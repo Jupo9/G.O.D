@@ -26,9 +26,6 @@ public class GA_TransportLogic : Actions
 
     private GameObject checkoutTarget;
 
-    //check finished action 
-    private bool actionFinished = false;
-
     // Interface for buildings
     private IResourceManager resourceManager = null;
     private string lockedRessourceType = "";
@@ -59,22 +56,24 @@ public class GA_TransportLogic : Actions
 
     private TransportPhase currentPhase = TransportPhase.ToPickup;
 
-    // ------------- PrePerform ------------- 
+    // ------------- Debug testing ------------- 
 
-    void Update()
+    /*void Update()
     {
+        
         Debug.DrawLine(transform.position, target != null ? target.transform.position : transform.position, Color.yellow);
 
-        /*if (target != null)
+        if (target != null)
         {
             float distance = Vector3.Distance(transform.position, target.transform.position);
             Debug.Log($"Aktuelle Entfernung zu Target: {distance:F2}");
-        }*/
-    }
+        }
+    }*/
+
+    // ------------- PrePerform ------------- 
 
     public override bool PrePerform()
     {
-        actionFinished = false;
         DetermineUnitType();
         SetupTagsAndVariables();
         FindGOD();
@@ -494,17 +493,10 @@ public class GA_TransportLogic : Actions
     {
         target = checkoutTarget;
 
-        Debug.Log(actionFinished);
-
         while (Vector3.Distance(transform.position, target.transform.position) > targetDistance)
         {
             yield return new WaitForSeconds(0.3f);
         }
-
-        // Reached Checkout, finish action
-        Debug.Log("Reached Checkout");
-        actionFinished = true;
-        Debug.Log(actionFinished);
     }
 
     public override bool PostPerform()

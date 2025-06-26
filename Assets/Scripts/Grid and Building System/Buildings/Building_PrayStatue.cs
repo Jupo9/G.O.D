@@ -75,7 +75,7 @@ public class Building_PrayStatue : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("No Devil selected to assign the building task.");
+                Debug.LogWarning("No Angel selected to assign the building task.");
             }
         }
 

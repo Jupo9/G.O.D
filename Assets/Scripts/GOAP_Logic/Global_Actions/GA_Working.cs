@@ -23,11 +23,8 @@ public class GA_Working : Actions
     private GameObject checkoutTarget;
     private Building_Mine mineScript;
 
-    private bool actionFinsih = false;
-
     public override bool PrePerform()
     {
-        actionFinsih = false;
         DetermineUnitType();
         SetupTagsAndVariables();
         StartWorking();
@@ -70,7 +67,6 @@ public class GA_Working : Actions
             ressourceName = "Fire";
             Debug.Log("Set up is: Mine and Fire");
         }
-
     }
 
     private void StartWorking()
@@ -194,7 +190,6 @@ public class GA_Working : Actions
 
         Debug.Log("Reached CheckoutPoint");
         mineScript.SetBlocked(false);
-        actionFinsih = true;
     }
 
     public override bool PostPerform()
