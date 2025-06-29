@@ -11,10 +11,27 @@ public class BuildingButtonManager : MonoBehaviour
     private ObjectData objectData;
     private PreviewData previewData;
 
+    private bool initialized = false;
+
     private void Start()
     {
         objectData = PlacementSystem.Instance.GetDatabase().objectsData.Find(obj => obj.ID == objectID);
+
+        if (objectData == null)
+        {
+            Debug.LogError("objectData not found for objectID: " + objectID);
+            return;
+        }
+
         previewData = objectData.previewData;
+
+        if (previewData == null)
+        {
+            Debug.LogError("previewData missing in objectData ID: " + objectID);
+            return;
+        }
+
+        initialized = true;
 
         CheckAvailability();
     }
@@ -22,7 +39,11 @@ public class BuildingButtonManager : MonoBehaviour
     private void OnEnable()
     {
         Worlds.Instance.GetWorld().OnStateChanged += OnResourceChanged;
-        CheckAvailability();
+
+        if (initialized)
+        {
+            CheckAvailability();
+        }
     }
 
     private void OnDisable()
@@ -40,6 +61,12 @@ public class BuildingButtonManager : MonoBehaviour
 
     private void CheckAvailability()
     {
+        if (previewData == null || button == null)
+        {
+            Debug.LogWarning("CheckAvailability aborted – previewData or button is null");
+            return;
+        }
+
         var world = Worlds.Instance.GetWorld();
         var states = world.GetStates();
 

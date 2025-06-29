@@ -43,18 +43,20 @@ public class RegisterAngelDevil : MonoBehaviour
         devils.Remove(agent);
     }
 
-    public Agents GetBestAngel()
+    public Agents GetBestAvailableAngel()
     {
         return angels
         .OfType<Angel>() 
+        .Where(a => !a.HasActiveTemporaryAction)
         .OrderByDescending(a => a.currentFeeling)
         .FirstOrDefault();
     }
 
-    public Agents GetWorstDevil()
+    public Agents GetWorstAvailableDevil()
     {
         return devils
-        .OfType<Devil>() 
+        .OfType<Devil>()
+        .Where(d => !d.HasActiveTemporaryAction)
         .OrderBy(d => d.currentFeeling)
         .FirstOrDefault();
     }

@@ -64,6 +64,14 @@ public class GA_Building : Actions
 
     public override bool PostPerform()
     {
+        Agents agentScript = GetComponent<Agents>();
+
+        if (agentScript.unitType == Agents.UnitType.Devil)
+        {
+            Debug.Log("[GA_Building] Devil finished building and will die.");
+            agent.GetComponent<Agents>()?.Die();
+        }
+
         return true;
     }
 }

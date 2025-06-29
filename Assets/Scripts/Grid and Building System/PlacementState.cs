@@ -98,11 +98,11 @@ public class PlacementState : IBuildingState
 
             if (previewData.builderType == BuilderType.Angel)
             {
-                assignedAgent = RegisterAngelDevil.Instance.GetBestAngel();
+                assignedAgent = RegisterAngelDevil.Instance.GetBestAvailableAngel();
             }
             else if (previewData.builderType == BuilderType.Devil)
             {
-                assignedAgent = RegisterAngelDevil.Instance.GetWorstDevil();
+                assignedAgent = RegisterAngelDevil.Instance.GetWorstAvailableDevil();
             }
 
             if (assignedAgent != null)
@@ -112,7 +112,7 @@ public class PlacementState : IBuildingState
             }
             else
             {
-                Debug.LogWarning($"no valid {previewData.buildingName}");
+                Debug.LogWarning($"No available {previewData.builderType} for {previewData.buildingName}. Task remains in queue.");
             }
         }
         else

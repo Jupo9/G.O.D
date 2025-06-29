@@ -46,7 +46,11 @@ public class Agents : MonoBehaviour
     private Transform spawnTarget;
 
     [Header("TargetArea")]
-    [SerializeField] private float targetRadius = 1.0f; 
+    [SerializeField] private float targetRadius = 1.0f;
+
+    [Header("Temporary Action Visual")]
+    public GameObject temporaryActionIndicator;
+
 
     //find all Actions
     protected virtual void Start()
@@ -109,23 +113,10 @@ public class Agents : MonoBehaviour
             return;
         }
 
-        /*if (currentAction is DA_WorkingComplete ||
-            currentAction is DA_TransportLogic ||
-            currentAction is AA_WorkingComplete ||
-            currentAction is AA_TransportLogic ||
-            currentAction is AA_Building)
+        if (temporaryActionIndicator != null)
         {
-            foreach (var goal in goals.Keys.ToList())
-            {
-                Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
-                goals.Remove(goal);
-            }
-
-            ResetPlanner();
-            SubGoal MainGoal = new SubGoal("Survive", 1, false);
-            goals.Add(MainGoal, 5);
-            Debug.Log("Survive Goal startet neu");
-        }*/
+            temporaryActionIndicator.SetActive(false);
+        }
     }
 
     private void LateUpdate()
@@ -274,28 +265,23 @@ public class Agents : MonoBehaviour
         {
             action.priorityValue += 0.01f;
         }
+    }
 
-        // task behaviour
-        /*if ( 
-            action is DA_TransportLogic || action is DA_WorkingComplete ||
-            action is AA_TransportLogic || action is AA_WorkingComplete
-           )
-        {
-            foreach (var goal in goals.Keys.ToList())
-            {
-                Debug.Log("Entferne Ziel: " + goal.subGoals.Keys.First());
-                goals.Remove(goal);
-            }
+    public bool HasActiveTemporaryAction => currentAction != null && currentAction.running && IsTemporaryAction(currentAction);
 
-            ResetPlanner();
-            SubGoal MainGoal = new SubGoal("Survive", 1, false);
-            goals.Add(MainGoal, 5);
-            Debug.Log("Survive Goal starts new");
-        }*/
+    private bool IsTemporaryAction(Actions action)
+    {
+        return action is GA_Building; // später ersetzten durch: return action is GA_Building || action is GA_Working || action is GA_TransportLogic;
     }
 
     public void TemporaryAction(Actions tempAction)
     {
+        if (queuedTemporaryAction != null)
+        {
+            Debug.LogWarning("Temporary action is already in queued. Ignoring new temporary action");
+            return;
+        }
+
         if (currentAction == null || !currentAction.running)
         {
             Debug.Log("Starting temporary action immediately: " + tempAction.actionName);
@@ -337,6 +323,17 @@ public class Agents : MonoBehaviour
         }
 
         Debug.Log($"Started temporary action: {currentAction.actionName}");
+
+        if (temporaryActionIndicator != null && IsTemporaryAction(currentAction))
+        {
+            temporaryActionIndicator.SetActive(true);
+        }
+    }
+
+    public void Die()
+    {
+        RegisterAngelDevil.Instance?.UnregisterNPC(this);
+        Destroy(this.gameObject, 0.25f);
     }
 
     private void ResetPlanner()
