@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class WorldsManager : MonoBehaviour
 {
-    /// <summary>
-    /// add at the beginning all existing states that were implimentet in the scene (global useage)
-    /// </summary>
-
     [System.Serializable]
     public struct StateDefinition
     {
@@ -20,12 +16,6 @@ public class WorldsManager : MonoBehaviour
     {
         InitializeWorldStates();
     }
-
-    /// <summary>
-    /// Add ressources for Player in Storage, this is important because every ressource need to be activate by
-    /// a methode for the world states and UI informations
-    /// </summary>
-
 
     private void InitializeWorldStates()
     {

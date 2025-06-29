@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class PlacementState : IBuildingState
 {
+    private bool hasPlacedObject = false;
+
     private int selectedObjectIndex = -1;
     private Quaternion currentRotation = Quaternion.identity;
     int ID;
@@ -36,11 +39,16 @@ public class PlacementState : IBuildingState
 
     public void EndState()
     {
-        previewSystem.StopShowingPreview();
+        if (!hasPlacedObject)
+        {
+            previewSystem.StopShowingPreview();
+        }
     }
 
     public void OnAction(Vector3Int gridPosition)
     {
+        hasPlacedObject = true;
+
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
 
         if (!placementValidity)
@@ -48,37 +56,79 @@ public class PlacementState : IBuildingState
             return;
         }
 
-        GameObject placedObject = previewSystem.CurrentPreviewObject;
+        var objectData = database.objectsData[selectedObjectIndex];
+        var previewData = objectData.previewData;
 
-        if (placedObject == null)
+        int fireCost = previewData.buildFireCosts;
+        int lightCost = previewData.buildLightCosts;
+
+        bool fireOK = ResourceCalculator.Instance.TypConsumeResources("Res_fire", fireCost);
+        bool lightOK = ResourceCalculator.Instance.TypConsumeResources("Res_light", lightCost);
+
+        if (!fireOK || !lightOK)
         {
-            throw new System.Exception("Preview object is not available.");
+            Debug.LogWarning("Not enough resources for: " + previewData.buildingName);
+            return;
         }
 
-        previewSystem.StopShowingPreview();
-
-        Vector2Int size = database.objectsData[selectedObjectIndex].Size;
+        Vector2Int size = objectData.Size;
         Vector3 worldPosition = grid.CellToWorld(gridPosition);
-        Vector3 centeredPosition = new Vector3(
-            worldPosition.x + size.x * 0.5f,
-            0.5f,
-            worldPosition.z + size.y * 0.5f
-        );
+        Vector3 centeredPosition = new Vector3(worldPosition.x + size.x * 0.5f, 0.5f, worldPosition.z + size.y * 0.5f);
 
-        placedObject.transform.position = centeredPosition;
+        GameObject previewInstance = previewSystem.CurrentPreviewObject;
 
-        int index = objectPlacer.RegisterPlacedObject(placedObject);
+        if (previewInstance == null)
+        {
+            Debug.LogError("No preview instance available.");
+            return;
+        }
 
-        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildingData;
+        previewInstance.transform.position = centeredPosition;
+        previewInstance.transform.rotation = currentRotation;
 
-        selectedData.AddObjectAt(gridPosition,
-            database.objectsData[selectedObjectIndex].Size,
-            database.objectsData[selectedObjectIndex].ID,
-            index);
+        Construction construction = previewInstance.GetComponent<Construction>();
+
+        if (construction != null)
+        {
+            construction.previewData = previewData;
+
+            BuildingTaskManager.Instance.EnqueueTask(construction);
+
+            Agents assignedAgent = null;
+
+            if (previewData.builderType == BuilderType.Angel)
+            {
+                assignedAgent = RegisterAngelDevil.Instance.GetBestAngel();
+            }
+            else if (previewData.builderType == BuilderType.Devil)
+            {
+                assignedAgent = RegisterAngelDevil.Instance.GetWorstDevil();
+            }
+
+            if (assignedAgent != null)
+            {
+                construction.AssignBuilder(assignedAgent);
+                construction.StartConstruction();
+            }
+            else
+            {
+                Debug.LogWarning($"no valid {previewData.buildingName}");
+            }
+        }
+        else
+        {
+            Debug.LogError("Preview-Object missing Constuction Script!");
+        }
+
+        int index = objectPlacer.RegisterPlacedObject(previewInstance);
+        GridData selectedData = objectData.ID == 0 ? floorData : buildingData;
+        selectedData.AddObjectAt(gridPosition, size, objectData.ID, index);
+
+        previewSystem.HideCellIndicator();
 
         PlacementSystem.Instance.StopPlacement();
     }
-    
+
     public void RotatePreview()
     {
         currentRotation *= Quaternion.Euler(0, 90, 0);

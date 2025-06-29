@@ -834,6 +834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3711873763562650757}
   - component: {fileID: 1532987171381066969}
+  - component: {fileID: 3151127118160278774}
   m_Layer: 0
   m_Name: Mine_Entrance
   m_TagString: Mine
@@ -879,6 +880,20 @@ MonoBehaviour:
   batteryVisual: {fileID: 6366154006115209942}
   mineStorePoint: {fileID: 2244283037242791645}
   checkoutPoint: {fileID: 1750605344841782301}
+  registerResources: {fileID: 3151127118160278774}
+--- !u!114 &3151127118160278774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991196735113373530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0298cea37286d4f8c25d31988a0519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceType: 1
 --- !u!1 &4036681391693353465
 GameObject:
   m_ObjectHideFlags: 0

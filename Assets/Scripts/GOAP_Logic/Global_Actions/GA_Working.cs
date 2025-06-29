@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class GA_Working : Actions
@@ -38,12 +36,10 @@ public class GA_Working : Actions
         if (GetComponent<Angel>() != null)
         {
             unitType = UnitType.Angel;
-            Debug.Log("Unit is Angel");
         }
         else if (GetComponent<Devil>() != null)
         {
             unitType = UnitType.Devil;
-            Debug.Log("Unit is Devil");
         }
         else
         {
@@ -59,13 +55,11 @@ public class GA_Working : Actions
             //resourceName is important not the Tag, check Name!!
             workingTag = "Mine";
             ressourceName = "Light";
-            Debug.Log("Set up is: Mine and Light");
         }
         else if (unitType == UnitType.Devil)
         {
             workingTag = "Mine";
             ressourceName = "Fire";
-            Debug.Log("Set up is: Mine and Fire");
         }
     }
 
@@ -83,7 +77,6 @@ public class GA_Working : Actions
             }
 
             agent.SetDestination(target.transform.position);
-            Debug.Log("Start Work Corountine");
             StartCoroutine(WorkingRoutine());
         }
         else
@@ -160,7 +153,6 @@ public class GA_Working : Actions
 
         if (checkoutTarget != null)
         {
-            Debug.Log("Going to Checkout");
             agent.SetDestination(checkoutTarget.transform.position);
             StartCoroutine(PerformCheckout());
             yield break;
@@ -188,13 +180,11 @@ public class GA_Working : Actions
             yield return new WaitForSeconds(0.3f);
         }
 
-        Debug.Log("Reached CheckoutPoint");
         mineScript.SetBlocked(false);
     }
 
     public override bool PostPerform()
     {
-        Debug.Log("Finish Working Action");
         return true;
     }
 

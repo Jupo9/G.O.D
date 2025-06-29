@@ -27,6 +27,7 @@ public class Agents : MonoBehaviour
     SubGoal currentGoal;
 
     private Actions currentRunningAction;
+    private Actions queuedTemporaryAction = null;
 
     public bool playersWish = false;
     public float spawnWaitingTime = 6f;
@@ -69,7 +70,9 @@ public class Agents : MonoBehaviour
             actions.Add(a);
         }
 
-        unitType = CompareTag("Angel") ? UnitType.Angel : UnitType.Devil; 
+        unitType = CompareTag("Angel") ? UnitType.Angel : UnitType.Devil;
+
+        RegisterAngelDevil.Instance?.RegisterNPC(this);
     }
 
     bool invoked = false;
@@ -98,6 +101,14 @@ public class Agents : MonoBehaviour
         }
 
         // task behaviour
+        if (queuedTemporaryAction != null)
+        {
+            Debug.Log("Executing queued temporary action: " + queuedTemporaryAction.actionName);
+            ExecuteTemporaryAction(queuedTemporaryAction);
+            queuedTemporaryAction = null;
+            return;
+        }
+
         /*if (currentAction is DA_WorkingComplete ||
             currentAction is DA_TransportLogic ||
             currentAction is AA_WorkingComplete ||
@@ -129,7 +140,7 @@ public class Agents : MonoBehaviour
 
     private IEnumerator HandleInitialSpawn()
     {
-        // moce to spawn location before action starts
+        // move to spawn location before action starts
         if (spawnTarget != null)
         {
             UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -152,6 +163,13 @@ public class Agents : MonoBehaviour
     {
         if (currentAction != null && currentAction.running)
         {
+            if (currentAction.target == null)
+            {
+                Debug.LogWarning("target was destroyed, action is done: " + currentAction.actionName);
+                CompleteAction();
+                return;
+            }
+
             if (ShouldMoveToTarget(currentAction))
             {
                 currentAction.agent.SetDestination(currentAction.target.transform.position);
@@ -274,6 +292,51 @@ public class Agents : MonoBehaviour
             goals.Add(MainGoal, 5);
             Debug.Log("Survive Goal starts new");
         }*/
+    }
+
+    public void TemporaryAction(Actions tempAction)
+    {
+        if (currentAction == null || !currentAction.running)
+        {
+            Debug.Log("Starting temporary action immediately: " + tempAction.actionName);
+            ExecuteTemporaryAction(tempAction);
+        }
+        else
+        {
+            Debug.Log("Queuing temporary action for later: " + tempAction.actionName);
+            queuedTemporaryAction = tempAction;
+        }
+    }
+
+    private void ExecuteTemporaryAction(Actions tempAction)
+    {
+        ResetPlanner();
+        currentAction = tempAction;
+        currentAction.running = true;
+        currentAction.agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        if (currentAction.PrePerform())
+        {
+            if (currentAction.target == null && !string.IsNullOrEmpty(currentAction.targetTag))
+            {
+                currentAction.target = GameObject.FindWithTag(currentAction.targetTag);
+            }
+
+            if (currentAction.target != null)
+            {
+                currentAction.agent.SetDestination(currentAction.target.transform.position);
+            }
+            else
+            {
+                Debug.LogWarning($"ExecuteTemporaryAction: no target was found {currentAction.actionName}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"ExecuteTemporaryAction: PrePerform failed in {currentAction.actionName}");
+        }
+
+        Debug.Log($"Started temporary action: {currentAction.actionName}");
     }
 
     private void ResetPlanner()

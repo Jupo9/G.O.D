@@ -62,12 +62,13 @@ public class PreviewSystem : MonoBehaviour
 
         if (previewObject != null)
         {
-            ResetPreviewMaterial(previewObject);
+            //ResetPreviewMaterial(previewObject);
+            Destroy(previewObject);
             previewObject = null; 
         }
     }
 
-    private void ResetPreviewMaterial(GameObject obj)
+    /*private void ResetPreviewMaterial(GameObject obj)
     {
         Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in renderers)
@@ -79,7 +80,7 @@ public class PreviewSystem : MonoBehaviour
             }
             renderer.materials = materials;
         }
-    }
+    }*/
 
     public void UpdatePosition(Vector3 position, Vector2Int size, bool validity)
     {
@@ -126,6 +127,14 @@ public class PreviewSystem : MonoBehaviour
     {
         Vector3 centeredPosition = new Vector3(position.x + size.x * 0.5f, 0.5f, position.z + size.y * 0.5f);
         previewObject.transform.position = centeredPosition;
+    }
+
+    public void HideCellIndicator()
+    {
+        if (cellIndicator != null)
+        {
+            cellIndicator.SetActive(false);
+        }
     }
 
     internal void StartShowingRemovePreview()

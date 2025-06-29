@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265c9c21bfb4ee34e93be4662a5d713f, type: 3}
+  m_Name: Database_Trap
+  m_EditorClassIdentifier: 
+  buildingName: Devil_Trap_Building
+  builderType: 1
+  previewPrefab: {fileID: 514025252438460437, guid: 81225ffc5b7475f41888f9ad4ead50a4, type: 3}
+  buildingPrefab: {fileID: 8093609658743301528, guid: c9ef0cf4d11f710419e781afd546180b, type: 3}
+  buildTime: 3
+  buildFireCosts: 3
+  buildLightCosts: 3

@@ -642,7 +642,7 @@ GameObject:
   - component: {fileID: 2547051908256418874}
   m_Layer: 0
   m_Name: Altar_Storage_Building
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1391,6 +1391,7 @@ GameObject:
   - component: {fileID: 5498932109311749503}
   - component: {fileID: 7831203517198182728}
   - component: {fileID: 4348522408495645127}
+  - component: {fileID: 231506615344160062}
   m_Layer: 0
   m_Name: AltarPoint
   m_TagString: Storage
@@ -1492,6 +1493,20 @@ MonoBehaviour:
   - {fileID: 3936448345293394945}
   updateParts: {fileID: 6491705673011914794}
   navMeshManager: {fileID: 0}
+  registerResources: {fileID: 231506615344160062}
+--- !u!114 &231506615344160062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7026117907306450445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0298cea37286d4f8c25d31988a0519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceType: 0
 --- !u!1 &7301980896190239867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1534,7 @@ Transform:
   m_GameObject: {fileID: 7301980896190239867}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.057, z: 2.527}
+  m_LocalPosition: {x: 0, y: 0.116, z: 2.535}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []

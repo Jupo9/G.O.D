@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1554101566424397532}
+  - component: {fileID: -2836623148759787741}
   m_Layer: 0
   m_Name: Preview_Angel_PrayStatue_Building
   m_TagString: Untagged
@@ -152,6 +153,19 @@ Transform:
   - {fileID: 396411007791922535}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2836623148759787741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8547893175128843083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f57a876f4e16a4c48b493c3fc4924548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewData: {fileID: 0}
 --- !u!1 &8599242716924479932
 GameObject:
   m_ObjectHideFlags: 0

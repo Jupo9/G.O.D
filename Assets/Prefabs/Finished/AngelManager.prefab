@@ -242,6 +242,8 @@ GameObject:
   - component: {fileID: 4647746923435293516}
   - component: {fileID: 5620621513218831420}
   - component: {fileID: 2955713069280050144}
+  - component: {fileID: 6079531534288577327}
+  - component: {fileID: 4114203731159211212}
   - component: {fileID: 1115139751628603151}
   m_Layer: 3
   m_Name: AngelManager
@@ -422,7 +424,9 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   playersWish: 0
   spawnWaitingTime: 6
-  targetRadius: 0.5
+  unitType: 0
+  targetRadius: 1
+  currentFeeling: 60
   objectCanvas: {fileID: 3285904797352875761}
   targetRendererObject: {fileID: 6879266971273363832}
   targetBuildUI: {fileID: 0}
@@ -445,13 +449,13 @@ MonoBehaviour:
   isPurity: 0
   isBelieve: 0
   lightResource: {fileID: 0}
-  revive: {fileID: 6227320924420593714, guid: 515defeebf35b734ebbd5cf5946d6dcf, type: 3}
+  revive: {fileID: 416235645599343849, guid: 8c9533ce512d10f48aec8829cd3d4530, type: 3}
   isWorking: 0
   isTransporting: 0
   isBuilding: 0
   choosenOne: 0
   buildingAction: 0
-  preferClosest: 0
+  preferClosest: 1
 --- !u!114 &2955713069280050144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,14 +473,64 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Angel
-  duration: 0
+  duration: 10
   preConditions: []
   afterEffects:
   - key: transport
     value: 0
   agent: {fileID: 0}
   running: 0
-  targetDistance: 1.5
+  targetDistance: 1.1
+--- !u!114 &6079531534288577327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219769873427762393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5055ee57b60266047bcc8b77f0bfb588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Work
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: Angel
+  duration: 12
+  preConditions:
+  - key: transport
+    value: 0
+  afterEffects:
+  - key: working
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  workingTime: 10
+--- !u!114 &4114203731159211212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219769873427762393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d134201abccbeaa4c8b782a04b6d6491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Building
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: 
+  duration: 10
+  preConditions: []
+  afterEffects: []
+  agent: {fileID: 0}
+  running: 0
+  buildTime: 2.5
 --- !u!114 &1115139751628603151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,7 +550,7 @@ MonoBehaviour:
   targetTag: Angel
   duration: 10000
   preConditions:
-  - key: transport
+  - key: working
     value: 0
   afterEffects:
   - key: Survive

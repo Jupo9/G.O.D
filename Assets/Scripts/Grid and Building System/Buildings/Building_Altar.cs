@@ -35,12 +35,23 @@ public class Building_Altar : MonoBehaviour, IResourceManager
     public GameObject updateParts;
     public NavMeshSurface navMeshManager;
 
+    //WorldStates
+    private const string fireResourceKey = "Res_fire";
+    private const string lightResourceKey = "Res_light";
+
+    [SerializeField] private RegisterResources registerResources;
+
     private void Start()
     {
         for (int i = 0; i < fireAmount; i++) AddVisualSlot("Fire");
         for (int i = 0; i < lightAmount; i++) AddVisualSlot("Light");
 
+        SyncWithWorldState();
+
         navMeshManager.BuildNavMesh();
+
+        ResourceCalculator.Instance?.RegisterResourceSource(new ResourceManager("Res_fire", ResourceType.Mine, this));
+        ResourceCalculator.Instance?.RegisterResourceSource(new ResourceManager("Res_light", ResourceType.Mine, this));
     }
 
     // ------------- Interface (IResourceManager) -------------
@@ -120,25 +131,97 @@ public class Building_Altar : MonoBehaviour, IResourceManager
     public void IncreaseFireAmount()
     {
         fireAmount += 1;
+        RegisterFire();
         AddVisualSlot("Fire");
     }
 
     public void DecreaseFireAmount()
     {
         fireAmount -= 1;
+        UnregisterFire();
         RemoveVisualSlot("Fire");
     }
 
     public void IncreaseLightAmount()
     {
         lightAmount += 1;
+        RegisterLight();
         AddVisualSlot("Light");
     }
 
     public void DecreaseLightAmount()
     {
         lightAmount -= 1;
+        UnregisterLight();
         RemoveVisualSlot("Fire");
+    }
+
+    // ------------- Register World States -------------
+    private void SyncWithWorldState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(fireResourceKey))
+        {
+            worldStates.SetState(fireResourceKey, 0);
+        }
+
+        if (!worldStates.HasState(lightResourceKey))
+        {
+            worldStates.SetState(lightResourceKey, 0);
+        }
+ 
+        worldStates.ModifyState(fireResourceKey, fireAmount);
+        worldStates.ModifyState(lightResourceKey, lightAmount);
+        ResourceWatcher.Notify();
+    }
+
+    private void RegisterFire()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(fireResourceKey))
+        {
+            worldStates.SetState(fireResourceKey, 0);
+        }
+
+        worldStates.ModifyState(fireResourceKey, +1);
+        ResourceWatcher.Notify();
+    }
+
+    private void RegisterLight()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(lightResourceKey))
+        {
+            worldStates.SetState(lightResourceKey, 0);
+        }
+
+        worldStates.ModifyState(lightResourceKey, +1);
+        ResourceWatcher.Notify();
+    }
+
+    private void UnregisterFire()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(fireResourceKey))
+        {
+            worldStates.ModifyState(fireResourceKey, -1);
+        }
+        ResourceWatcher.Notify();
+    }
+
+    private void UnregisterLight()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(lightResourceKey))
+        {
+            worldStates.ModifyState(lightResourceKey, -1);
+        }
+        ResourceWatcher.Notify();
     }
 
     // ------------- Visual Handling -------------

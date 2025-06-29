@@ -56,7 +56,7 @@ public class Building_IronMaiden : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         if (!isAvailable) 
         {
@@ -87,7 +87,7 @@ public class Building_IronMaiden : MonoBehaviour
         {
             isPreview = true;
         }
-    }
+    }*/
 
     private void OnDestroy()
     {

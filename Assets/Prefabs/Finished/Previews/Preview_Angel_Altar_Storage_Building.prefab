@@ -515,8 +515,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5713543717743055301}
+  - component: {fileID: 3080654077402062962}
   m_Layer: 0
-  m_Name: Preview_Altar_Storage_Building
+  m_Name: Preview_Angel_Altar_Storage_Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -539,6 +540,19 @@ Transform:
   - {fileID: 7894416315944884535}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3080654077402062962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8536282171402287530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f57a876f4e16a4c48b493c3fc4924548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewData: {fileID: 0}
 --- !u!1001 &103745576266212568
 PrefabInstance:
   m_ObjectHideFlags: 0

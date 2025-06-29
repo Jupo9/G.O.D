@@ -28,6 +28,9 @@ public class InputManager : MonoBehaviour
     public event Action OnExit;
     public event Action OnRotate;
 
+    [SerializeField] private GameObject escapeBuildingMenu;
+    [SerializeField] private GameObject[] disableBuildingUI;
+
     //Events for CameraMovement
     public event Action<Vector2> OnCameraMove;
     public event Action<float> OnCameraZoom;
@@ -63,6 +66,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
             OnExit?.Invoke();
+            DisableBuildingUI();
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -90,8 +94,28 @@ public class InputManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100, placementLayermask))
         {
             lastPosition = hit.point;
+            return hit.point;
         }
-        return lastPosition;
+        return Vector3.negativeInfinity;
+    }
+
+    private void DisableBuildingUI()
+    {
+        if (escapeBuildingMenu != null)
+        {
+            escapeBuildingMenu.SetActive(true);
+        }
+
+        if (disableBuildingUI != null)
+        {
+            foreach (var ui in disableBuildingUI)
+            {
+                if (ui != null)
+                {
+                    ui.SetActive(false);
+                }
+            }
+        }
     }
 
 

@@ -16,32 +16,40 @@ MonoBehaviour:
   - <Name>k__BackingField: A_Waterfall
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 5, y: 5}
-    <Prefab>k__BackingField: {fileID: 8604346934352595321, guid: da303ac64dda11043b0b177a1d12eb63, type: 3}
+    <previewData>k__BackingField: {fileID: 11400000, guid: ece300b0536fec748b733133b26dd92d, type: 2}
   - <Name>k__BackingField: A_LightCharge
     <ID>k__BackingField: 2
     <Size>k__BackingField: {x: 4, y: 4}
-    <Prefab>k__BackingField: {fileID: 1309984011772474131, guid: 45499601e1f09904d9843d7efef6227c, type: 3}
+    <previewData>k__BackingField: {fileID: 11400000, guid: a9419d59482f93946bbba86cd3bfee16, type: 2}
   - <Name>k__BackingField: A_PrayStatue
     <ID>k__BackingField: 3
     <Size>k__BackingField: {x: 3, y: 3}
-    <Prefab>k__BackingField: {fileID: 8547893175128843083, guid: 61f5d6bc63c2df94e85d3a996eedf9a2, type: 3}
+    <previewData>k__BackingField: {fileID: 11400000, guid: f2bb27af7dc19164a9c50a5a21044b5e, type: 2}
   - <Name>k__BackingField: D_Trap
     <ID>k__BackingField: 4
     <Size>k__BackingField: {x: 5, y: 5}
-    <Prefab>k__BackingField: {fileID: 514025252438460437, guid: 81225ffc5b7475f41888f9ad4ead50a4, type: 3}
+    <previewData>k__BackingField: {fileID: 11400000, guid: 406f2d1281951ae4ea26b06e83e55fe2, type: 2}
   - <Name>k__BackingField: D_FireCharge
     <ID>k__BackingField: 5
     <Size>k__BackingField: {x: 4, y: 4}
-    <Prefab>k__BackingField: {fileID: 5745371564766963927, guid: d0904d398cf2a2b48903cd3c4994f583, type: 3}
+    <previewData>k__BackingField: {fileID: 11400000, guid: 88fdc7c2cec1cef4d863fc94fba61210, type: 2}
   - <Name>k__BackingField: D_Pentagram
     <ID>k__BackingField: 6
     <Size>k__BackingField: {x: 3, y: 3}
-    <Prefab>k__BackingField: {fileID: 478751874043497051, guid: 581a8335aec10cc4aa757081190caf45, type: 3}
-  - <Name>k__BackingField: G_Altar
+    <previewData>k__BackingField: {fileID: 11400000, guid: 7ee9c5379657a89409292dfdaff8983b, type: 2}
+  - <Name>k__BackingField: D_Mine
     <ID>k__BackingField: 7
     <Size>k__BackingField: {x: 5, y: 5}
-    <Prefab>k__BackingField: {fileID: 8536282171402287530, guid: c1ab698c6a2e7b348ad050ef7e85982d, type: 3}
-  - <Name>k__BackingField: G_Mine
+    <previewData>k__BackingField: {fileID: 11400000, guid: 191ed2378f3ea554ca90280045323ed2, type: 2}
+  - <Name>k__BackingField: D_Altar
     <ID>k__BackingField: 8
     <Size>k__BackingField: {x: 5, y: 5}
-    <Prefab>k__BackingField: {fileID: 5105500766574814633, guid: a59ba69798caebb4e96ad73ccedb0ef2, type: 3}
+    <previewData>k__BackingField: {fileID: 11400000, guid: 7e2c84afe851265409df4b4d9a151931, type: 2}
+  - <Name>k__BackingField: A_Mine
+    <ID>k__BackingField: 9
+    <Size>k__BackingField: {x: 5, y: 5}
+    <previewData>k__BackingField: {fileID: 11400000, guid: 8278f47614a249e4aac117c4baa0c290, type: 2}
+  - <Name>k__BackingField: A_Altar
+    <ID>k__BackingField: 10
+    <Size>k__BackingField: {x: 5, y: 5}
+    <previewData>k__BackingField: {fileID: 11400000, guid: 013abca140177124d94d090087658a60, type: 2}

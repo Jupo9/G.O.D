@@ -111,7 +111,7 @@ public class Building_Fire : MonoBehaviour
 
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         if (!isAvailable)
         {
@@ -142,7 +142,7 @@ public class Building_Fire : MonoBehaviour
         {
             isPreview = true;
         }
-    }
+    }*/
 
     private void OnDestroy()
     {

@@ -83,6 +83,12 @@ public class PlacementSystem : MonoBehaviour
         }
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+
+        if (mousePosition == Vector3.negativeInfinity) 
+        {
+            return;
+        }
+
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
         buildingState.OnAction(gridPosition);
@@ -98,7 +104,6 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(false);
 
         buildingState.EndState();
-        previewSystem.StopShowingPreview();
 
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
@@ -130,5 +135,10 @@ public class PlacementSystem : MonoBehaviour
             buildingState.UpdateState(gridPosition);
             lastDetectedPosition = gridPosition;
         }
+    }
+
+    public BuidlingDatabase GetDatabase()
+    {
+        return database;
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265c9c21bfb4ee34e93be4662a5d713f, type: 3}
+  m_Name: Database_FireCharge
+  m_EditorClassIdentifier: 
+  buildingName: Devil_FireCharge_Building
+  builderType: 1
+  previewPrefab: {fileID: 5745371564766963927, guid: d0904d398cf2a2b48903cd3c4994f583, type: 3}
+  buildingPrefab: {fileID: 3508587159543076415, guid: 3a1e9878df8934142b5e26d8206f7d0d, type: 3}
+  buildTime: 3
+  buildFireCosts: 3
+  buildLightCosts: 3

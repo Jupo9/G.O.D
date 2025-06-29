@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
-public class Devil : Agents, IUnitInterface
+public class Angel : Agents, IUnitInterface
 {
+    [Header("Needs")]
+    public float currentFeeling = 100f;
+
     [Header("UI")]
     public GameObject objectCanvas;
     public GameObject targetRendererObject;
@@ -15,36 +15,39 @@ public class Devil : Agents, IUnitInterface
 
     public GameObject targetUIForBuildings;
     public GameObject targetUIForNeeds;
-    //public GameObject targetUIForTransport;
 
     private MeshRenderer targetMeshRenderer;
     private int targetMaterialIndex = -1;
 
     [Header("Believes")]
-    public float needEvil = 100f;
-    public float needChill = 100f;
-    public float needJoy = 100f;
+    public float needEnjoy = 100f;
+    public float needBelieve = 100f;
     public float needPower = 100f;
+    public float needPurity = 100f;
 
     [Header("Decays")]
-    public float decayEvil = 1.0f;
-    public float decayChill = 1.0f;
-    public float decayJoy = 1.0f;
+    public float decayEnjoy = 1.0f;
+    public float decayBelieve = 1.0f;
     public float decayPower = 1.0f;
+    public float decayPurity = 1.0f;
 
     [Header("Charge Power")]
-    public float bullyCharge = 1.0f;
-    public float chillCharge = 1.0f;
-    public float punshPoints = 10f;
+    public float purityCharge = 1.0f;
+    public float believeCharge = 1.0f;
 
     [Header("Current State")]
-    public bool bullyActive = false;
-    public bool punshedAngel = false;
-    public bool isChilled = false;
+    public bool available = true;
+    public bool isStunned = false;
+    public bool isPurity = false;
+    public bool isBelieve = false;
 
-    public GameObject fireObject;
+    public GameObject lightResource;
 
     public WorldStates localStates;
+
+    public GameObject revive;
+
+    private static Angel activeAngel;
 
     [Header("SubGoalsBools")]
     public bool isWorking = false;
@@ -60,13 +63,10 @@ public class Devil : Agents, IUnitInterface
     public bool PreferClosest => preferClosest;
 
     private bool checkAction = false;
+    //public bool isSpawning = true;
 
-    private static Devil activeDevil;
-
-    public GameObject grave;
-
-    private const string AvialableDevilKey = "Avail_devil";
-    private const string UIAvialableDevilKey = "UI_Avail_devil";
+    private const string AvialableAngelKey = "Avail_angel"; 
+    private const string UIAvialableAngelKey = "UI_Avail_angel";
 
     void Awake()
     {
@@ -79,7 +79,7 @@ public class Devil : Agents, IUnitInterface
         SubGoal s1 = new SubGoal("Survive", 1, true);
         goals.Add(s1, 3);
 
-        StartCoroutine("LostOverTimeDevil");
+        StartCoroutine("LostOverTime");
 
         if (targetRendererObject == null)
         {
@@ -112,19 +112,14 @@ public class Devil : Agents, IUnitInterface
 
     private void Update()
     {
-        if (needEvil > 100)
+        if (needEnjoy > 100)
         {
-            needEvil = 100;
+            needEnjoy = 100;
         }
 
-        if (needChill > 100)
+        if (needBelieve > 100)
         {
-            needChill = 100;
-        }
-
-        if (needJoy > 100)
-        {
-            needJoy = 100;
+            needBelieve = 100;
         }
 
         if (needPower > 100)
@@ -132,9 +127,14 @@ public class Devil : Agents, IUnitInterface
             needPower = 100;
         }
 
-        if (needEvil <= 0 || needChill <= 0 || needJoy <= 0 || needPower <= 0)
+        if (needPurity > 100)
         {
-            Instantiate(grave, transform.position, transform.rotation);
+            needPurity = 100;
+        }
+
+        if (needBelieve <= 0 || needEnjoy <= 0 || needPower <= 0 || needPurity <= 0)
+        {
+            Instantiate(revive, transform.position, transform.rotation);
             Destroy(gameObject);
         }
 
@@ -147,14 +147,14 @@ public class Devil : Agents, IUnitInterface
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    SetActiveDevil(this);
+                    SetActiveAngel(this);
                 }
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && !buildingAction) 
+        if (Input.GetMouseButtonDown(1) && !buildingAction)
         {
-            if (!isBuilding) 
+            if (!isBuilding)
             {
                 targetBuildUI.SetActive(false);
             }
@@ -174,20 +174,42 @@ public class Devil : Agents, IUnitInterface
             checkAction = true;
             DisableUI();
             ToggleCanvas(false);
+            Invoke("SaveTime", 30f);
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Devil") && isStunned)
+        {
+            Invoke("PrepareStun", 2f);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Devil"))
+        {
+            available = true;
+        }
+
+    }
     private void OnEnable()
     {
-        AddDevilState();
-        AddUIDevilState();
+        AddAngelState();
+        AddUIAngelState();
         AssignUIReferences();
     }
 
     private void OnDestroy()
     {
-        RemoveDevilState();
-        RemoveUIDevilState();
+        RemoveAngelState();
+        RemoveUIAngelState();
+    }
+
+    public void SaveTime()
+    {
+        buildingAction = false;
     }
 
     public void ActivateUIForBuildings()
@@ -199,11 +221,6 @@ public class Devil : Agents, IUnitInterface
     {
         ActivateUIElement(targetUIForNeeds);
     }
-
-    /*public void ActivateUIForTransport()
-    {
-        ActivateUIElement(targetUIForTransport);
-    }*/
 
     private void ActivateUIElement(GameObject uiElement)
     {
@@ -228,30 +245,23 @@ public class Devil : Agents, IUnitInterface
         {
             targetUIForNeeds.SetActive(false);
         }
-        /*if (targetUIForTransport != null)
-        {
-            targetUIForTransport.SetActive(false);
-        }*/
     }
 
-    /// <summary>
-    /// Activate and Deactivate choosen Devil UI and Shader, so that only one Devil can be selected 
-    /// </summary>
-
-    public static void SetActiveDevil(Devil newActiveDevil)
+    public static void SetActiveAngel(Angel newActiveAngel)
     {
-        if (activeDevil != null && activeDevil != newActiveDevil)
+        if (activeAngel != null && activeAngel != newActiveAngel)
         {
-            activeDevil.Deactivate();
+            activeAngel.Deactivate();
         }
 
-        foreach (Angel angel in FindObjectsByType<Angel>(FindObjectsSortMode.None))
+        foreach (Devil devil in FindObjectsByType<Devil>(FindObjectsSortMode.None))
         {
-            angel.Deactivate();
+            //devil.Deactivate();
+            Debug.Log("Devil was found");
         }
 
-        activeDevil = newActiveDevil; 
-        newActiveDevil.Activate(); 
+        activeAngel = newActiveAngel;
+        newActiveAngel.Activate();
     }
 
     private void Activate()
@@ -278,7 +288,7 @@ public class Devil : Agents, IUnitInterface
         if (targetMeshRenderer != null && targetMaterialIndex != -1)
         {
             Material[] materials = targetMeshRenderer.materials;
-            materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f); 
+            materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f);
             targetMeshRenderer.materials = materials;
         }
 
@@ -295,15 +305,14 @@ public class Devil : Agents, IUnitInterface
 
     public void AssignUIReferences()
     {
-        GameObject canvas = GameObject.Find("MainCanvas");
+        GameObject canvas = GameObject.Find("MainCanvas"); 
         if (canvas != null)
         {
 
-            targetBuildUI = canvas.transform.Find("DevilBuidlings").gameObject;
-            targetNeedUI = canvas.transform.Find("ShowDevilUINeeds").gameObject;
-            targetUIForBuildings = canvas.transform.Find("DevilBuidlings").gameObject;
-            targetUIForNeeds = canvas.transform.Find("ShowDevilUINeeds").gameObject;
-            //targetUIForTransport = canvas.transform.Find("Timer").gameObject;
+            targetBuildUI = canvas.transform.Find("AngelBuildings").gameObject; 
+            targetNeedUI = canvas.transform.Find("ShowAngelUINeeds").gameObject; 
+            targetUIForBuildings = canvas.transform.Find("AngelBuildings").gameObject; 
+            targetUIForNeeds = canvas.transform.Find("ShowAngelUINeeds").gameObject;
         }
         else
         {
@@ -311,100 +320,108 @@ public class Devil : Agents, IUnitInterface
         }
     }
 
-
-    /// <summary>
-    /// UI States are there for the visibility for the Player, because the other State will be removed when the Devil is not available
-    /// So the UI shows always the current count of Devils and the normal Devil State is hidden for the player and only important for the System
-    /// </summary>
-
-    public void AddDevilState()
+    public void AddAngelState()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        if (!worldStates.HasState(AvialableDevilKey))
+        if (!worldStates.HasState(AvialableAngelKey))
         {
-            worldStates.SetState(AvialableDevilKey, 1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+            worldStates.SetState(AvialableAngelKey, 1);
         }
         else
         {
-            worldStates.ModifyState(AvialableDevilKey, +1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+            worldStates.ModifyState(AvialableAngelKey, +1);
         }
     }
 
-    public void RemoveDevilState()
+    public void RemoveAngelState()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        if (worldStates.HasState(AvialableDevilKey))
+        if (worldStates.HasState(AvialableAngelKey))
         {
-            int currentCount = worldStates.GetStates()["Avail_devil"];
-            if (currentCount > 0)
+            int currentCount = worldStates.GetStates()["Avail_angel"];
+            if (currentCount > 0) 
             {
-                worldStates.ModifyState(AvialableDevilKey, -1);
+                worldStates.ModifyState(AvialableAngelKey, -1);
             }
         }
-
     }
 
-    public void AddUIDevilState()
+    public void AddUIAngelState()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        if (!worldStates.HasState(UIAvialableDevilKey))
+        if (!worldStates.HasState(UIAvialableAngelKey))
         {
-            worldStates.SetState(UIAvialableDevilKey, 1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
+            worldStates.SetState(UIAvialableAngelKey, 1);
         }
         else
         {
-            worldStates.ModifyState(UIAvialableDevilKey, +1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
+            worldStates.ModifyState(UIAvialableAngelKey, +1);
         }
     }
 
-    public void RemoveUIDevilState()
+    public void RemoveUIAngelState()
     {
         WorldStates worldStates = Worlds.Instance.GetWorld();
 
-        if (worldStates.HasState(UIAvialableDevilKey))
+        if (worldStates.HasState(UIAvialableAngelKey))
         {
-            int currentCount = worldStates.GetStates()["UI_Avail_devil"];
+            int currentCount = worldStates.GetStates()["UI_Avail_angel"];
             if (currentCount > 0)
             {
-                worldStates.ModifyState(UIAvialableDevilKey, -1);
+                worldStates.ModifyState(UIAvialableAngelKey, -1);
             }
         }
     }
-    IEnumerator LostOverTimeDevil()
+
+    IEnumerator LostOverTime()
     {
-        while (true)
+        while (true) 
         {
-            needEvil -= decayEvil;
-            needChill -= decayChill;
-            needJoy -= decayJoy;
+            needEnjoy -= decayEnjoy;
+            needBelieve -= decayBelieve;
             needPower -= decayPower;
+            needPurity -= decayPurity;
 
-            if (bullyActive)
+            if (isPurity)
             {
-                needEvil += bullyCharge;
+                needPurity += purityCharge;
             }
 
-            if (isChilled) 
+            if (isBelieve)
             {
-                needChill += chillCharge;
+                needBelieve += believeCharge;
             }
-
-            if (punshedAngel)
-            {
-                needEvil += punshPoints;
-                punshedAngel = false;
-            }
-
-
 
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void PrepareStun()
+    {
+        available = false;
+        isStunned = false;
+        StartCoroutine("StunAngel");
+    }
+
+    IEnumerator StunAngel()
+    {
+        while (!available)
+        {
+            if (currentAction != null)
+            {
+                currentAction.agent.isStopped = true;
+            }
+
+            yield return new WaitForSeconds(10f);
+            available = true;
+        }
+
+        if (currentAction != null)
+        {
+            currentAction.agent.isStopped = false;
         }
     }
 
@@ -421,11 +438,11 @@ public class Devil : Agents, IUnitInterface
 
             if (state)
             {
-                materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f); 
+                materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f);
             }
             else
             {
-                materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f); 
+                materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f);
             }
             targetMeshRenderer.materials = materials;
         }
@@ -446,3 +463,4 @@ public class Devil : Agents, IUnitInterface
         isTransporting = true;
     }
 }
+

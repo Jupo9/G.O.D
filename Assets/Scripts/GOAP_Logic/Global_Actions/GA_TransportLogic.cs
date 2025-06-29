@@ -84,12 +84,11 @@ public class GA_TransportLogic : Actions
 
         if (godNeedsResource)
         {
-            Debug.Log("GOD needs " + ressourceName);
-
             //FindTargetBuilding is an GameObject bool which true stands for Work_Building and false for Storage
             //If no available Work_Building exist, it will search for a Storage. 
+
+            //Debug.Log("GOD needs " + ressourceName);
             targetBuilding = FindTargetBuilding(true);
-            Debug.Log(targetBuilding);
 
             if (targetBuilding == null)
             {
@@ -105,8 +104,6 @@ public class GA_TransportLogic : Actions
         }
         else
         {
-            Debug.Log("Fill Storage");
-
             GameObject deliverStorage = FindStorageToDeliver();
 
             if (deliverStorage == null)
@@ -130,7 +127,6 @@ public class GA_TransportLogic : Actions
             if (mineScript != null && mineScript.GetMineStorePoint() != null)
             {
                 target = mineScript.GetMineStorePoint().gameObject;
-                Debug.Log("Unit will go to specific Mine_Store point of selected Mine.");
             }
             else
             {
@@ -155,8 +151,6 @@ public class GA_TransportLogic : Actions
 
         currentTransportCoroutine = StartCoroutine(PerformPickupAndContinue());
 
-        Debug.Log("After Corountine");
-
         return true;
     }
 
@@ -168,12 +162,10 @@ public class GA_TransportLogic : Actions
         if (GetComponent<Angel>() != null)
         {
             unitType = UnitType.Angel;
-            Debug.Log("Unit is Angel");
         }
         else if (GetComponent<Devil>() != null)
         {
             unitType = UnitType.Devil;
-            Debug.Log("Unit is Devil");
         }
         else
         {
@@ -190,14 +182,12 @@ public class GA_TransportLogic : Actions
             workingTag = "Mine";
             storeTag = "Storage";
             ressourceName = "Light";
-            Debug.Log("Set up is: Storage, Mine and Light");
         }
         else if (unitType == UnitType.Devil)
         {
             workingTag = "Mine";
             storeTag = "Storage";
             ressourceName = "Fire";
-            Debug.Log("Set up is: Storage, Mine and Fire");
         }
 
     }
@@ -224,12 +214,12 @@ public class GA_TransportLogic : Actions
     {
         if (unitType == UnitType.Angel)
         {
-            Debug.Log($"GOD Light Need: wantLight={god.wantLight}, fullLight={god.fullLight}");
+            //Debug.Log($"GOD Light Need: wantLight={god.wantLight}, fullLight={god.fullLight}");
             return god != null && god.wantLight > 0 && !god.fullLight;
         }
         else if (unitType == UnitType.Devil)
         {
-            Debug.Log($"GOD Fire Need: wantFire={god.wantFire}, fullFire={god.fullFire}");
+            //Debug.Log($"GOD Fire Need: wantFire={god.wantFire}, fullFire={god.fullFire}");
             return god != null && god.wantFire > 0 && !god.fullFire;
         }
 
@@ -240,13 +230,12 @@ public class GA_TransportLogic : Actions
     // Find Target Building with diffrent distance logic (close or near)
     private GameObject FindTargetBuilding(bool godNeedsResource)
     {
-        Debug.Log("Initiate FindTargetBuilding");
         // Explained: needed Tag is State ? if true : else (short version for if/else logic)
         string searchTag = godNeedsResource ? workingTag : storeTag;
 
         GameObject[] candidates = GameObject.FindGameObjectsWithTag(searchTag);
 
-        Debug.Log("the current Tag is " + searchTag);
+        //Debug.Log("the current Tag is " + searchTag);
 
         if (candidates.Length == 0)
         {
@@ -330,7 +319,6 @@ public class GA_TransportLogic : Actions
 
     private IEnumerator PerformPickupAndContinue()
     {
-        Debug.Log("Corountine PerfromPickupAndContinue");
         // Wait until Unit reached Target position
         while (Vector3.Distance(transform.position, target.transform.position) > targetDistance)
         {
@@ -340,15 +328,13 @@ public class GA_TransportLogic : Actions
         // Take ressource
         if (resourceManager != null && !string.IsNullOrEmpty(lockedRessourceType))
         {
-            Debug.Log("Ressource is taken by unit");
             resourceManager.ConsumeLockedRessource(lockedRessourceType);
             isCarryingResource = true;
 
-            Debug.Log($"Unit picked up {lockedRessourceType} from {resourceManager}.");
+            //Debug.Log($"Unit picked up {lockedRessourceType} from {resourceManager}.");
         }
 
         // Reset Lock
-        Debug.Log("Reset Lock");
         resourceManager = null;
         lockedRessourceType = "";
 
@@ -356,7 +342,6 @@ public class GA_TransportLogic : Actions
         target = null;
 
         // Start to go to the final target
-        Debug.Log("Start GoToDeliveryPoint");
         ShowCarriedResource(true);
         currentPhase = TransportPhase.ToDelivery;
         GoToDeliveryPoint();
@@ -367,15 +352,13 @@ public class GA_TransportLogic : Actions
     // Transport Way
     private void GoToDeliveryPoint()
     {
-        Debug.Log("GoToDeliveryPoint");
-
         finalTarget = FindDeliveryTarget();
 
         if (finalTarget != null)
         {
             agent.SetDestination(finalTarget.transform.position);
             StartCoroutine(PerformDelivery());
-            Debug.Log($"Heading to delivery point: {finalTarget.name}");
+            //Debug.Log($"Heading to delivery point: {finalTarget.name}");
         }
         else
         {
@@ -385,8 +368,6 @@ public class GA_TransportLogic : Actions
 
     private GameObject FindDeliveryTarget()
     {
-        Debug.Log("FindDeliveryTarget");
-
         if (godNeedsResource)
         {
             return GameObject.FindWithTag("GOD");
@@ -423,8 +404,6 @@ public class GA_TransportLogic : Actions
 
     private IEnumerator PerformDelivery()
     {
-        Debug.Log("PerformDelivery");
-
         target = finalTarget;
 
         while (Vector3.Distance(transform.position, finalTarget.transform.position) > targetDistance)
@@ -442,7 +421,6 @@ public class GA_TransportLogic : Actions
             {
                 if (unitType == UnitType.Angel)
                 {
-                    Debug.Log("increase Light");
                     god.IncreaseLightRessource();
                 }
                 else
@@ -483,7 +461,7 @@ public class GA_TransportLogic : Actions
             }
         }
 
-        Debug.Log($"{this.name} has delivered the ressource to {finalTarget.name}");
+        //Debug.Log($"{this.name} has delivered the ressource to {finalTarget.name}");
         currentPhase = TransportPhase.ToPickup;
     }
 
@@ -501,7 +479,6 @@ public class GA_TransportLogic : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Finish Transport Action");
         return true;
     }
 
@@ -554,7 +531,7 @@ public class GA_TransportLogic : Actions
         if (resourceManager != null && !string.IsNullOrEmpty(lockedRessourceType))
         {
             resourceManager.ReleaseLock(lockedRessourceType);
-            Debug.Log($"Free Locked Ressource: {lockedRessourceType} from {resourceManager}");
+            //Debug.Log($"Free Locked Ressource: {lockedRessourceType} from {resourceManager}");
             resourceManager = null;
             lockedRessourceType = "";
         }

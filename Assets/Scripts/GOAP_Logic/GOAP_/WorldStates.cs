@@ -4,20 +4,14 @@ using UnityEngine;
 [System.Serializable]
 public class WorldState
 {
-    /// <summary>
-    /// "key" represents the state that the Object get or have when it execute an action
-    /// for example hungy as key state before the npc get some food, and after the npc ate something the state changed to saturated
-    /// "value" is the number of keys that exist in the scene
-    /// for example 2 foodstands that are available
-    /// </summary>
     public string key;
     public int value;
 }
-/// <summary>
-/// Add, change, controll the States of the World, these mostly global states and are used for buidlings, npc counts or ressourcs
-/// </summary>
+
 public class WorldStates
 {
+    public delegate void WorldStateChanged(string key, int newValue);
+    public event WorldStateChanged OnStateChanged;
     public Dictionary<string, int> states;
 
     public WorldStates()
@@ -48,6 +42,8 @@ public class WorldStates
         if (states.ContainsKey(key))
         {
             states[key] += value;
+            OnStateChanged?.Invoke(key, states[key]);
+
             if (states[key] <= 0)
             {
                 RemoveState(key);
@@ -56,6 +52,7 @@ public class WorldStates
         else
         {
             states.Add(key, value);
+            OnStateChanged?.Invoke(key, value);
         }
     }
 
@@ -64,6 +61,7 @@ public class WorldStates
         if (states.ContainsKey(key))
         {
             states.Remove(key);
+            OnStateChanged?.Invoke(key, 0);
         }
     }
 
@@ -86,14 +84,8 @@ public class WorldStates
 
     public void SetState(string key, int value)
     {
-        if (states.ContainsKey(key))
-        {
-            states[key] = value;
-        }
-        else
-        {
-            states.Add(key, value); 
-        }
+        states[key] = value;
+        OnStateChanged?.Invoke(key, value);
     }
 
     public Dictionary<string, int> GetStates()

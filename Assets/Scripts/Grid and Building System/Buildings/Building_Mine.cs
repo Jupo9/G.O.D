@@ -47,26 +47,19 @@ public class Building_Mine : MonoBehaviour, IResourceManager
     [SerializeField] private Transform checkoutPoint;
     public Transform GetCheckoutPoint() => checkoutPoint;
 
+    [SerializeField] private RegisterResources registerResources; 
+
+    //WorldStates
+    private const string fireResourceKey = "Res_fire";
+    private const string lightResourceKey = "Res_light";
+
     private void Start()
     {
-        if (batteryVisual == null)
-        {
-            Debug.LogError("Battery is Missing");
-        }
-        else
-        {
-            Debug.Log("Battery was found");
-        }
+        SyncWithWorldState();
+        BatteryVisual();
 
-        for (int i = 0; i < fireAmount; i++)
-        {
-            batteryVisual?.AddSlot("Fire");
-        }
-
-        for (int i = 0; i < lightAmount; i++)
-        {
-            batteryVisual?.AddSlot("Light");
-        }
+        ResourceCalculator.Instance?.RegisterResourceSource(new ResourceManager("Res_fire", ResourceType.Mine, this));
+        ResourceCalculator.Instance?.RegisterResourceSource(new ResourceManager("Res_light", ResourceType.Mine, this));
     }
 
     private void Update()
@@ -169,24 +162,119 @@ public class Building_Mine : MonoBehaviour, IResourceManager
     public void IncreaseFireAmount()
     {
         fireAmount += 1;
+        RegisterFire();
         batteryVisual?.AddSlot("Fire");
     }
 
     public void DecreaseFireAmount()
     {
         fireAmount -= 1;
+        UnregisterFire();
         batteryVisual?.RemoveSlot("Fire");
     }
 
     public void IncreaseLightAmount()
     {
         lightAmount += 1;
+        RegisterLight();
         batteryVisual?.AddSlot("Light");
     }
 
     public void DecreaseLightAmount()
     {
         lightAmount -= 1;
+        UnregisterLight();
         batteryVisual?.RemoveSlot("Light");
+    }
+
+    private void BatteryVisual()
+    {
+        /*if (batteryVisual == null)
+        {
+            Debug.LogError("Battery is Missing");
+        }
+        else
+        {
+            Debug.Log("Battery was found");
+        }*/
+
+        for (int i = 0; i < fireAmount; i++)
+        {
+            batteryVisual?.AddSlot("Fire");
+        }
+
+        for (int i = 0; i < lightAmount; i++)
+        {
+            batteryVisual?.AddSlot("Light");
+        }
+    }
+
+    // ------------- Register World States -------------
+
+    private void SyncWithWorldState()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(fireResourceKey))
+        {
+            worldStates.SetState(fireResourceKey, 0);
+        }
+
+        if (!worldStates.HasState(lightResourceKey))
+        {
+            worldStates.SetState(lightResourceKey, 0);
+        }
+
+        worldStates.ModifyState(fireResourceKey, fireAmount);
+        worldStates.ModifyState(lightResourceKey, lightAmount);
+        ResourceWatcher.Notify();
+    }
+
+    private void RegisterFire()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(fireResourceKey))
+        {
+            worldStates.SetState(fireResourceKey, 0);
+        }
+
+        worldStates.ModifyState(fireResourceKey, +1);
+        ResourceWatcher.Notify();
+    }
+
+    private void RegisterLight()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (!worldStates.HasState(lightResourceKey))
+        {
+            worldStates.SetState(lightResourceKey, 0);
+        }
+
+        worldStates.ModifyState(lightResourceKey, +1);
+        ResourceWatcher.Notify();
+    }
+
+    private void UnregisterFire()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(fireResourceKey))
+        {
+            worldStates.ModifyState(fireResourceKey, -1);
+        }
+        ResourceWatcher.Notify();
+    }
+
+    private void UnregisterLight()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        if (worldStates.HasState(lightResourceKey))
+        {
+            worldStates.ModifyState(lightResourceKey, -1);
+        }
+        ResourceWatcher.Notify();
     }
 }
