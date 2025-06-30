@@ -37,6 +37,8 @@ public class InputManager : MonoBehaviour
     public event Action<float> OnCameraRotate;
     public event Action OnCameraResetRotation;
 
+    [SerializeField] private WorkAndTransportButton workAndTransportUI;
+
     private Vector3 lastPosition;
 
     private void Awake()
@@ -174,6 +176,11 @@ public class InputManager : MonoBehaviour
 
     private void HandleCreatureSelection()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100f, creatureMask))
@@ -218,6 +225,12 @@ public class InputManager : MonoBehaviour
         {
             cg.alpha = 1f;
         }
+
+        Agents agent = creature.GetComponent<Agents>();
+        if (agent != null && workAndTransportUI != null)
+        {
+            workAndTransportUI.SetSelectedAgent(agent);
+        }
     }
 
     private void DeselectCreature()
@@ -243,5 +256,10 @@ public class InputManager : MonoBehaviour
         selectedCreature = null;
         selectedOutline = null;
         selectedTag = null;
+
+        if (workAndTransportUI != null)
+        {
+            workAndTransportUI.SetSelectedAgent(null);
+        }
     }
 }

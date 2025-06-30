@@ -15,10 +15,14 @@ GameObject:
   - component: {fileID: 2759355562987283823}
   - component: {fileID: 7351807628753264383}
   - component: {fileID: 5149483047189268368}
+  - component: {fileID: 928147142214094503}
   - component: {fileID: 881109568504978597}
   - component: {fileID: 8794823067698096892}
   - component: {fileID: 7793379044468183175}
   - component: {fileID: 5470876419120829715}
+  - component: {fileID: 7193746627117688321}
+  - component: {fileID: 2577281994876994176}
+  - component: {fileID: 2841807680439358943}
   - component: {fileID: 3040695652865304283}
   m_Layer: 3
   m_Name: DevilManager
@@ -183,6 +187,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineObject: {fileID: 7090831787753915625}
+--- !u!114 &928147142214094503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416235645599343849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b424e91c65247614abd61a6c69867e31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &881109568504978597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,12 +254,8 @@ MonoBehaviour:
   target: {fileID: 0}
   targetTag: Devil
   duration: 10
-  preConditions:
-  - key: working
-    value: 0
-  afterEffects:
-  - key: transport
-    value: 0
+  preConditions: []
+  afterEffects: []
   agent: {fileID: 0}
   running: 0
   targetDistance: 1.1
@@ -266,9 +278,7 @@ MonoBehaviour:
   targetTag: Devil
   duration: 12
   preConditions: []
-  afterEffects:
-  - key: working
-    value: 0
+  afterEffects: []
   agent: {fileID: 0}
   running: 0
   workingTime: 10
@@ -299,6 +309,81 @@ MonoBehaviour:
   agent: {fileID: 0}
   running: 0
   buildTime: 2.5
+--- !u!114 &7193746627117688321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416235645599343849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab93349d200880146ad6f0f962fdf9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: HEAT
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: HeatPoint
+  duration: 0
+  preConditions: []
+  afterEffects:
+  - key: Heat
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  heatTime: 3
+--- !u!114 &2577281994876994176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416235645599343849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a53c8aec68a986c4793bc6ade2044e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: SUMMON
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: SummonPoint
+  duration: 0
+  preConditions: []
+  afterEffects:
+  - key: Summon
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  summonTime: 3
+--- !u!114 &2841807680439358943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416235645599343849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b0de50bd093b247a9d033cdf66e3f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: STAIN
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: StainPoint
+  duration: 0
+  preConditions: []
+  afterEffects:
+  - key: Stain
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  stainTime: 3
 --- !u!114 &3040695652865304283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,7 +403,11 @@ MonoBehaviour:
   targetTag: Devil
   duration: 10
   preConditions:
-  - key: transport
+  - key: Summon
+    value: 0
+  - key: Heat
+    value: 0
+  - key: Stain
     value: 0
   afterEffects:
   - key: Survive

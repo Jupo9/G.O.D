@@ -240,10 +240,14 @@ GameObject:
   - component: {fileID: 8978145579940615677}
   - component: {fileID: 5635046076254567006}
   - component: {fileID: 4647746923435293516}
+  - component: {fileID: 5670466691915470832}
   - component: {fileID: 5620621513218831420}
   - component: {fileID: 2955713069280050144}
   - component: {fileID: 6079531534288577327}
   - component: {fileID: 4114203731159211212}
+  - component: {fileID: 2727482077413841794}
+  - component: {fileID: 9112329873331080629}
+  - component: {fileID: 3362629907800872969}
   - component: {fileID: 1115139751628603151}
   m_Layer: 3
   m_Name: AngelManager
@@ -409,6 +413,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineObject: {fileID: 2324802281911212036}
+--- !u!114 &5670466691915470832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219769873427762393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b424e91c65247614abd61a6c69867e31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5620621513218831420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,9 +493,7 @@ MonoBehaviour:
   targetTag: Angel
   duration: 10
   preConditions: []
-  afterEffects:
-  - key: transport
-    value: 0
+  afterEffects: []
   agent: {fileID: 0}
   running: 0
   targetDistance: 1.1
@@ -501,12 +515,8 @@ MonoBehaviour:
   target: {fileID: 0}
   targetTag: Angel
   duration: 12
-  preConditions:
-  - key: transport
-    value: 0
-  afterEffects:
-  - key: working
-    value: 0
+  preConditions: []
+  afterEffects: []
   agent: {fileID: 0}
   running: 0
   workingTime: 10
@@ -533,6 +543,81 @@ MonoBehaviour:
   agent: {fileID: 0}
   running: 0
   buildTime: 2.5
+--- !u!114 &2727482077413841794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219769873427762393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e25df59ccb25e6a4f8ed9a5cf8956a49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: BELIEVE
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: BelievePoint
+  duration: 10
+  preConditions: []
+  afterEffects:
+  - key: Believe
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  believeTime: 3
+--- !u!114 &9112329873331080629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219769873427762393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61642ee25c92064695b4ceca5abf9bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: PURITY
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: PurityPoint
+  duration: 0
+  preConditions: []
+  afterEffects:
+  - key: Purity
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  purityTime: 3
+--- !u!114 &3362629907800872969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219769873427762393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41d82d2ca08a7c4fb836771167957e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: SPIRIT
+  priorityValue: 1
+  timeCosts: 2
+  target: {fileID: 0}
+  targetTag: SpiritPoint
+  duration: 0
+  preConditions: []
+  afterEffects:
+  - key: Spirit
+    value: 0
+  agent: {fileID: 0}
+  running: 0
+  spiritTime: 3
 --- !u!114 &1115139751628603151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,9 +635,13 @@ MonoBehaviour:
   timeCosts: 2
   target: {fileID: 0}
   targetTag: Angel
-  duration: 10000
+  duration: 10
   preConditions:
-  - key: working
+  - key: Believe
+    value: 0
+  - key: Spirit
+    value: 0
+  - key: Purity
     value: 0
   afterEffects:
   - key: Survive

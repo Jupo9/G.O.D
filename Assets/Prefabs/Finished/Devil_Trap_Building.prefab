@@ -679,7 +679,7 @@ GameObject:
   - component: {fileID: 6931571648707494411}
   m_Layer: 0
   m_Name: TrapPoint
-  m_TagString: Untagged
+  m_TagString: StainPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -765,6 +765,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateParts: {fileID: 9190604551875560969}
   navMeshManager: {fileID: 0}
+  isAvailable: 0
 --- !u!1 &7268867259640175094
 GameObject:
   m_ObjectHideFlags: 0

@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 3879200710275934603}
   m_Layer: 0
   m_Name: WaterfallPoint
-  m_TagString: Untagged
+  m_TagString: PurityPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -841,6 +841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateParts: {fileID: 589095870189491986}
   navMeshManager: {fileID: 0}
+  isAvailable: 0
 --- !u!1 &7322462134945842050
 GameObject:
   m_ObjectHideFlags: 0

@@ -637,7 +637,7 @@ GameObject:
   - component: {fileID: 1842645634391107529}
   m_Layer: 0
   m_Name: LightCharge_Point
-  m_TagString: Untagged
+  m_TagString: SpiritPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -723,6 +723,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateParts: {fileID: 3753719757681964684}
   navMeshManager: {fileID: 0}
+  isAvailable: 0
 --- !u!1 &5633579189662109564
 GameObject:
   m_ObjectHideFlags: 0

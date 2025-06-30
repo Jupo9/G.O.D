@@ -40,6 +40,12 @@ TagManager:
   - Mine
   - Mine_Store
   - Obstacle
+  - BelievePoint
+  - PurityPoint
+  - SpiritPoint
+  - HeatPoint
+  - SummonPoint
+  - StainPoint
   layers:
   - Default
   - TransparentFX

@@ -48,10 +48,29 @@ public class Building_Altar : MonoBehaviour, IResourceManager
 
         SyncWithWorldState();
 
-        navMeshManager.BuildNavMesh();
+        NavMeshSync();
 
         ResourceCalculator.Instance?.RegisterResourceSource(new ResourceManager("Res_fire", ResourceType.Mine, this));
         ResourceCalculator.Instance?.RegisterResourceSource(new ResourceManager("Res_light", ResourceType.Mine, this));
+    }
+
+    // ------------- NavMesh Update -------------
+
+    private void NavMeshSync()
+    {
+        if (navMeshManager == null)
+        {
+            navMeshManager = FindAnyObjectByType<NavMeshSurface>();
+        }
+
+        if (navMeshManager != null)
+        {
+            navMeshManager.BuildNavMesh();
+        }
+        else
+        {
+            Debug.LogWarning("No NavMeshSurface found in the scene.");
+        }
     }
 
     // ------------- Interface (IResourceManager) -------------

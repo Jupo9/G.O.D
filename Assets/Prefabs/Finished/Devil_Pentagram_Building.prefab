@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 6265115233195434620}
   m_Layer: 0
   m_Name: Pentagram_Manager
-  m_TagString: Untagged
+  m_TagString: SummonPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1018,6 +1018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateParts: {fileID: 4751375087622483611}
   navMeshManager: {fileID: 0}
+  isAvailable: 0
 --- !u!1 &5931237061874818067
 GameObject:
   m_ObjectHideFlags: 0

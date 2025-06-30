@@ -271,7 +271,7 @@ public class Agents : MonoBehaviour
 
     private bool IsTemporaryAction(Actions action)
     {
-        return action is GA_Building; // später ersetzten durch: return action is GA_Building || action is GA_Working || action is GA_TransportLogic;
+         return action is GA_Building || action is GA_Working || action is GA_TransportLogic;
     }
 
     public void TemporaryAction(Actions tempAction)

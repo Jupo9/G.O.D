@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5367397306835996067}
   m_Layer: 0
   m_Name: FirePoint
-  m_TagString: Untagged
+  m_TagString: HeatPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateParts: {fileID: 2542389467830307330}
   navMeshManager: {fileID: 0}
+  isAvailable: 0
 --- !u!1 &180769210987648947
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Building_PrayStatue : MonoBehaviour
 {
-    public bool isAvailable = false;
+    public bool isAvailable = true;
 
     [System.Serializable]
     public class Waypoint
