@@ -5,12 +5,10 @@ using UnityEngine.AI;
 public abstract class Actions : MonoBehaviour
 {
     public string actionName = "Action";
-    public float priorityValue = 1f;
-    public float timeCosts = 2f;
     public GameObject target;
     public string targetTag;
 
-    public float duration = 0f;
+    //public float duration = 0f;
     public WorldState[] preConditions;
     public WorldState[] afterEffects;
     public NavMeshAgent agent;
@@ -19,6 +17,7 @@ public abstract class Actions : MonoBehaviour
     public Dictionary<string, int> effect;
 
     public WorldStates agentBeliefs;
+    public Agents agentScriptReference;
 
     public bool running = false;
 
@@ -109,6 +108,12 @@ public abstract class Actions : MonoBehaviour
         {
             relevantState[eff.Key] = eff.Value;
         }
+    }
+
+    public void FinishAction()
+    {
+        running = false;
+        agentScriptReference?.CompleteAction();
     }
 
     public abstract bool PrePerform();

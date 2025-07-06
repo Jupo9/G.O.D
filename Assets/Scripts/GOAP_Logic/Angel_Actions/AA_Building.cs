@@ -41,7 +41,6 @@ public class AA_Building : Actions
         target = closestBuilding;
         agent.SetDestination(target.transform.position);
 
-        duration = 30;
 
         changeBuildState = closestBuilding.GetComponentInChildren<ChangeBuildState>();
         if (changeBuildState == null)

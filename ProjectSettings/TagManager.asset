@@ -50,12 +50,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Creature
+  - Unit
   - Water
   - UI
   - Mouse
   - Placement
-  - 
+  - Avoiding
   - 
   - 
   - 

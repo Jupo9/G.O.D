@@ -17,8 +17,8 @@ public class DA_PunshAngel : Actions
         Angel angelScript = other.GetComponent<Angel>();
         if (angelScript != null)
         {
-            angelScript.isStunned = true;
-            devil.punshedAngel = true;
+            //angelScript.isStunned = true;
+            //devil.punshedAngel = true;
             Debug.Log($"{angelScript.name} is now punshable by {this.name}.");
         }
     }
@@ -57,7 +57,7 @@ public class DA_PunshAngel : Actions
 
             //Implement angelScript Remove and ADD functions!
 
-            if (distance < closestDistance && angelScript != null && !angelScript.isStunned)
+            if (distance < closestDistance && angelScript != null)
             {
                 closestDistance = distance;
                 closestAngel = angel;

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AA_Believe : Actions
 {
@@ -75,7 +73,7 @@ public class AA_Believe : Actions
             prayStatue.isAvailable = true;
         }
 
-        running = false;
+        FinishAction();
     }
 
     public override bool PostPerform()

@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AA_Social : Actions
 {
     public override bool PrePerform()
     {
+        FinishAction();
         return true;
     }
 

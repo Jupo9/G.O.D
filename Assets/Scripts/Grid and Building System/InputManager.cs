@@ -1,5 +1,4 @@
 using System;
-using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,9 +16,9 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private Camera sceneCamera;
     [SerializeField] private LayerMask placementLayermask;
-    [SerializeField] private LayerMask creatureMask;
+    [SerializeField] private LayerMask unitMask;
 
-    private GameObject selectedCreature;
+    private GameObject selectedUnit;
     private string selectedTag;
     private SelectionOutline selectedOutline;
 
@@ -30,6 +29,7 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private GameObject escapeBuildingMenu;
     [SerializeField] private GameObject[] disableBuildingUI;
+    [SerializeField] private GameObject needsUIContainer;
 
     //Events for CameraMovement
     public event Action<Vector2> OnCameraMove;
@@ -38,6 +38,8 @@ public class InputManager : MonoBehaviour
     public event Action OnCameraResetRotation;
 
     [SerializeField] private WorkAndTransportButton workAndTransportUI;
+
+    [SerializeField] private UIForCurrentNeeds uiForCurrentNeeds;
 
     private Vector3 lastPosition;
 
@@ -78,7 +80,7 @@ public class InputManager : MonoBehaviour
 
         PauseGame();
 
-        HandleCreatureSelection();
+        HandleUnitSelection();
     }
 
     // ------------- Building Grid Controll -------------
@@ -174,7 +176,7 @@ public class InputManager : MonoBehaviour
 
     // ------------- Select Unit -------------
 
-    private void HandleCreatureSelection()
+    private void HandleUnitSelection()
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -183,59 +185,69 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100f, creatureMask))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100f, unitMask))
             {
                 GameObject target = hit.collider.gameObject;
 
-                if (target.layer == LayerMask.NameToLayer("Creature"))
+                if (target.layer == LayerMask.NameToLayer("Unit"))
                 {
-                    SelectCreature(target);
+                    SelectUnit(target);
+                    needsUIContainer.SetActive(true);
                 }
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            DeselectCreature();
+            DeselectUnit();
+            needsUIContainer.SetActive(false);
         }
     }
 
-    private void SelectCreature(GameObject creature)
+    private void SelectUnit(GameObject unit)
     {
-        if (selectedCreature == creature)
+        if (selectedUnit == unit)
         {
             return;
         }
 
-        DeselectCreature();
+        DeselectUnit();
 
-        selectedCreature = creature;
-        selectedTag = creature.tag;
+        selectedUnit = unit;
+        selectedTag = unit.tag;
 
         // activate outline
-        selectedOutline = creature.GetComponent<SelectionOutline>();
+        selectedOutline = unit.GetComponent<SelectionOutline>();
         if (selectedOutline != null)
         {
             selectedOutline.SetOutline(true);
         }
 
         // activate Canvasgroup
-        CanvasGroup cg = creature.GetComponentInChildren<CanvasGroup>();
+        CanvasGroup cg = unit.GetComponentInChildren<CanvasGroup>();
         if (cg != null)
         {
             cg.alpha = 1f;
         }
 
-        Agents agent = creature.GetComponent<Agents>();
+        Agents agent = unit.GetComponent<Agents>();
         if (agent != null && workAndTransportUI != null)
         {
             workAndTransportUI.SetSelectedAgent(agent);
         }
+
+        MonoBehaviour needs = unit.GetComponent<Devil>() as MonoBehaviour
+                           ?? unit.GetComponent<Angel>() as MonoBehaviour;
+
+        if (uiForCurrentNeeds != null)
+        {
+            uiForCurrentNeeds.SetTarget(needs);
+        }
     }
 
-    private void DeselectCreature()
+    private void DeselectUnit()
     {
-        if (selectedCreature == null)
+        if (selectedUnit == null)
         {
             return;
         }
@@ -247,19 +259,24 @@ public class InputManager : MonoBehaviour
         }
 
         // deactivate Canvasgroup
-        CanvasGroup cg = selectedCreature.GetComponentInChildren<CanvasGroup>();
+        CanvasGroup cg = selectedUnit.GetComponentInChildren<CanvasGroup>();
         if (cg != null)
         {
             cg.alpha = 0f;
         }
 
-        selectedCreature = null;
-        selectedOutline = null;
-        selectedTag = null;
-
         if (workAndTransportUI != null)
         {
             workAndTransportUI.SetSelectedAgent(null);
         }
+
+        if (uiForCurrentNeeds != null)
+        {
+            uiForCurrentNeeds.SetTarget(null);
+        }
+
+        selectedUnit = null;
+        selectedOutline = null;
+        selectedTag = null;
     }
 }

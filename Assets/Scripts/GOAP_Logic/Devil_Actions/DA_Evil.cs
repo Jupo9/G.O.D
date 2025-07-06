@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DA_Evil : Actions
 {
     public override bool PrePerform()
     {
+        FinishAction();
         return true;
     }
 

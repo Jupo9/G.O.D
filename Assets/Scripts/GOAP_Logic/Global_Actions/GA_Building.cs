@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GA_Building : Actions
@@ -55,6 +54,7 @@ public class GA_Building : Actions
         Debug.Log("Building was succesful placed");
 
         agent.isStopped = false;
+        FinishAction();
     }
 
     public void SetConstructionTarget(Construction target)

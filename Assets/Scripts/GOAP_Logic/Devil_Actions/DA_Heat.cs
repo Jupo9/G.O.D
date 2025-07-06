@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DA_Heat : Actions
@@ -75,7 +74,7 @@ public class DA_Heat : Actions
             heat.isAvailable = true;
         }
 
-        running = false;
+        FinishAction();
     }
 
     public override bool PostPerform()

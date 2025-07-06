@@ -1,14 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 
 public class Node
 {
-    /// <summary>
-    /// Represents a node in the planning graph, used for goal-oriented action planning.
-    /// Each node stores its parent, cost, current state, and the action leading to this state.
-    /// </summary>
     public Node parent;
     public float cost;
     public Dictionary<string, int> state;
@@ -23,11 +18,6 @@ public class Node
     }
 }
 
-/// <summary>
-/// Handles goal-oriented actions. planning them by constructing a plan (a sequence of actions) 
-/// that reach a given goal based on the world's current state and available actions. All actions get sorted by there cost and useage
-/// the planner, like the world states and world not really are in the scenes they communicate thourgh other scripts like Agents and Actions
-/// </summary>
 public class Planner
 {
     public Queue<Actions> plan(List<Actions> actions, Dictionary<string, int> goal, WorldStates states)
@@ -42,8 +32,6 @@ public class Planner
             }
         }
 
-        usableActions.Sort((a, b) => b.priorityValue.CompareTo(a.priorityValue));
-
         List<Node> leaves = new List<Node>();
         Node start = new Node(null, 0, Worlds.Instance.GetWorld().GetStates(), null);
 
@@ -51,7 +39,6 @@ public class Planner
 
         if(!success)
         {
-           //NO PLAN
             return null;
         }
 
@@ -79,7 +66,6 @@ public class Planner
         return queue.Count > 0 ? queue : null;
     }
 
-    // Builds a graph of nodes to explore potential plans, starting from the initial state.
     private bool BuildGraph(Node start, List<Node> leaves, List<Actions> usableActions, Dictionary<string, int> goal)
     {
         PriorityQueue<Node> openList = new PriorityQueue<Node>();
@@ -105,7 +91,7 @@ public class Planner
                         currentState[eff.Key] = eff.Value;
                     }
 
-                    Node child = new Node(currentNode, currentNode.cost + action.priorityValue, currentState, action);
+                    Node child = new Node(currentNode, currentNode.cost + 1f, currentState, action);
                     openList.Enqueue(child, child.cost);
                 }
             }
@@ -114,24 +100,53 @@ public class Planner
         return false;
     }
 
-    // Priority queue implementation for handling nodes by priority.
     public class PriorityQueue<T>
     {
-        private List<(T item, float priority)> elements = new List<(T, float)>();
+        private List<(T item, float priority)> elements = new();
 
         public int Count => elements.Count;
 
         public void Enqueue(T item, float priority)
         {
             elements.Add((item, priority));
-            elements.Sort((a, b) => a.priority.CompareTo(b.priority)); 
+            int c = elements.Count - 1;
+
+            while (c > 0)
+            {
+                int parent = (c - 1) / 2;
+                if (elements[c].priority >= elements[parent].priority)
+                    break;
+
+                (elements[c], elements[parent]) = (elements[parent], elements[c]);
+                c = parent;
+            }
         }
 
         public T Dequeue()
         {
-            var item = elements[0];
-            elements.RemoveAt(0);
-            return item.item;
+            int li = elements.Count - 1;
+            (T item, float priority) frontItem = elements[0];
+            elements[0] = elements[li];
+            elements.RemoveAt(li);
+
+            --li;
+            int pi = 0;
+            while (true)
+            {
+                int ci = pi * 2 + 1;
+                if (ci > li) break;
+                int rc = ci + 1;
+                if (rc <= li && elements[rc].priority < elements[ci].priority)
+                    ci = rc;
+
+                if (elements[pi].priority <= elements[ci].priority)
+                    break;
+
+                (elements[pi], elements[ci]) = (elements[ci], elements[pi]);
+                pi = ci;
+            }
+
+            return frontItem.item;
         }
     }
 

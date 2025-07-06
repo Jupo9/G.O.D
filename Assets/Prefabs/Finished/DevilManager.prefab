@@ -215,14 +215,18 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   playersWish: 0
   spawnWaitingTime: 6
+  needBehaviour: 0
   unitType: 1
-  targetRadius: 1
   temporaryActionIndicator: {fileID: 1494325691982900831}
   currentFeeling: 100
   needEvil: 100
   needChill: 100
   needJoy: 100
   needPower: 100
+  evil: 100
+  summon: 100
+  stain: 100
+  heat: 100
   decayEvil: 0
   decayChill: 0
   decayJoy: 0
@@ -249,14 +253,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: TRANSPORT
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
-  duration: 10
   preConditions: []
   afterEffects: []
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   targetDistance: 1.1
 --- !u!114 &7793379044468183175
@@ -272,14 +274,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: Action
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
-  duration: 12
   preConditions: []
   afterEffects: []
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   workingTime: 10
 --- !u!114 &5470876419120829715
@@ -295,11 +295,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: Action
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: 
-  duration: 10
   preConditions:
   - key: 
     value: 0
@@ -307,6 +304,7 @@ MonoBehaviour:
   - key: 
     value: 0
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   buildTime: 2.5
 --- !u!114 &7193746627117688321
@@ -322,16 +320,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: HEAT
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: HeatPoint
-  duration: 0
   preConditions: []
   afterEffects:
   - key: Heat
     value: 0
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   heatTime: 3
 --- !u!114 &2577281994876994176
@@ -347,16 +343,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: SUMMON
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: SummonPoint
-  duration: 0
   preConditions: []
   afterEffects:
   - key: Summon
     value: 0
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   summonTime: 3
 --- !u!114 &2841807680439358943
@@ -372,16 +366,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: STAIN
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: StainPoint
-  duration: 0
   preConditions: []
   afterEffects:
   - key: Stain
     value: 0
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   stainTime: 3
 --- !u!114 &3040695652865304283
@@ -397,11 +389,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: Move Around
-  priorityValue: 1
-  timeCosts: 2
   target: {fileID: 0}
   targetTag: Devil
-  duration: 10
   preConditions:
   - key: Summon
     value: 0
@@ -413,10 +402,16 @@ MonoBehaviour:
   - key: Survive
     value: 0
   agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
   running: 0
   moveRadius: 25
   minMovementTime: 5
   maxMovementTime: 15
+  avoidZonesLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  avoidRadius: 5
+  maxTries: 10
 --- !u!1 &1494325691982900831
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,7 +508,6 @@ GameObject:
   - component: {fileID: 377657749763812765}
   - component: {fileID: 6224410040000383773}
   - component: {fileID: 1324605313124618967}
-  - component: {fileID: 9081345627957515909}
   m_Layer: 3
   m_Name: Cylinder
   m_TagString: Untagged
@@ -588,29 +582,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &9081345627957515909
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6435462068889140988}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &7090831787753915625
 GameObject:
   m_ObjectHideFlags: 0

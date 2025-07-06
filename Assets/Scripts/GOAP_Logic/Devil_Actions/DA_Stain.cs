@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DA_Stain : Actions
 {
     [Header("Stain Settings")]
-    //[SerializeField] private float stainTime = 3f;
+    [SerializeField] private float stainTime = 3f;
 
     private Building_Trap stained;
 
@@ -66,7 +65,7 @@ public class DA_Stain : Actions
         agent.isStopped = true;
 
 
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(stainTime);
 
         agent.isStopped = false;
 
@@ -75,7 +74,7 @@ public class DA_Stain : Actions
             stained.isAvailable = true;
         }
 
-        running = false;
+        FinishAction();
     }
 
     public override bool PostPerform()

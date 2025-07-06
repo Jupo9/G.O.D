@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AA_Purity : Actions
@@ -74,7 +73,7 @@ public class AA_Purity : Actions
             waterFall.isAvailable = true;
         }
 
-        running = false;
+        FinishAction();
     }
 
     public override bool PostPerform()

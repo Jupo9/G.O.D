@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class Angel : Agents, IUnitInterface
@@ -6,48 +7,18 @@ public class Angel : Agents, IUnitInterface
     [Header("Needs")]
     public float currentFeeling = 100f;
 
-    [Header("UI")]
-    public GameObject objectCanvas;
-    public GameObject targetRendererObject;
-    public GameObject targetBuildUI;
-    public GameObject targetNeedUI;
-    public string targetMaterialName = "Outline_1";
-
-    public GameObject targetUIForBuildings;
-    public GameObject targetUIForNeeds;
-
-    private MeshRenderer targetMeshRenderer;
-    private int targetMaterialIndex = -1;
-
     [Header("Believes")]
-    public float needEnjoy = 100f;
-    public float needBelieve = 100f;
-    public float needPower = 100f;
-    public float needPurity = 100f;
-
-    [Header("Decays")]
-    public float decayEnjoy = 1.0f;
-    public float decayBelieve = 1.0f;
-    public float decayPower = 1.0f;
-    public float decayPurity = 1.0f;
-
-    [Header("Charge Power")]
-    public float purityCharge = 1.0f;
-    public float believeCharge = 1.0f;
+    public float spirit = 100f;
+    public float social = 100f;
+    public float believe = 100f;
+    public float purity = 100f;
 
     [Header("Current State")]
     public bool available = true;
-    public bool isStunned = false;
-    public bool isPurity = false;
-    public bool isBelieve = false;
 
     public GameObject lightResource;
 
-    public WorldStates localStates;
-
     public GameObject revive;
-
-    private static Angel activeAngel;
 
     [Header("SubGoalsBools")]
     public bool isWorking = false;
@@ -58,15 +29,16 @@ public class Angel : Agents, IUnitInterface
     public bool choosenOne = false;
     public bool buildingAction = false;
 
+    //World keys
+    private const string AvialableAngelKey = "Avail_angel";
+    private const string UIAvialableAngelKey = "UI_Avail_angel";
+
+    public WorldStates localStates;
+
     //To choose if the unit search for farest or nearest Buildings when transport something 
     public bool preferClosest = true;
     public bool PreferClosest => preferClosest;
 
-    private bool checkAction = false;
-    //public bool isSpawning = true;
-
-    private const string AvialableAngelKey = "Avail_angel"; 
-    private const string UIAvialableAngelKey = "UI_Avail_angel";
 
     void Awake()
     {
@@ -78,127 +50,18 @@ public class Angel : Agents, IUnitInterface
         base.Start();
         SubGoal s1 = new SubGoal("Survive", 1, true);
         goals.Add(s1, 3);
-
-        StartCoroutine("LostOverTime");
-
-        if (targetRendererObject == null)
-        {
-            Debug.LogError("Kein Zielobjekt für den MeshRenderer zugewiesen!");
-            return;
-        }
-
-        targetMeshRenderer = targetRendererObject.GetComponent<MeshRenderer>();
-        if (targetMeshRenderer == null)
-        {
-            Debug.LogError($"Kein MeshRenderer im Zielobjekt '{targetRendererObject.name}' gefunden!");
-            return;
-        }
-
-        Material[] materials = targetMeshRenderer.materials;
-        for (int i = 0; i < materials.Length; i++)
-        {
-            if (materials[i].name.Contains(targetMaterialName))
-            {
-                targetMaterialIndex = i;
-                break;
-            }
-        }
-
-        if (targetMaterialIndex == -1)
-        {
-            Debug.LogWarning($"Kein Material mit dem Namen '{targetMaterialName}' gefunden!");
-        }
     }
 
     private void Update()
     {
-        if (needEnjoy > 100)
-        {
-            needEnjoy = 100;
-        }
-
-        if (needBelieve > 100)
-        {
-            needBelieve = 100;
-        }
-
-        if (needPower > 100)
-        {
-            needPower = 100;
-        }
-
-        if (needPurity > 100)
-        {
-            needPurity = 100;
-        }
-
-        if (needBelieve <= 0 || needEnjoy <= 0 || needPower <= 0 || needPurity <= 0)
-        {
-            Instantiate(revive, transform.position, transform.rotation);
-            Destroy(gameObject);
-        }
-
-        if (Input.GetMouseButtonDown(0) && !buildingAction)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider.gameObject == gameObject)
-                {
-                    SetActiveAngel(this);
-                }
-            }
-        }
-
-        if (Input.GetMouseButtonDown(1) && !buildingAction)
-        {
-            if (!isBuilding)
-            {
-                targetBuildUI.SetActive(false);
-            }
-
-            targetNeedUI.SetActive(false);
-
-            ToggleCanvas(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && !buildingAction)
-        {
-            DisableUI();
-        }
-
-        if (buildingAction && !checkAction)
-        {
-            checkAction = true;
-            DisableUI();
-            ToggleCanvas(false);
-            Invoke("SaveTime", 30f);
-        }
+        NeedLostOverTime();
+        AngelEnds();
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Devil") && isStunned)
-        {
-            Invoke("PrepareStun", 2f);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Devil"))
-        {
-            available = true;
-        }
-
-    }
     private void OnEnable()
     {
         AddAngelState();
         AddUIAngelState();
-        AssignUIReferences();
     }
 
     private void OnDestroy()
@@ -207,116 +70,27 @@ public class Angel : Agents, IUnitInterface
         RemoveUIAngelState();
     }
 
-    public void SaveTime()
+    private void NeedLostOverTime()
     {
-        buildingAction = false;
+        social -= Time.deltaTime * 0.01f;
+        social = Mathf.Clamp01(social);
+
+        purity -= Time.deltaTime * 0.01f;
+        purity = Mathf.Clamp01(purity);
+
+        spirit -= Time.deltaTime * 0.01f;
+        spirit = Mathf.Clamp01(spirit);
+
+        believe -= Time.deltaTime * 0.01f;
+        believe = Mathf.Clamp01(believe);
     }
 
-    public void ActivateUIForBuildings()
+    private void AngelEnds()
     {
-        ActivateUIElement(targetUIForBuildings);
-    }
-
-    public void ActivateUIForNeeds()
-    {
-        ActivateUIElement(targetUIForNeeds);
-    }
-
-    private void ActivateUIElement(GameObject uiElement)
-    {
-        if (uiElement == null)
+        if (social <= 0 || spirit <= 0 || purity <= 0 || believe <= 0)
         {
-            Debug.LogError("UI-Element ist null.");
-            return;
-        }
-
-        DeactivateAllUIElements();
-
-        uiElement.SetActive(true);
-    }
-
-    private void DeactivateAllUIElements()
-    {
-        if (targetUIForBuildings != null)
-        {
-            targetUIForBuildings.SetActive(false);
-        }
-        if (targetUIForNeeds != null)
-        {
-            targetUIForNeeds.SetActive(false);
-        }
-    }
-
-    public static void SetActiveAngel(Angel newActiveAngel)
-    {
-        if (activeAngel != null && activeAngel != newActiveAngel)
-        {
-            activeAngel.Deactivate();
-        }
-
-        foreach (Devil devil in FindObjectsByType<Devil>(FindObjectsSortMode.None))
-        {
-            //devil.Deactivate();
-            Debug.Log("Devil was found");
-        }
-
-        activeAngel = newActiveAngel;
-        newActiveAngel.Activate();
-    }
-
-    private void Activate()
-    {
-        choosenOne = true;
-
-        if (targetMeshRenderer != null && targetMaterialIndex != -1)
-        {
-            Material[] materials = targetMeshRenderer.materials;
-            materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f);
-            targetMeshRenderer.materials = materials;
-        }
-
-        ToggleCanvas(true);
-
-        Debug.Log($"{name} is active.");
-    }
-
-    public void Deactivate()
-    {
-        choosenOne = false;
-        DisableUI();
-
-        if (targetMeshRenderer != null && targetMaterialIndex != -1)
-        {
-            Material[] materials = targetMeshRenderer.materials;
-            materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f);
-            targetMeshRenderer.materials = materials;
-        }
-
-        ToggleCanvas(false);
-
-        Debug.Log($"{name} was deactivate.");
-    }
-
-    private void DisableUI()
-    {
-        targetBuildUI.SetActive(false);
-        targetNeedUI.SetActive(false);
-    }
-
-    public void AssignUIReferences()
-    {
-        GameObject canvas = GameObject.Find("MainCanvas"); 
-        if (canvas != null)
-        {
-
-            targetBuildUI = canvas.transform.Find("AngelBuildings").gameObject; 
-            targetNeedUI = canvas.transform.Find("ShowAngelUINeeds").gameObject; 
-            targetUIForBuildings = canvas.transform.Find("AngelBuildings").gameObject; 
-            targetUIForNeeds = canvas.transform.Find("ShowAngelUINeeds").gameObject;
-        }
-        else
-        {
-            Debug.LogError("Canvas nicht gefunden!");
+            Instantiate(revive, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
     }
 
@@ -374,93 +148,6 @@ public class Angel : Agents, IUnitInterface
                 worldStates.ModifyState(UIAvialableAngelKey, -1);
             }
         }
-    }
-
-    IEnumerator LostOverTime()
-    {
-        while (true) 
-        {
-            needEnjoy -= decayEnjoy;
-            needBelieve -= decayBelieve;
-            needPower -= decayPower;
-            needPurity -= decayPurity;
-
-            if (isPurity)
-            {
-                needPurity += purityCharge;
-            }
-
-            if (isBelieve)
-            {
-                needBelieve += believeCharge;
-            }
-
-            yield return new WaitForSeconds(1f);
-        }
-    }
-
-    private void PrepareStun()
-    {
-        available = false;
-        isStunned = false;
-        StartCoroutine("StunAngel");
-    }
-
-    IEnumerator StunAngel()
-    {
-        while (!available)
-        {
-            if (currentAction != null)
-            {
-                currentAction.agent.isStopped = true;
-            }
-
-            yield return new WaitForSeconds(10f);
-            available = true;
-        }
-
-        if (currentAction != null)
-        {
-            currentAction.agent.isStopped = false;
-        }
-    }
-
-    private void ToggleCanvas(bool state)
-    {
-        if (objectCanvas != null)
-        {
-            objectCanvas.SetActive(state);
-        }
-
-        if (targetMeshRenderer != null && targetMaterialIndex != -1)
-        {
-            Material[] materials = targetMeshRenderer.materials;
-
-            if (state)
-            {
-                materials[targetMaterialIndex].SetFloat("_Opacity", 1.0f);
-            }
-            else
-            {
-                materials[targetMaterialIndex].SetFloat("_Opacity", 0.0f);
-            }
-            targetMeshRenderer.materials = materials;
-        }
-    }
-
-    public void StartBuilding()
-    {
-        isBuilding = true;
-    }
-
-    public void StartWorking()
-    {
-        isWorking = true;
-    }
-
-    public void StartTransporting()
-    {
-        isTransporting = true;
     }
 }
 

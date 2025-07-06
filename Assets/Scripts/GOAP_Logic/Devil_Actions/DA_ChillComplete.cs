@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class DA_ChillComplete : Actions
 {
@@ -77,8 +76,6 @@ public class DA_ChillComplete : Actions
 
         StartCoroutine("ChillingRoutine");
 
-        duration = 30f; 
-
         return true;
     }
 
@@ -121,7 +118,7 @@ public class DA_ChillComplete : Actions
             targetBuilding.CloseDoubleDoors();
         }
 
-        devil.isChilled = true;
+        //devil.isChilled = true;
         agent.isStopped = true;
 
         yield return new WaitForSeconds(10f);
@@ -133,7 +130,7 @@ public class DA_ChillComplete : Actions
 
         yield return new WaitForSeconds(5f);
 
-        devil.isChilled = false;
+        //devil.isChilled = false;
         agent.isStopped = false;
 
         targetTag = "WO_Iron";
@@ -153,7 +150,7 @@ public class DA_ChillComplete : Actions
             yield return null;
         }
 
-        devil.isChilled = false;
+        //devil.isChilled = false;
 
         targetBuilding.isAvailable = true;
     }

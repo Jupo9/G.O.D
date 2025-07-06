@@ -475,6 +475,8 @@ public class GA_TransportLogic : Actions
         {
             yield return new WaitForSeconds(0.3f);
         }
+
+        FinishAction();
     }
 
     public override bool PostPerform()

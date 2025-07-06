@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DA_Summon : Actions
@@ -74,7 +73,7 @@ public class DA_Summon : Actions
             summon.isAvailable = true;
         }
 
-        running = false;
+        FinishAction();
     }
 
     public override bool PostPerform()

@@ -18,7 +18,7 @@ public class DA_BullyAngel : Actions
         if (other.CompareTag("Angel"))
         {
             Debug.Log("Hit Angel");
-            devil.bullyActive = true;
+            //devil.bullyActive = true;
         }
     }
 
@@ -28,7 +28,7 @@ public class DA_BullyAngel : Actions
         if (other.CompareTag("Angel"))
         {
             Debug.Log("leave Angel");
-            devil.bullyActive = false;
+            //devil.bullyActive = false;
         }
     }
 
@@ -77,8 +77,6 @@ public class DA_BullyAngel : Actions
 
         target = closestAngel;
         agent.SetDestination(target.transform.position);
-
-        duration = 10f;
 
         return true;
     }

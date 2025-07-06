@@ -52,7 +52,6 @@ public class DA_WorkingComplete : Actions
 
         StartCoroutine("WorkingRoutine");
 
-        duration = 35f;
 
         return true;
     }

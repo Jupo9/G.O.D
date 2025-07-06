@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class AA_PrayComplete : Actions
 {
@@ -78,7 +77,6 @@ public class AA_PrayComplete : Actions
 
         StartCoroutine("PrayRoutine");
 
-        duration = 35f;
         return true;
     }
 
@@ -95,12 +93,12 @@ public class AA_PrayComplete : Actions
             yield return null;
         }
 
-        angel.isBelieve = true;
+        //angel.isBelieve = true;
         agent.isStopped = true;
 
         yield return new WaitForSeconds(15f);
 
-        angel.isBelieve = false;
+        //angel.isBelieve = false;
         agent.isStopped = false;
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AA_WorkingComplete : Actions
@@ -52,8 +51,6 @@ public class AA_WorkingComplete : Actions
         agent.SetDestination(target.transform.position);
 
         StartCoroutine("WorkingRoutine");
-
-        duration = 35f;
 
         return true;
     }

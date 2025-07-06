@@ -32,6 +32,8 @@ public class Agents : MonoBehaviour
     public bool playersWish = false;
     public float spawnWaitingTime = 6f;
 
+    public bool needBehaviour = false;
+
     //Types
     public enum UnitType
     {
@@ -44,9 +46,6 @@ public class Agents : MonoBehaviour
     //Spawning logic
     private bool getSpawned = true;
     private Transform spawnTarget;
-
-    [Header("TargetArea")]
-    [SerializeField] private float targetRadius = 1.0f;
 
     [Header("Temporary Action Visual")]
     public GameObject temporaryActionIndicator;
@@ -79,12 +78,11 @@ public class Agents : MonoBehaviour
         RegisterAngelDevil.Instance?.RegisterNPC(this);
     }
 
-    bool invoked = false;
-    void CompleteAction()
+
+    public void CompleteAction()
     {
         currentAction.running = false;
         currentAction.PostPerform();
-        invoked = false;
 
         if (actionQueue.Count == 0 && currentGoal != null)
         {
@@ -154,6 +152,14 @@ public class Agents : MonoBehaviour
     {
         if (currentAction != null && currentAction.running)
         {
+            if (currentAction is GA_MoveAround && needBehaviour)
+            {
+                Debug.Log("[Agents] needBehaviour ist TRUE -> GA_MoveAround wird vorzeitig beendet.");
+                ((GA_MoveAround)currentAction).FinishAction();
+                needBehaviour = false;
+                return;
+            }
+
             if (currentAction.target == null)
             {
                 Debug.LogWarning("target was destroyed, action is done: " + currentAction.actionName);
@@ -167,14 +173,14 @@ public class Agents : MonoBehaviour
             }
 
             float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-            if (currentAction.agent.hasPath && distanceToTarget < targetRadius) ///currentAction.agent.remainingDistance < 1f
+            /*if (currentAction.agent.hasPath && distanceToTarget < targetRadius) ///currentAction.agent.remainingDistance < 1f
             {
                 if (!invoked)
                 {
                     Invoke("CompleteAction", currentAction.duration);
                     invoked = true;
                 }
-            }
+            }*/
 
             return;
         }
@@ -203,6 +209,8 @@ public class Agents : MonoBehaviour
             currentAction = actionQueue.Dequeue();
             Debug.Log("Assigned Action: " + currentAction.actionName);
 
+            currentAction.agentScriptReference = this;
+
             if (currentAction.PrePerform())
             {
                 if (currentAction.target == null && currentAction.targetTag != "")
@@ -220,8 +228,6 @@ public class Agents : MonoBehaviour
             else
             {
                 Debug.Log($"Action {currentAction.actionName} failed in PrePerform.");
-
-                AdjustPriorityValueOrResetPlanner(currentAction);
             }
         }
         else
@@ -235,35 +241,25 @@ public class Agents : MonoBehaviour
         switch (unitType)
         {
             case UnitType.Angel:
-                return action is AA_Building || 
+                return action is AA_Social || 
+                       action is AA_Purity ||
+                       action is AA_Spirit ||
+                       action is AA_Believe ||
+                       action is GA_MoveAround ||
+                       action is GA_Building ||
                        action is GA_Working ||
-                       action is GA_TransportLogic ||
-                       action is AA_PrayComplete ||
-                       action is AA_TransportLogic ||
-                       action is AA_ShowerComplete ||
-                       action is AA_WorkingComplete;
+                       action is GA_TransportLogic;
             case UnitType.Devil:
-                return action is DA_BullyAngel ||
+                return action is DA_Evil ||
+                       action is DA_Heat ||
+                       action is DA_Summon ||
+                       action is DA_Stain ||
+                       action is GA_MoveAround ||
+                       action is GA_Building ||
                        action is GA_Working ||
-                       action is GA_TransportLogic ||
-                       action is DA_PunshAngel ||
-                       action is DA_Spawning ||
-                       action is DA_Building ||
-                       action is DA_ChillComplete ||
-                       action is DA_TransportLogic;
+                       action is GA_TransportLogic;
             default:
                 return false;
-        }
-    }
-
-    private void AdjustPriorityValueOrResetPlanner(Actions action)
-    {
-        if (
-           (unitType == UnitType.Angel && (action is AA_ShowerComplete || action is AA_PrayComplete)) ||
-           (unitType == UnitType.Devil && (action is DA_ChillComplete || action is DA_BullyAngel || action is DA_PunshAngel))
-           )
-        {
-            action.priorityValue += 0.01f;
         }
     }
 

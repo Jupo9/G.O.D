@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class AA_ShowerComplete : Actions
 {
@@ -77,8 +76,6 @@ public class AA_ShowerComplete : Actions
 
         StartCoroutine("ShowerRoutine");
 
-        duration = 30f;
-
         return true;
     }
 
@@ -132,7 +129,7 @@ public class AA_ShowerComplete : Actions
             targetBuilding.StartSteam();
         }
 
-        angel.isPurity = true;
+        //angel.isPurity = true;
         agent.isStopped = true;
 
         yield return new WaitForSeconds(10f);
@@ -149,7 +146,7 @@ public class AA_ShowerComplete : Actions
 
         yield return new WaitForSeconds(5f);
 
-        angel.isPurity = false;
+        //angel.isPurity = false;
         agent.isStopped = false;
 
         targetTag = "WO_Shower";

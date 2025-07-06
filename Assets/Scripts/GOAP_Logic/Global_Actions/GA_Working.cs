@@ -181,6 +181,8 @@ public class GA_Working : Actions
         }
 
         mineScript.SetBlocked(false);
+
+        FinishAction();
     }
 
     public override bool PostPerform()

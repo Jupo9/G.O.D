@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AA_Spirit : Actions
 {
     [Header("Spirit Settings")]
-   // [SerializeField] private float spiritTime = 3f;
+    [SerializeField] private float spiritTime = 3f;
 
     private Building_LightCharge lightCharge;
 
@@ -65,7 +64,7 @@ public class AA_Spirit : Actions
 
         agent.isStopped = true;
 
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(spiritTime);
 
         agent.isStopped = false;
 
@@ -74,7 +73,7 @@ public class AA_Spirit : Actions
             lightCharge.isAvailable = true;
         }
 
-        running = false;
+        FinishAction();
     }
 
     public override bool PostPerform()
