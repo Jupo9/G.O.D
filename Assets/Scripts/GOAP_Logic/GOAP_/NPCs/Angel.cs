@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Angel : Agents, IUnitInterface
 {
@@ -13,21 +14,19 @@ public class Angel : Agents, IUnitInterface
     public float believe = 100f;
     public float purity = 100f;
 
+    [Header("Decay Needs")]
+    public float spiritDecay = 1.0f;
+    public float socialDecay = 1.0f;
+    public float believeDecay = 1.0f;
+    public float purityDecay = 1.0f;
+
     [Header("Current State")]
-    public bool available = true;
+    public bool isAvailable = true;
 
+    public NavMeshAgent agent;
     public GameObject lightResource;
-
     public GameObject revive;
-
-    [Header("SubGoalsBools")]
-    public bool isWorking = false;
-    public bool isTransporting = false;
-    public bool isBuilding = false;
-
-    [Header("BuildingStates")]
-    public bool choosenOne = false;
-    public bool buildingAction = false;
+    public GameObject stunEffect;
 
     //World keys
     private const string AvialableAngelKey = "Avail_angel";
@@ -39,6 +38,7 @@ public class Angel : Agents, IUnitInterface
     public bool preferClosest = true;
     public bool PreferClosest => preferClosest;
 
+    private bool triggeredNeedBelowThreshold = false;
 
     void Awake()
     {
@@ -55,6 +55,7 @@ public class Angel : Agents, IUnitInterface
     private void Update()
     {
         NeedLostOverTime();
+        CheckedNeedBelowThreshold();
         AngelEnds();
     }
 
@@ -72,17 +73,39 @@ public class Angel : Agents, IUnitInterface
 
     private void NeedLostOverTime()
     {
-        social -= Time.deltaTime * 0.01f;
+        social -= Time.deltaTime * socialDecay;
         social = Mathf.Clamp01(social);
 
-        purity -= Time.deltaTime * 0.01f;
+        purity -= Time.deltaTime * purityDecay;
         purity = Mathf.Clamp01(purity);
 
-        spirit -= Time.deltaTime * 0.01f;
+        spirit -= Time.deltaTime * spiritDecay;
         spirit = Mathf.Clamp01(spirit);
 
-        believe -= Time.deltaTime * 0.01f;
+        believe -= Time.deltaTime * believeDecay;
         believe = Mathf.Clamp01(believe);
+    }
+
+    private void CheckedNeedBelowThreshold()
+    {
+        if (!triggeredNeedBelowThreshold && (social < 0.5f ||
+                                             purity < 0.5f ||
+                                             spirit < 0.5f ||
+                                             believe < 0.5f))
+        {
+            Debug.Log("Angel Needs are lower than 50%, starts need behaviour attention");
+            needBehaviour = true;
+            triggeredNeedBelowThreshold = true;
+        }
+
+        if (triggeredNeedBelowThreshold && social >= 0.5f &&
+                                           purity >= 0.5f &&
+                                           spirit >= 0.5f &&
+                                           believe >= 0.5f)
+        {
+            Debug.Log("reset triggeredNeedBelowThreshold");
+            triggeredNeedBelowThreshold = false;
+        }
     }
 
     private void AngelEnds()

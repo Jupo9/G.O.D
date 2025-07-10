@@ -5,11 +5,20 @@ public class DA_Heat : Actions
 {
     [Header("Heat Settings")]
     [SerializeField] private float heatTime = 3f;
+    [SerializeField] private float heatIncreasePerSecond = 10f;
 
-    private Building_FireCharge heat;
+    private Building_FireCharge bbq;
 
     public override bool PrePerform()
     {
+        Devil devilScript = agentScriptReference as Devil;
+
+        if (devilScript != null && devilScript.heat >= 0.8f)
+        {
+            Debug.Log("heat is enough, jump to next action");
+            FinishAction();
+            return false;
+        }
 
         target = GetBuildingTarget();
 
@@ -19,11 +28,11 @@ public class DA_Heat : Actions
             return false;
         }
 
-        heat = target.GetComponent<Building_FireCharge>();
+        bbq = target.GetComponent<Building_FireCharge>();
 
-        if (heat != null)
+        if (bbq != null)
         {
-            heat.isAvailable = false;
+            bbq.isAvailable = false;
         }
 
         agent.SetDestination(target.transform.position);
@@ -63,18 +72,48 @@ public class DA_Heat : Actions
             yield return null;
         }
 
-        agent.isStopped = true;
+        if (bbq != null)
+        {
+            bbq.BuildingHeatEvents(true);
+        }
+
+        Coroutine regenRoutine = StartCoroutine(IncreaseHeatOverTime(heatTime));
 
         yield return new WaitForSeconds(heatTime);
 
-        agent.isStopped = false;
-
-        if (heat != null)
+        if (regenRoutine != null)
         {
-            heat.isAvailable = true;
+            StopCoroutine(regenRoutine);
+        }
+
+        if (bbq != null)
+        {
+            bbq.BuildingHeatEvents(false);
+            bbq.isAvailable = true;
         }
 
         FinishAction();
+    }
+
+    private IEnumerator IncreaseHeatOverTime(float duration)
+    {
+        float timer = 0f;
+        Devil devilScript = agentScriptReference as Devil;
+
+        if (devilScript == null)
+        {
+            Debug.LogWarning("DA_Heat: agentScriptReference is not an Devil.");
+            yield break;
+        }
+
+        while (timer < duration)
+        {
+            devilScript.heat += heatIncreasePerSecond * Time.deltaTime;
+            devilScript.heat = Mathf.Clamp01(devilScript.heat);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public override bool PostPerform()

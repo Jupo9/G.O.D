@@ -5,75 +5,125 @@ public class DA_Summon : Actions
 {
     [Header("Summon Settings")]
     [SerializeField] private float summonTime = 3f;
+    [SerializeField] private float summonIncreasePerSecond = 10f;
 
-    private Building_Pentagram summon;
+    private Building_Pentagram pentagram;
+    private GameObject currentWaypoint;
+    private int waypointIndex = -1;
 
     public override bool PrePerform()
     {
-        target = GetBuildingTarget();
+        Devil devilScript = agentScriptReference as Devil;
 
-        if (target == null)
+        if (devilScript != null && devilScript.summon >= 0.8f)
         {
-            Debug.LogWarning("No valid Pentagram found.");
+            Debug.Log("summon is enough, jump to next action");
+            FinishAction();
             return false;
         }
 
-        summon = target.GetComponent<Building_Pentagram>();
+        pentagram = FindClosestValidPentagram();
 
-        if (summon != null)
+        if (pentagram == null)
         {
-            summon.isAvailable = false;
+            Debug.LogWarning("No valid pentagram found.");
+            return false;
         }
 
-        agent.SetDestination(target.transform.position);
+        currentWaypoint = GetAndReserveFreeWaypoint(pentagram, out waypointIndex);
+
+        target = currentWaypoint;
+
+        agent.SetDestination(currentWaypoint.transform.position);
         StartCoroutine(SummonRoutine());
 
         return true;
     }
 
-    private GameObject GetBuildingTarget()
+    private Building_Pentagram FindClosestValidPentagram()
     {
         GameObject[] buildings = GameObject.FindGameObjectsWithTag(targetTag);
 
-        GameObject closest = null;
+        Building_Pentagram closestStatue = null;
         float minDist = float.MaxValue;
 
         foreach (var building in buildings)
         {
-            var ps = building.GetComponentInChildren<Building_Pentagram>();
-            if (ps != null && ps.isAvailable)
+            var sign = building.GetComponentInChildren<Building_Pentagram>();
+            if (sign != null && sign.isAvailable)
             {
                 float dist = Vector3.Distance(transform.position, building.transform.position);
                 if (dist < minDist)
                 {
                     minDist = dist;
-                    closest = building;
+                    closestStatue = sign;
                 }
             }
         }
 
-        return closest;
+        return closestStatue;
+    }
+
+    private GameObject GetAndReserveFreeWaypoint(Building_Pentagram statue, out int index)
+    {
+        for (int i = 0; i < statue.waypoints.Length; i++)
+        {
+            if (statue.waypoints[i].open && statue.waypoints[i].waypointObject != null)
+            {
+                statue.waypoints[i].open = false;
+                statue.CheckAvailability();
+                index = i;
+                return statue.waypoints[i].waypointObject;
+            }
+        }
+
+        index = -1;
+        return null;
     }
 
     private IEnumerator SummonRoutine()
     {
-        while (Vector3.Distance(transform.position, target.transform.position) > 1.1f)
+        while (Vector3.Distance(transform.position, currentWaypoint.transform.position) > 1.1f)
         {
             yield return null;
         }
 
-        agent.isStopped = true;
+        Coroutine regenRoutine = StartCoroutine(IncreaseSummonOverTime(summonTime));
 
         yield return new WaitForSeconds(summonTime);
 
-        agent.isStopped = false;
-
-        if (summon != null)
+        if (regenRoutine != null)
         {
-            summon.isAvailable = true;
+            StopCoroutine(regenRoutine);
+        }
+
+        if (pentagram != null && waypointIndex != -1)
+        {
+            pentagram.SetWaypointState(waypointIndex, true);
         }
 
         FinishAction();
+    }
+
+    private IEnumerator IncreaseSummonOverTime(float duration)
+    {
+        float timer = 0f;
+        Devil devilScript = agentScriptReference as Devil;
+
+        if (devilScript == null)
+        {
+            Debug.LogWarning("DA_Summon: agentScriptReference is not an Devil.");
+            yield break;
+        }
+
+        while (timer < duration)
+        {
+            devilScript.summon += summonIncreasePerSecond * Time.deltaTime;
+            devilScript.summon = Mathf.Clamp01(devilScript.summon);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public override bool PostPerform()

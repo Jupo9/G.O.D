@@ -22,6 +22,8 @@ public class InputManager : MonoBehaviour
     private string selectedTag;
     private SelectionOutline selectedOutline;
 
+    [SerializeField] private GameObject pauseMenuPanel;
+
     //Events for Building System
     public event Action OnClicked;
     public event Action OnExit;
@@ -170,7 +172,29 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
+            if (Time.timeScale == 0)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                Time.timeScale = 0;
+
+                if (pauseMenuPanel != null)
+                {
+                    pauseMenuPanel.SetActive(true);
+                }
+            }
+        }
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+
+        if (pauseMenuPanel != null)
+        {
+            pauseMenuPanel.SetActive(false);
         }
     }
 

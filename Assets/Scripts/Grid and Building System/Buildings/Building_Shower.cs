@@ -63,7 +63,7 @@ public class Building_Shower : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         if (!isAvailable)
         {
@@ -94,7 +94,7 @@ public class Building_Shower : MonoBehaviour
         {
             isPreview = true;
         }
-    }
+    }*/
 
     private void OnDestroy()
     {

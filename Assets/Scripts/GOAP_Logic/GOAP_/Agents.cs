@@ -173,14 +173,6 @@ public class Agents : MonoBehaviour
             }
 
             float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-            /*if (currentAction.agent.hasPath && distanceToTarget < targetRadius) ///currentAction.agent.remainingDistance < 1f
-            {
-                if (!invoked)
-                {
-                    Invoke("CompleteAction", currentAction.duration);
-                    invoked = true;
-                }
-            }*/
 
             return;
         }
@@ -287,7 +279,14 @@ public class Agents : MonoBehaviour
         {
             Debug.Log("Queuing temporary action for later: " + tempAction.actionName);
             queuedTemporaryAction = tempAction;
+
+            if (currentAction is GA_MoveAround)
+            {
+                Debug.Log("GA_MoveAround get finished for task");
+                needBehaviour = true;
+            }
         }
+
     }
 
     private void ExecuteTemporaryAction(Actions tempAction)

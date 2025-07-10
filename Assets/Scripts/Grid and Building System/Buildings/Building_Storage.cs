@@ -170,7 +170,7 @@ public class Building_Storage : MonoBehaviour, IResourceManager
         }
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         if (!isAvailable)
         {
@@ -201,7 +201,7 @@ public class Building_Storage : MonoBehaviour, IResourceManager
         {
             isPreview = true;
         }
-    }
+    }*/
 
     private void OnDestroy()
     {

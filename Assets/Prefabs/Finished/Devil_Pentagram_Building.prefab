@@ -1072,6 +1072,20 @@ MonoBehaviour:
   updateParts: {fileID: 4751375087622483611}
   navMeshManager: {fileID: 0}
   isAvailable: 0
+  waypoints:
+  - waypointObject: {fileID: 6661317471974754025}
+    open: 1
+  - waypointObject: {fileID: 9107513487338112006}
+    open: 1
+  - waypointObject: {fileID: 2072138980462217385}
+    open: 1
+  - waypointObject: {fileID: 3060762234273890844}
+    open: 1
+  - waypointObject: {fileID: 7972826079993320225}
+    open: 1
+  rotatingObjects:
+  - {fileID: 8357372151835491701}
+  rotationSpeed: 90
 --- !u!1 &5931237061874818067
 GameObject:
   m_ObjectHideFlags: 0

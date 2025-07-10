@@ -3,14 +3,20 @@ using UnityEngine;
 
 public class ObstacleData : MonoBehaviour
 {
-    [Tooltip("Obstacle have an offset from -0.5, if you want 7.5 you need 7")]
-    public List<ObstacleArea> obstacleAreas;
+    [HideInInspector]
+    public List<ObstacleArea> obstacleAreas = new();
 
+    [Tooltip("Only activated to see placed obstacle pillars!")]
     [Header("Visualisierung")]
     [SerializeField] private bool showCornerMarkers = true;
     [SerializeField] private Material markerMaterial;
 
     private List<GameObject> spawnedMarkers = new();
+
+    private void Awake()
+    {
+        PlacedObstacleAreas();
+    }
 
     private void Start()
     {
@@ -59,5 +65,62 @@ public class ObstacleData : MonoBehaviour
         }
 
         spawnedMarkers.Add(cube);
+    }
+
+    private void PlacedObstacleAreas()
+    {
+        obstacleAreas = new List<ObstacleArea>
+        {
+            new ObstacleArea //Summon
+            {
+                CornerA = new Vector3Int(2, 0, 20),
+                CornerB = new Vector3Int(0, 0, 18)
+            },
+            new ObstacleArea //Heat
+            {
+                CornerA = new Vector3Int(10, 0, 14),
+                CornerB = new Vector3Int(7, 0, 11)
+            },
+            new ObstacleArea //Stain
+            {
+                CornerA = new Vector3Int(25, 0, 20),
+                CornerB = new Vector3Int(21, 0, 16)
+            },
+            new ObstacleArea //Spirit
+            {
+                CornerA = new Vector3Int(10, 0, -12),
+                CornerB = new Vector3Int(7, 0, -15)
+            },
+            new ObstacleArea //Purity
+            {
+                CornerA = new Vector3Int(25, 0, -17),
+                CornerB = new Vector3Int(21, 0, -21)
+            },
+            new ObstacleArea //Believe
+            {
+                CornerA = new Vector3Int(2, 0, -19),
+                CornerB = new Vector3Int(0, 0, -21)
+            },
+            new ObstacleArea //Mine one
+            {
+                CornerA = new Vector3Int(-7, 0, -9),
+                CornerB = new Vector3Int(-11, 0, -13)
+            },
+            new ObstacleArea //GOD
+            {
+                CornerA = new Vector3Int(6, 0, 5),
+                CornerB = new Vector3Int(-7, 0, -6)
+            },
+            new ObstacleArea //Mine 2
+            {
+                CornerA = new Vector3Int(-17, 0, -9),
+                CornerB = new Vector3Int(-21, 0, -13)
+            },
+            new ObstacleArea //Altar
+            {
+                CornerA = new Vector3Int(-12, 0, -17),
+                CornerB = new Vector3Int(-16, 0, -21)
+            }
+        };
     }
 }

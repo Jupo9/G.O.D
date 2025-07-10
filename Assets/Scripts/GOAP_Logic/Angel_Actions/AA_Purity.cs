@@ -5,11 +5,21 @@ public class AA_Purity : Actions
 {
     [Header("Purity Settings")]
     [SerializeField] private float purityTime = 3f;
+    [SerializeField] private float purityIncreasePerSecond = 10f;
 
     private Building_Waterfall waterFall;
 
     public override bool PrePerform()
     {
+        Angel angelScript = agentScriptReference as Angel;
+
+        if (angelScript != null && angelScript.purity >= 0.8f)
+        {
+            Debug.Log("purity is enough, jump to next action");
+            FinishAction();
+            return false;
+        }
+
         target = GetBuildingTarget();
 
         if (target == null)
@@ -62,11 +72,14 @@ public class AA_Purity : Actions
             yield return null;
         }
 
-        agent.isStopped = true;
+        Coroutine regenRoutine = StartCoroutine(IncreasePurityOverTime(purityTime));
 
         yield return new WaitForSeconds(purityTime);
 
-        agent.isStopped = false;
+        if (regenRoutine != null)
+        {
+            StopCoroutine(regenRoutine);
+        }
 
         if (waterFall != null)
         {
@@ -74,6 +87,27 @@ public class AA_Purity : Actions
         }
 
         FinishAction();
+    }
+
+    private IEnumerator IncreasePurityOverTime(float duration)
+    {
+        float timer = 0f;
+        Angel angelScript = agentScriptReference as Angel;
+
+        if (angelScript == null)
+        {
+            Debug.LogWarning("AA_Purity: agentScriptReference is not an Angel.");
+            yield break;
+        }
+
+        while (timer < duration)
+        {
+            angelScript.purity += purityIncreasePerSecond * Time.deltaTime;
+            angelScript.purity = Mathf.Clamp01(angelScript.purity);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public override bool PostPerform()

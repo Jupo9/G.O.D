@@ -110,7 +110,7 @@ public class Building_Light : MonoBehaviour, IResourceManager
         }
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         if (!isAvailable)
         {
@@ -141,7 +141,7 @@ public class Building_Light : MonoBehaviour, IResourceManager
         {
             isPreview = true;
         }
-    }
+    }*/
 
     private void OnDestroy()
     {

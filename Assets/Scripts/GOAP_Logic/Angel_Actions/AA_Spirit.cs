@@ -5,11 +5,21 @@ public class AA_Spirit : Actions
 {
     [Header("Spirit Settings")]
     [SerializeField] private float spiritTime = 3f;
+    [SerializeField] private float spiritIncreasePerSecond = 10f;
 
     private Building_LightCharge lightCharge;
 
     public override bool PrePerform()
     {
+        Angel angelScript = agentScriptReference as Angel;
+
+        if (angelScript != null && angelScript.spirit >= 0.8f)
+        {
+            Debug.Log("spirit is enough, jump to next action");
+            FinishAction();
+            return false;
+        }
+
         target = GetBuildingTarget();
 
         if (target == null)
@@ -62,18 +72,48 @@ public class AA_Spirit : Actions
             yield return null;
         }
 
-        agent.isStopped = true;
+        if (lightCharge != null)
+        {
+            lightCharge.BuildingSpiritEvents(true);
+        }
+
+        Coroutine regenRoutine = StartCoroutine(IncreaseSpiritOverTime(spiritTime));
 
         yield return new WaitForSeconds(spiritTime);
 
-        agent.isStopped = false;
+        if (regenRoutine != null)
+        {
+            StopCoroutine(regenRoutine);
+        }
 
         if (lightCharge != null)
         {
+            lightCharge.BuildingSpiritEvents(false);
             lightCharge.isAvailable = true;
         }
 
         FinishAction();
+    }
+
+    private IEnumerator IncreaseSpiritOverTime(float duration)
+    {
+        float timer = 0f;
+        Angel angelScript = agentScriptReference as Angel;
+
+        if (angelScript == null)
+        {
+            Debug.LogWarning("AA_Spirit: agentScriptReference is not an Angel.");
+            yield break;
+        }
+
+        while (timer < duration)
+        {
+            angelScript.spirit += spiritIncreasePerSecond * Time.deltaTime;
+            angelScript.spirit = Mathf.Clamp01(angelScript.spirit);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public override bool PostPerform()

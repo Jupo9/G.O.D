@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 7193746627117688321}
   - component: {fileID: 2577281994876994176}
   - component: {fileID: 2841807680439358943}
+  - component: {fileID: 7476945407387001390}
   - component: {fileID: 3040695652865304283}
   m_Layer: 3
   m_Name: DevilManager
@@ -219,24 +220,14 @@ MonoBehaviour:
   unitType: 1
   temporaryActionIndicator: {fileID: 1494325691982900831}
   currentFeeling: 100
-  needEvil: 100
-  needChill: 100
-  needJoy: 100
-  needPower: 100
   evil: 100
   summon: 100
   stain: 100
   heat: 100
-  decayEvil: 0
-  decayChill: 0
-  decayJoy: 0
-  decayPower: 0
-  bullyCharge: 20
-  chillCharge: 10
-  punshPoints: 30
-  bullyActive: 0
-  punshedAngel: 0
-  isChilled: 0
+  evilDecay: 0.02
+  summonDecay: 0.001
+  stainDecay: 0.001
+  heatDecay: 0.005
   fireObject: {fileID: 0}
   grave: {fileID: 1724823241412100497, guid: b68031f4a3a730549b3e392e0beb8e67, type: 3}
   preferClosest: 0
@@ -329,7 +320,8 @@ MonoBehaviour:
   agent: {fileID: 0}
   agentScriptReference: {fileID: 0}
   running: 0
-  heatTime: 3
+  heatTime: 5
+  heatIncreasePerSecond: 10
 --- !u!114 &2577281994876994176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +344,8 @@ MonoBehaviour:
   agent: {fileID: 0}
   agentScriptReference: {fileID: 0}
   running: 0
-  summonTime: 3
+  summonTime: 5
+  summonIncreasePerSecond: 10
 --- !u!114 &2841807680439358943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,7 +368,32 @@ MonoBehaviour:
   agent: {fileID: 0}
   agentScriptReference: {fileID: 0}
   running: 0
-  stainTime: 3
+  stainTime: 5
+  stainIncreasePerSecond: 10
+--- !u!114 &7476945407387001390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416235645599343849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07b65d3fcfc9f24ab426642f0706367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: EVIL
+  target: {fileID: 0}
+  targetTag: 
+  preConditions: []
+  afterEffects:
+  - key: Evil
+    value: 0
+  agent: {fileID: 0}
+  agentScriptReference: {fileID: 0}
+  running: 0
+  evilTime: 10
+  evilIncreasePerSecond: 10
 --- !u!114 &3040695652865304283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +415,8 @@ MonoBehaviour:
   - key: Heat
     value: 0
   - key: Stain
+    value: 0
+  - key: Evil
     value: 0
   afterEffects:
   - key: Survive

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class Devil : Agents, IUnitInterface
 {
@@ -10,7 +11,13 @@ public class Devil : Agents, IUnitInterface
     public float evil = 100f;
     public float summon = 100f;
     public float stain = 100f;
-    public float heat = 100f; 
+    public float heat = 100f;
+
+    [Header("Decay Needs")]
+    public float evilDecay = 1.0f;
+    public float summonDecay = 1.0f;
+    public float stainDecay = 1.0f;
+    public float heatDecay = 1.0f;
 
     public GameObject fireObject;
 
@@ -25,6 +32,8 @@ public class Devil : Agents, IUnitInterface
     //To choose if the unit search for farest or nearest Buildings when transport something 
     public bool preferClosest = true;
     public bool PreferClosest => preferClosest;
+
+    private bool triggeredNeedBelowThreshold = false;
 
     void Awake()
     {
@@ -41,6 +50,7 @@ public class Devil : Agents, IUnitInterface
     private void Update()
     {
         NeedLostOverTime();
+        CheckedNeedBelowThreshold();
         DevilEnds();
     }
 
@@ -58,17 +68,39 @@ public class Devil : Agents, IUnitInterface
 
     private void NeedLostOverTime()
     {
-        stain -= Time.deltaTime * 0.01f;
+        stain -= Time.deltaTime * stainDecay;
         stain = Mathf.Clamp01(stain);
 
-        summon -= Time.deltaTime * 0.01f;
+        summon -= Time.deltaTime * summonDecay;
         summon = Mathf.Clamp01(summon);
 
-        heat -= Time.deltaTime * 0.01f;
+        heat -= Time.deltaTime * heatDecay;
         heat = Mathf.Clamp01(heat);
 
-        evil -= Time.deltaTime * 0.01f;
+        evil -= Time.deltaTime * evilDecay;
         evil = Mathf.Clamp01(evil);
+    }
+
+    private void CheckedNeedBelowThreshold()
+    {
+        if (!triggeredNeedBelowThreshold && (evil < 0.5f ||
+                                             stain < 0.5f ||
+                                             summon < 0.5f ||
+                                             heat < 0.5f))
+        {
+            Debug.Log("Devil Needs are lower than 50%, starts need behaviour attention");
+            needBehaviour = true;
+            triggeredNeedBelowThreshold = true;
+        }
+
+        if (triggeredNeedBelowThreshold && evil >= 0.5f &&
+                                           stain >= 0.5f &&
+                                           summon >= 0.5f &&
+                                           heat >= 0.5f)
+        {
+            Debug.Log("reset triggeredNeedBelowThreshold");
+            triggeredNeedBelowThreshold = false;
+        }
     }
 
     private void DevilEnds()
@@ -87,12 +119,12 @@ public class Devil : Agents, IUnitInterface
         if (!worldStates.HasState(AvialableDevilKey))
         {
             worldStates.SetState(AvialableDevilKey, 1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+            Debug.Log($"Devil added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
         }
         else
         {
             worldStates.ModifyState(AvialableDevilKey, +1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+            Debug.Log($"Devil added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
         }
     }
 
