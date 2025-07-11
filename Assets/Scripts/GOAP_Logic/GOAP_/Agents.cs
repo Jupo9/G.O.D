@@ -33,6 +33,7 @@ public class Agents : MonoBehaviour
     public float spawnWaitingTime = 6f;
 
     public bool needBehaviour = false;
+    public bool hasPendingPlayerTempAction = false;
 
     //Types
     public enum UnitType
@@ -114,6 +115,11 @@ public class Agents : MonoBehaviour
         if (temporaryActionIndicator != null)
         {
             temporaryActionIndicator.SetActive(false);
+        }
+
+        if (IsTemporaryAction(currentAction))
+        {
+            hasPendingPlayerTempAction = false;
         }
     }
 
@@ -270,6 +276,8 @@ public class Agents : MonoBehaviour
             return;
         }
 
+        hasPendingPlayerTempAction = true;
+
         if (currentAction == null || !currentAction.running)
         {
             Debug.Log("Starting temporary action immediately: " + tempAction.actionName);
@@ -295,6 +303,7 @@ public class Agents : MonoBehaviour
         currentAction = tempAction;
         currentAction.running = true;
         currentAction.agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        currentAction.agentScriptReference = this;
 
         if (currentAction.PrePerform())
         {

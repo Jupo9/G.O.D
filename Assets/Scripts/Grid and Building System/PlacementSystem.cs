@@ -128,17 +128,31 @@ public class PlacementSystem : MonoBehaviour
             return;
         }
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+
+        if (!IsValidMousePosition(mousePosition))
+        {
+            previewSystem.HidePreview();
+            return;
+        }
+
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
         if (lastDetectedPosition != gridPosition)
         {
             buildingState.UpdateState(gridPosition);
             lastDetectedPosition = gridPosition;
+
+            previewSystem.ShowPreview();
         }
     }
 
     public BuidlingDatabase GetDatabase()
     {
         return database;
+    }
+
+    private bool IsValidMousePosition(Vector3 position)
+    {
+        return !(float.IsInfinity(position.x) || float.IsInfinity(position.y) || float.IsInfinity(position.z));
     }
 }

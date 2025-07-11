@@ -35,6 +35,11 @@ public class AA_Purity : Actions
             waterFall.isAvailable = false;
         }
 
+        if (angelScript != null)
+        {
+            angelScript.isAvailable = false;
+        }
+
         agent.SetDestination(target.transform.position);
         StartCoroutine(PurityRoutine());
 
@@ -112,6 +117,13 @@ public class AA_Purity : Actions
 
     public override bool PostPerform()
     {
+        Angel angelScript = agentScriptReference as Angel;
+
+        if (angelScript != null)
+        {
+            angelScript.isAvailable = true;
+        }
+
         Debug.Log("Finished Action: " + actionName);
         return true;
     }

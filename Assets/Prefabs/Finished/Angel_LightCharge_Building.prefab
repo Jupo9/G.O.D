@@ -405,6 +405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 416562940824742055}
   - component: {fileID: 6892963648061629164}
+  - component: {fileID: 592749103661902859}
   m_Layer: 8
   m_Name: AvoidMe
   m_TagString: Untagged
@@ -448,6 +449,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &592749103661902859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3619174326792650732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cadd9fa2610c74fb9c631641117473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearRadius: 3
 --- !u!1 &3753719757681964684
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +773,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5209962134375902974}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -810,7 +824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateParts: {fileID: 3753719757681964684}
   navMeshManager: {fileID: 0}
-  isAvailable: 0
+  isAvailable: 1
   spiritParticles: {fileID: 5383288290394501212}
   targetRenderers:
   - {fileID: 3275620720061847792}

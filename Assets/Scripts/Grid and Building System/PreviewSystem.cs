@@ -56,6 +56,22 @@ public class PreviewSystem : MonoBehaviour
         }
     }
 
+    public void HidePreview()
+    {
+        if (CurrentPreviewObject != null)
+        {
+            CurrentPreviewObject.SetActive(false);
+        }
+    }
+
+    public void ShowPreview()
+    {
+        if (CurrentPreviewObject != null)
+        {
+            CurrentPreviewObject.SetActive(true);
+        }
+    }
+
     public void StopShowingPreview()
     {
         cellIndicator.SetActive(false);

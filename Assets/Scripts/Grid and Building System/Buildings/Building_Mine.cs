@@ -19,6 +19,8 @@ public class Building_Mine : MonoBehaviour, IResourceManager
     [Header("Conditions")]
     public bool isAvailable = true;
 
+    public GameObject outOfOrder;
+
     private bool isBlocked = false;
 
     public bool IsBlocked
@@ -63,6 +65,7 @@ public class Building_Mine : MonoBehaviour, IResourceManager
     {
         CalculateAmounts();
         UpdateAvailability();
+        ShowMiningIndicator();
     }
 
     // ------------- Interface (IResourceManager) -------------
@@ -149,6 +152,18 @@ public class Building_Mine : MonoBehaviour, IResourceManager
     public void SetBlocked(bool blocked)
     {
         IsBlocked = blocked;
+    }
+
+    private void ShowMiningIndicator()
+    {
+        if (!isAvailable)
+        {
+            outOfOrder.SetActive(true);
+        }
+        else
+        {
+            outOfOrder.SetActive(false);
+        }
     }
 
     private void CalculateAmounts()

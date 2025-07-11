@@ -171,7 +171,7 @@ public class Building_Altar : MonoBehaviour, IResourceManager
     {
         lightAmount -= 1;
         UnregisterLight();
-        RemoveVisualSlot("Fire");
+        RemoveVisualSlot("Light");
     }
 
     // ------------- Register World States -------------

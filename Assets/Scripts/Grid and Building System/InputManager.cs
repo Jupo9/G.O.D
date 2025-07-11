@@ -105,7 +105,7 @@ public class InputManager : MonoBehaviour
         return Vector3.negativeInfinity;
     }
 
-    private void DisableBuildingUI()
+    public void DisableBuildingUI()
     {
         if (escapeBuildingMenu != null)
         {
@@ -269,7 +269,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void DeselectUnit()
+    public void DeselectUnit()
     {
         if (selectedUnit == null)
         {
@@ -296,7 +296,12 @@ public class InputManager : MonoBehaviour
 
         if (uiForCurrentNeeds != null)
         {
-            uiForCurrentNeeds.SetTarget(null);
+            uiForCurrentNeeds.ClearTarget();
+        }
+
+        if (needsUIContainer != null)
+        {
+            needsUIContainer.SetActive(false);
         }
 
         selectedUnit = null;

@@ -60,9 +60,14 @@ public class PlacementState : IBuildingState
 
         int fireCost = previewData.buildFireCosts;
         int lightCost = previewData.buildLightCosts;
+        bool fireOK = true;
+        bool lightOK = true;
 
-        bool fireOK = ResourceCalculator.Instance.TypConsumeResources("Res_fire", fireCost);
-        bool lightOK = ResourceCalculator.Instance.TypConsumeResources("Res_light", lightCost);
+        if (fireCost > 0)
+            fireOK = ResourceCalculator.Instance.TypConsumeResources("Res_fire", fireCost);
+
+        if (lightCost > 0)
+            lightOK = ResourceCalculator.Instance.TypConsumeResources("Res_light", lightCost);
 
         if (!fireOK || !lightOK)
         {
@@ -124,6 +129,8 @@ public class PlacementState : IBuildingState
         selectedData.AddObjectAt(gridPosition, size, objectData.ID, index);
 
         previewSystem.HideCellIndicator();
+
+        InputManager.Instance.DisableBuildingUI();
 
         PlacementSystem.Instance.StopPlacement();
     }

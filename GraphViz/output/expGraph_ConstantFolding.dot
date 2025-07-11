@@ -1,0 +1,41 @@
+digraph G {
+node0 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Boolean (True)
+_vfx_enabled_a
+_vfx_enabled_a
+_vfx_enabled_b
+_vfx_enabled_a"]
+node1 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float2 ((1.00, 1.00))
+Count_a"]
+node2 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float2 ((0.00, 0.00))
+Delay_a"]
+node3 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float3 ((0.00, 1.00, 0.00))
+bounds_center"]
+node4 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float3 ((3.50, 4.00, 3.50))
+bounds_size"]
+node5 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float3 ((0.50, 0.50, 0.50))
+boundsPadding"]
+node6 [shape="box" color="cyan" style="filled" label="VFXMeshValue Mesh (62352)
+mesh"]
+node7 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Uint32 (4294967295)
+subMeshMask"]
+node8 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float3 ((0.00, 0.00, 0.00))
+Angle_a"]
+node9 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float3 ((1.00, 5.00, 1.00))
+Scale_a"]
+node10 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float (1)
+Size_b"]
+node11 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float4 ((0.33, 0.63, 0.84, 0.00))
+_BaseColor"]
+node12 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float4 ((1.00, 1.00, 1.00, 0.00))
+_MainTextureColor"]
+node13 [shape="box" color="cyan" style="filled" label="VFXTexture2DValue Texture2D (62906)
+_MainTexture"]
+node14 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float (0)
+_Clip"]
+node15 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float2 ((1.50, 0.33))
+_MainTexturetiling"]
+node16 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float2 ((0.00, 0.50))
+_MainTextureSpeed"]
+node17 [shape="box" color="steelblue" style="filled" label="VFXValue`1 Float (1,8)
+_MainTexturePower"]
+}

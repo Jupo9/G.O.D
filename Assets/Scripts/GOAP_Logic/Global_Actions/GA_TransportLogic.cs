@@ -16,6 +16,8 @@ public class GA_TransportLogic : Actions
     [Header("TargetDistance")]
     [SerializeField] private float targetDistance = 2.0f;
 
+    public float performDeliveryTime = 1.0f;
+
     //Important for Buidling and Ressource finding
     private GOD god;
     private bool godNeedsResource = false;
@@ -412,7 +414,9 @@ public class GA_TransportLogic : Actions
         }
 
         agent.isStopped = true;
-        yield return new WaitForSeconds(5f);
+
+        yield return new WaitForSeconds(performDeliveryTime);
+
         agent.isStopped = false;
 
         if (isCarryingResource)
@@ -481,6 +485,7 @@ public class GA_TransportLogic : Actions
 
     public override bool PostPerform()
     {
+        Debug.Log("Transport Done");
         return true;
     }
 

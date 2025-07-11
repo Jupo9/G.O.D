@@ -9,7 +9,6 @@ public class GA_Working : Actions
         Devil
     }
 
-    [Tooltip("WorkTime need to be less than duration to avoid conflicts")]
     [Header("WorkTime")]
     [SerializeField] private float workingTime = 0f;
 
@@ -25,6 +24,8 @@ public class GA_Working : Actions
     {
         DetermineUnitType();
         SetupTagsAndVariables();
+
+
         StartWorking();
 
         return true;
@@ -73,7 +74,13 @@ public class GA_Working : Actions
 
             if (mineScript != null)
             {
+                if (unitType == UnitType.Angel)
+                {
+                    mineScript.isAvailable = false;
+                }
+
                 mineScript.SetBlocked(true);
+
             }
 
             agent.SetDestination(target.transform.position);
@@ -128,6 +135,7 @@ public class GA_Working : Actions
         }
 
         agent.isStopped = true;
+
         yield return new WaitForSeconds(workingTime);
 
         checkoutTarget = mineScript.GetCheckoutPoint()?.gameObject;
@@ -180,6 +188,11 @@ public class GA_Working : Actions
             yield return new WaitForSeconds(0.3f);
         }
 
+        if (unitType == UnitType.Angel)
+        {
+            mineScript.isAvailable = true; 
+        }
+
         mineScript.SetBlocked(false);
 
         FinishAction();
@@ -187,6 +200,7 @@ public class GA_Working : Actions
 
     public override bool PostPerform()
     {
+        Debug.Log("Working Done");
         return true;
     }
 

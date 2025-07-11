@@ -35,6 +35,11 @@ public class AA_Spirit : Actions
             lightCharge.isAvailable = false;
         }
 
+        if (angelScript != null)
+        {
+            angelScript.isAvailable = false; 
+        }
+
         agent.SetDestination(target.transform.position);
         StartCoroutine(SpiritRoutine());
 
@@ -118,6 +123,13 @@ public class AA_Spirit : Actions
 
     public override bool PostPerform()
     {
+        Angel angelScript = agentScriptReference as Angel;
+
+        if (angelScript != null)
+        {
+            angelScript.isAvailable = true; 
+        }
+
         Debug.Log("Finished Action: " + actionName);
         return true;
     }

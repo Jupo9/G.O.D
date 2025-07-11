@@ -26,7 +26,7 @@ public class WorldsManager : MonoBehaviour
             if (!worldStates.HasState(state.key))
             {
                 worldStates.SetState(state.key, state.value);
-                Debug.Log($"Initialized state '{state.key}' with value {state.value}");
+                //Debug.Log($"Initialized state '{state.key}' with value {state.value}");
             }
         }
     }

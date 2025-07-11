@@ -2,24 +2,22 @@ using UnityEngine;
 
 public class SimpleMovement : MonoBehaviour
 {
-    public Vector3 pointA = new Vector3(0, 0, 0);  
-    public Vector3 pointB = new Vector3(5, 0, 0);  
-    public float speed = 2f;
+    public float floatSpeed = 1f;         
+    public float floatHeight = 0.5f;      
+    public float rotationSpeed = 45f;     
 
-    private Vector3 targetPosition;
+    private Vector3 startPosition;
 
     void Start()
     {
-        targetPosition = pointB; 
+        startPosition = transform.position;
     }
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        float newY = startPosition.y + Mathf.Sin(Time.time * floatSpeed) * floatHeight;
+        transform.position = new Vector3(startPosition.x, newY, startPosition.z);
 
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-        {
-            targetPosition = (targetPosition == pointA) ? pointB : pointA;
-        }
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
     }
 }

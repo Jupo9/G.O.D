@@ -5,8 +5,6 @@ public class GA_Building : Actions
 {
     private Construction constructionTarget;
 
-    [SerializeField] private float buildTime = 2.5f;
-
     public override bool PrePerform()
     {
         constructionTarget = BuildingTaskManager.Instance.DequeueNextTask(GetComponent<Agents>().unitType);
@@ -34,7 +32,10 @@ public class GA_Building : Actions
 
         agent.isStopped = true;
 
-        yield return new WaitForSeconds(buildTime);
+        float individualBuildTime = constructionTarget.previewData != null
+                                  ? constructionTarget.previewData.buildTime : 2.5f; 
+
+        yield return new WaitForSeconds(individualBuildTime);
 
         FinalizeConstruction();
     }
@@ -51,7 +52,7 @@ public class GA_Building : Actions
                     constructionTarget.transform.rotation);
 
         Destroy(constructionTarget.gameObject);
-        Debug.Log("Building was succesful placed");
+        //Debug.Log("Building was succesful placed");
 
         agent.isStopped = false;
         FinishAction();
@@ -64,6 +65,7 @@ public class GA_Building : Actions
 
     public override bool PostPerform()
     {
+        Debug.Log("Building Done");
         Agents agentScript = GetComponent<Agents>();
 
         if (agentScript.unitType == Agents.UnitType.Devil)

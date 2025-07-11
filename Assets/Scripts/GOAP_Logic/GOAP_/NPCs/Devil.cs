@@ -23,6 +23,9 @@ public class Devil : Agents, IUnitInterface
 
     public GameObject grave;
 
+    [Header("Visual Feedback")]
+    public Renderer feelingIndicatorRenderer;
+
     //World keys
     private const string AvialableDevilKey = "Avail_devil";
     private const string UIAvialableDevilKey = "UI_Avail_devil";
@@ -49,7 +52,12 @@ public class Devil : Agents, IUnitInterface
 
     private void Update()
     {
-        NeedLostOverTime();
+        if (!HasActiveTemporaryAction)
+        {
+            NeedLostOverTime();
+        }
+        UpdateCurrentFeeling();
+        UpdateFeelingVisuals();
         CheckedNeedBelowThreshold();
         DevilEnds();
     }
@@ -64,6 +72,44 @@ public class Devil : Agents, IUnitInterface
     {
         RemoveDevilState();
         RemoveUIDevilState();
+    }
+
+    public void TogglePreferClosest()
+    {
+        preferClosest = !preferClosest;
+    }
+
+    private void UpdateCurrentFeeling()
+    {
+        currentFeeling = ((stain + evil + heat + summon) / 4f) * 100f;
+    }
+
+    private void UpdateFeelingVisuals()
+    {
+        if (feelingIndicatorRenderer == null) return;
+
+        Color newColor;
+
+        if (currentFeeling >= 75)
+        {
+            newColor = Color.green;
+        }
+        else if (currentFeeling >= 50)
+        {
+            newColor = Color.yellow;
+        }
+        else if (currentFeeling >= 25)
+        {
+            newColor = new Color(1f, 0.5f, 0f);
+        }
+        else
+        {
+            newColor = Color.red;
+        }
+
+        newColor = Color.Lerp(Color.black, newColor, currentFeeling / 100f);
+
+        feelingIndicatorRenderer.material.color = newColor;
     }
 
     private void NeedLostOverTime()
@@ -108,6 +154,17 @@ public class Devil : Agents, IUnitInterface
         if (evil <= 0 || stain <= 0 || summon <= 0 || heat <= 0)
         {
             Instantiate(grave, transform.position, transform.rotation);
+
+            if (UIForCurrentNeeds.Instance != null)
+            {
+                UIForCurrentNeeds.Instance.ClearTarget();
+            }
+
+            if (InputManager.Instance != null)
+            {
+                InputManager.Instance.DeselectUnit();
+            }
+
             Destroy(gameObject);
         }
     }

@@ -46,6 +46,7 @@ TagManager:
   - HeatPoint
   - SummonPoint
   - StainPoint
+  - Enviroment
   layers:
   - Default
   - TransparentFX
@@ -56,7 +57,7 @@ TagManager:
   - Mouse
   - Placement
   - Avoiding
-  - 
+  - Ground
   - 
   - 
   - 

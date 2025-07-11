@@ -48,7 +48,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303789161035226119}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d0c820c812d8649ae67ee33d52fef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAvailable: 0
+  isAvailable: 1
   waypoints:
   - waypointObject: {fileID: 303789161035226119}
     open: 1
@@ -143,9 +143,6 @@ MonoBehaviour:
     open: 1
   - waypointObject: {fileID: 8580023473700930684}
     open: 1
-  startBuilding: 0
-  isPreview: 0
-  requiredLight: 0
 --- !u!1 &2004713495026736456
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +950,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5844504837084719875}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1160,7 +1157,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8514046245563426223}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1245,7 +1242,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8580023473700930684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1292,6 +1289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8800338165306754392}
   - component: {fileID: 6575544169658743908}
+  - component: {fileID: 7267812911858292292}
   m_Layer: 8
   m_Name: AvoidMe
   m_TagString: Untagged
@@ -1335,6 +1333,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7267812911858292292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8716802293413177275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cadd9fa2610c74fb9c631641117473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearRadius: 3
 --- !u!1 &8810944311209385823
 GameObject:
   m_ObjectHideFlags: 0

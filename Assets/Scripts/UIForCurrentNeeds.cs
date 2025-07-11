@@ -21,6 +21,13 @@ public class UIForCurrentNeeds : MonoBehaviour
     private Devil currentDevil;
     private Angel currentAngel;
 
+    public static UIForCurrentNeeds Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public void SetTarget(MonoBehaviour forCurrentNeeds)
     {
         currentDevil = null;
@@ -89,6 +96,13 @@ public class UIForCurrentNeeds : MonoBehaviour
         {
             return Color.Lerp(Color.red, Color.yellow, value * 2f);
         }
+    }
+    public void ClearTarget()
+    {
+        currentDevil = null;
+        currentAngel = null;
+        devilUI.SetActive(false);
+        angelUI.SetActive(false);
     }
 
 }

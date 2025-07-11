@@ -15,7 +15,7 @@ public class RegisterAngelDevil : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            StartCoroutine(LogNPCCounts());
+            //StartCoroutine(LogNPCCounts());
         }
         else
         {
@@ -64,12 +64,14 @@ public class RegisterAngelDevil : MonoBehaviour
     public List<Agents> GetAllAngels() => angels;
     public List<Agents> GetAllDevils() => devils;
 
-    private IEnumerator LogNPCCounts()
+    // ------------- Debug Testing -------------
+
+    /*private IEnumerator LogNPCCounts()
     {
         while (true)
         {
             yield return new WaitForSeconds(20f);
             Debug.Log($"[NPCRegistry] Angels: {angels.Count} | Devils: {devils.Count}");
         }
-    }
+    }*/
 }

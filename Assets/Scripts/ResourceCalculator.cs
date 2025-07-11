@@ -29,6 +29,11 @@ public class ResourceCalculator : MonoBehaviour
 
     public bool TypConsumeResources(string key, int amount)
     {
+        if (amount <= 0)
+        {
+            return true;
+        }
+
         var usable = allResources
                      .Where(r => r.key == key && r.resourceType != ResourceType.Locked && r.provider.HasAvailableResource(KeyToSimpleName(key)))
                      .OrderBy(r => r.resourceType == ResourceType.Mine ? 1 : 0)

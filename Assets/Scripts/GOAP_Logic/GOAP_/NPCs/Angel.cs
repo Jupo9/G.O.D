@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,6 +27,9 @@ public class Angel : Agents, IUnitInterface
     public GameObject revive;
     public GameObject stunEffect;
 
+    [Header("Visual Feedback")]
+    public Renderer feelingIndicatorRenderer;
+
     //World keys
     private const string AvialableAngelKey = "Avail_angel";
     private const string UIAvialableAngelKey = "UI_Avail_angel";
@@ -54,8 +56,14 @@ public class Angel : Agents, IUnitInterface
 
     private void Update()
     {
-        NeedLostOverTime();
+        if (!HasActiveTemporaryAction)
+        {
+            NeedLostOverTime();
+        }
+
         CheckedNeedBelowThreshold();
+        UpdateCurrentFeeling();
+        UpdateFeelingVisuals();
         AngelEnds();
     }
 
@@ -69,6 +77,11 @@ public class Angel : Agents, IUnitInterface
     {
         RemoveAngelState();
         RemoveUIAngelState();
+    }
+
+    public void TogglePreferClosest()
+    {
+        preferClosest = !preferClosest;
     }
 
     private void NeedLostOverTime()
@@ -108,11 +121,55 @@ public class Angel : Agents, IUnitInterface
         }
     }
 
+    private void UpdateCurrentFeeling()
+    {
+        currentFeeling = ((spirit + social + believe + purity) / 4f) * 100f;
+    }
+
+    private void UpdateFeelingVisuals()
+    {
+        if (feelingIndicatorRenderer == null) return;
+
+        Color newColor;
+
+        if (currentFeeling >= 75)
+        {
+            newColor = Color.green;
+        }
+        else if (currentFeeling >= 50)
+        {
+            newColor = Color.yellow;
+        }
+        else if (currentFeeling >= 25)
+        {
+            newColor = new Color(1f, 0.5f, 0f);
+        }
+        else
+        {
+            newColor = Color.red;
+        }
+
+        newColor = Color.Lerp(Color.black, newColor, currentFeeling / 100f);
+
+        feelingIndicatorRenderer.material.color = newColor;
+    }
+
     private void AngelEnds()
     {
         if (social <= 0 || spirit <= 0 || purity <= 0 || believe <= 0)
         {
             Instantiate(revive, transform.position, transform.rotation);
+
+            if (UIForCurrentNeeds.Instance != null)
+            {
+                UIForCurrentNeeds.Instance.ClearTarget();
+            }
+
+            if (InputManager.Instance != null)
+            {
+                InputManager.Instance.DeselectUnit();
+            }
+
             Destroy(gameObject);
         }
     }
