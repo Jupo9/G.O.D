@@ -41,7 +41,7 @@ public class Building_Battery : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("All battery slots are already filled");
+       Debug.LogWarning("All battery slots are already filled");
     }
 
     public void RemoveSlot(string type) 
@@ -57,7 +57,7 @@ public class Building_Battery : MonoBehaviour
             }
         }
 
-        Debug.LogWarning($"No {type} slot found to remove.");
+       Debug.LogWarning($"No {type} slot found to remove.");
     }
 
     private Material GetMaterialByType(string type)

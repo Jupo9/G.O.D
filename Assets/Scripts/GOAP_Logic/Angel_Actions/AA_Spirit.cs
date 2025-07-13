@@ -15,7 +15,7 @@ public class AA_Spirit : Actions
 
         if (angelScript != null && angelScript.spirit >= 0.8f)
         {
-            Debug.Log("spirit is enough, jump to next action");
+            //Debug.Log("spirit is enough, jump to next action");
             FinishAction();
             return false;
         }
@@ -24,7 +24,7 @@ public class AA_Spirit : Actions
 
         if (target == null)
         {
-            Debug.LogWarning("No valid light Charge found.");
+            //Debug.LogWarning("No valid light Charge found.");
             return false;
         }
 
@@ -130,7 +130,7 @@ public class AA_Spirit : Actions
             angelScript.isAvailable = true; 
         }
 
-        Debug.Log("Finished Action: " + actionName);
+        //Debug.Log("Finished Action: " + actionName);
         return true;
     }
 }

@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 public class Devil : Agents, IUnitInterface
 {
@@ -86,7 +84,10 @@ public class Devil : Agents, IUnitInterface
 
     private void UpdateFeelingVisuals()
     {
-        if (feelingIndicatorRenderer == null) return;
+        if (feelingIndicatorRenderer == null) 
+        { 
+            return; 
+        }
 
         Color newColor;
 
@@ -134,7 +135,7 @@ public class Devil : Agents, IUnitInterface
                                              summon < 0.5f ||
                                              heat < 0.5f))
         {
-            Debug.Log("Devil Needs are lower than 50%, starts need behaviour attention");
+            //Debug.Log("Devil Needs are lower than 50%, starts need behaviour attention");
             needBehaviour = true;
             triggeredNeedBelowThreshold = true;
         }
@@ -144,7 +145,7 @@ public class Devil : Agents, IUnitInterface
                                            summon >= 0.5f &&
                                            heat >= 0.5f)
         {
-            Debug.Log("reset triggeredNeedBelowThreshold");
+            //Debug.Log("reset triggeredNeedBelowThreshold");
             triggeredNeedBelowThreshold = false;
         }
     }
@@ -176,12 +177,12 @@ public class Devil : Agents, IUnitInterface
         if (!worldStates.HasState(AvialableDevilKey))
         {
             worldStates.SetState(AvialableDevilKey, 1);
-            Debug.Log($"Devil added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+            //Debug.Log($"Devil added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
         }
         else
         {
             worldStates.ModifyState(AvialableDevilKey, +1);
-            Debug.Log($"Devil added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
+            //Debug.Log($"Devil added. Current count: {worldStates.GetStates()[AvialableDevilKey]}");
         }
     }
 
@@ -207,12 +208,12 @@ public class Devil : Agents, IUnitInterface
         if (!worldStates.HasState(UIAvialableDevilKey))
         {
             worldStates.SetState(UIAvialableDevilKey, 1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
+            //Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
         }
         else
         {
             worldStates.ModifyState(UIAvialableDevilKey, +1);
-            Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
+            //Debug.Log($"Angel added. Current count: {worldStates.GetStates()[UIAvialableDevilKey]}");
         }
     }
 

@@ -17,7 +17,7 @@ public class DA_Evil : Actions
 
         if (devilScript != null && devilScript.evil >= 0.8f)
         {
-            Debug.Log("evil is enough, jump to next action");
+            //Debug.Log("evil is enough, jump to next action");
             FinishAction();
             return false;
         }
@@ -26,7 +26,7 @@ public class DA_Evil : Actions
 
         if (evilTarget == null)
         {
-            Debug.LogWarning("No evil target found!");
+            //Debug.LogWarning("No evil target found!");
             return false;
         }
 
@@ -127,7 +127,7 @@ public class DA_Evil : Actions
 
         if (devilScript == null)
         {
-            Debug.LogWarning("DA_Evil: agentScriptReference is not a Devil.");
+            //Debug.LogWarning("DA_Evil: agentScriptReference is not a Devil.");
             yield break;
         }
 
@@ -143,7 +143,7 @@ public class DA_Evil : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Finished Action: " + actionName);
+        //Debug.Log("Finished Action: " + actionName);
         return true;
     }
 }

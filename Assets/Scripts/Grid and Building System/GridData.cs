@@ -15,7 +15,10 @@ public class GridData
     public void BlockCells(IEnumerable<Vector3Int> gridPositions)
     {
         foreach (var pos in gridPositions)
+        {
             blockedCells.Add(pos);
+        }
+
     }
 
     public bool IsCellBlocked(Vector3Int pos)

@@ -42,10 +42,10 @@ public class GA_Working : Actions
         {
             unitType = UnitType.Devil;
         }
-        else
+        /*else
         {
             Debug.LogError("Unknown Unit Detected!");
-        }
+        }*/
     }
 
     //Setup correct Tags/Ressources by Unit Type
@@ -86,16 +86,16 @@ public class GA_Working : Actions
             agent.SetDestination(target.transform.position);
             StartCoroutine(WorkingRoutine());
         }
-        else
+        /*else
         {
             Debug.LogWarning("no valid work target found!");
-        }
+        }*/
     }
 
     private GameObject GetWorkingTarget()
     {
         GameObject[] mines = GameObject.FindGameObjectsWithTag(workingTag);
-        Debug.Log(workingTag);
+        //Debug.Log(workingTag);
 
         if (mines.Length == 0)
         {
@@ -151,10 +151,10 @@ public class GA_Working : Actions
             {
                 mineScript.IncreaseLightAmount();
             }
-            else
+            /*else
             {
                 Debug.LogWarning("Unknown resource type: " + ressourceName);
-            }
+            }*/
         }
 
         checkoutTarget = mineScript.GetCheckoutPoint()?.gameObject;
@@ -165,10 +165,10 @@ public class GA_Working : Actions
             StartCoroutine(PerformCheckout());
             yield break;
         }
-        else
+        /*else
         {
             Debug.LogWarning("No CheckoutPoint assigned to Mine!");
-        }
+        }*/
     }
 
     private bool GetPreferClosest()
@@ -200,7 +200,7 @@ public class GA_Working : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Working Done");
+        //Debug.Log("Working Done");
         return true;
     }
 

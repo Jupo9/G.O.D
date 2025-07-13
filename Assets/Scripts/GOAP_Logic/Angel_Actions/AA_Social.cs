@@ -160,7 +160,7 @@ public class AA_Social : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Finished Action: " + actionName);
+        //Debug.Log("Finished Action: " + actionName);
         return true;
     }
 }

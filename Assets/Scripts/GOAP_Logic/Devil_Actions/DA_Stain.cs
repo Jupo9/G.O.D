@@ -15,7 +15,7 @@ public class DA_Stain : Actions
 
         if (devilScript != null && devilScript.stain >= 0.8f)
         {
-            Debug.Log("stain is enough, jump to next action");
+            //Debug.Log("stain is enough, jump to next action");
             FinishAction();
             return false;
         }
@@ -24,7 +24,7 @@ public class DA_Stain : Actions
 
         if (target == null)
         {
-            Debug.LogWarning("No valid Trap found.");
+            //Debug.LogWarning("No valid Trap found.");
             return false;
         }
 
@@ -102,7 +102,7 @@ public class DA_Stain : Actions
 
         if (devilScript == null)
         {
-            Debug.LogWarning("DA_Stain: agentScriptReference is not an Devil.");
+            //Debug.LogWarning("DA_Stain: agentScriptReference is not an Devil.");
             yield break;
         }
 
@@ -118,7 +118,7 @@ public class DA_Stain : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Finished Action: " + actionName);
+        //Debug.Log("Finished Action: " + actionName);
         return true;
     }
 }

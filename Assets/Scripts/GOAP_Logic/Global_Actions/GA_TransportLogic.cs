@@ -49,14 +49,14 @@ public class GA_TransportLogic : Actions
 
     private UnitType unitType;
 
-    private enum TransportPhase
+   /*private enum TransportPhase
     {
         ToPickup,
         ToDelivery,
         ToCheckout
-    }
+    }*/
 
-    private TransportPhase currentPhase = TransportPhase.ToPickup;
+   // private TransportPhase currentPhase = TransportPhase.ToPickup;
 
     // ------------- Debug testing ------------- 
 
@@ -345,7 +345,7 @@ public class GA_TransportLogic : Actions
 
         // Start to go to the final target
         ShowCarriedResource(true);
-        currentPhase = TransportPhase.ToDelivery;
+        //currentPhase = TransportPhase.ToDelivery;
         GoToDeliveryPoint();
     }
 
@@ -458,7 +458,7 @@ public class GA_TransportLogic : Actions
             if (checkoutTarget != null)
             {
                  ShowCarriedResource(false);
-                 currentPhase = TransportPhase.ToCheckout;
+                 //currentPhase = TransportPhase.ToCheckout;
                  agent.SetDestination(checkoutTarget.transform.position);
                  StartCoroutine(PerformCheckout());
                  yield break;
@@ -466,7 +466,7 @@ public class GA_TransportLogic : Actions
         }
 
         //Debug.Log($"{this.name} has delivered the ressource to {finalTarget.name}");
-        currentPhase = TransportPhase.ToPickup;
+        //currentPhase = TransportPhase.ToPickup;
     }
 
     // ------------- Checkout and finish Action ------------- 

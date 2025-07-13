@@ -14,15 +14,10 @@ public class DestructibleObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("Test Destruction");
-        if (EventManager.Instance == null)
-        {
-            Debug.LogError("EventManager.Instance ist null!");
-        }
-        else
+        //Debug.Log("Test Destruction");
+        if (EventManager.Instance != null)
         {
             EventManager.Instance.TriggerStateChange(stateKey, valueChangeOnDestruction);
-            Debug.Log($"OnDestroy triggered. State '{stateKey}' changed by {valueChangeOnDestruction}. New value: {Worlds.Instance.GetWorld().GetStates()[stateKey]}");
         }
-    }
+    } 
 }

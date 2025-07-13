@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 public class WorldState
@@ -77,7 +76,7 @@ public class WorldStates
         }
         else
         {
-            Debug.Log($"State '{key}' does not exist. Adding it dynamically.");
+            //Debug.Log($"State '{key}' does not exist. Adding it dynamically.");
             AddState(key, valueChange);
         }
     }

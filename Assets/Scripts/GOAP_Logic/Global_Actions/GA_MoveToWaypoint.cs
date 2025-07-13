@@ -9,7 +9,7 @@ public class GA_MoveToWaypoint : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Reached");
+        //Debug.Log("Reached");
         return true;
     }
 

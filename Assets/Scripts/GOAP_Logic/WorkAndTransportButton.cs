@@ -81,7 +81,7 @@ public class WorkAndTransportButton : MonoBehaviour
         {
             angel.TogglePreferClosest();
             UpdatePreferenceButtonUI();
-            Debug.Log($"{angel.name}: PreferClosest = {angel.PreferClosest}");
+            //Debug.Log($"{angel.name}: PreferClosest = {angel.PreferClosest}");
         }
         else if (selectedAgent is Devil devil)
         { 

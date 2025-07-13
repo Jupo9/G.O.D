@@ -100,7 +100,7 @@ public class Construction : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[Construction] Still no available builder.");
+            Debug.Log("[Construction] Still no available builder.");
         }
     }
 }

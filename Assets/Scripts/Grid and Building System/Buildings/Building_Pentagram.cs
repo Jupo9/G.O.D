@@ -1,6 +1,5 @@
 using Unity.AI.Navigation;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Building_Pentagram : MonoBehaviour
@@ -108,9 +107,9 @@ public class Building_Pentagram : MonoBehaviour
         {
             navMeshManager.BuildNavMesh();
         }
-        else
+        /*else
         {
             Debug.LogWarning("No NavMeshSurface found in the scene.");
-        }
+        }*/
     }
 }

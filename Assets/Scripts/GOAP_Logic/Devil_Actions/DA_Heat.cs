@@ -15,7 +15,7 @@ public class DA_Heat : Actions
 
         if (devilScript != null && devilScript.heat >= 0.8f)
         {
-            Debug.Log("heat is enough, jump to next action");
+            //Debug.Log("heat is enough, jump to next action");
             FinishAction();
             return false;
         }
@@ -24,7 +24,7 @@ public class DA_Heat : Actions
 
         if (target == null)
         {
-            Debug.LogWarning("No valid fire Charge found.");
+            //Debug.LogWarning("No valid fire Charge found.");
             return false;
         }
 
@@ -102,7 +102,7 @@ public class DA_Heat : Actions
 
         if (devilScript == null)
         {
-            Debug.LogWarning("DA_Heat: agentScriptReference is not an Devil.");
+            //Debug.LogWarning("DA_Heat: agentScriptReference is not an Devil.");
             yield break;
         }
 
@@ -118,7 +118,7 @@ public class DA_Heat : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Finishedd Action: " + actionName);
+        //Debug.Log("Finishedd Action: " + actionName);
 
         return true;
     }

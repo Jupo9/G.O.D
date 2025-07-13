@@ -201,14 +201,14 @@ public class Building_Mine : MonoBehaviour, IResourceManager
 
     private void BatteryVisual()
     {
-        /*if (batteryVisual == null)
+        if (batteryVisual == null)
         {
             Debug.LogError("Battery is Missing");
         }
         else
         {
             Debug.Log("Battery was found");
-        }*/
+        }
 
         for (int i = 0; i < fireAmount; i++)
         {

@@ -64,10 +64,14 @@ public class PlacementState : IBuildingState
         bool lightOK = true;
 
         if (fireCost > 0)
+        {
             fireOK = ResourceCalculator.Instance.TypConsumeResources("Res_fire", fireCost);
+        }
 
         if (lightCost > 0)
+        {
             lightOK = ResourceCalculator.Instance.TypConsumeResources("Res_light", lightCost);
+        }
 
         if (!fireOK || !lightOK)
         {

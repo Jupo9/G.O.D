@@ -71,7 +71,7 @@ public class GA_MoveAround : Actions
                 {
                     if (agent == null)
                     {
-                        Debug.LogWarning("NavMeshAgent is missing!");
+                        //Debug.LogWarning("NavMeshAgent is missing!");
                         return;
                     }
 
@@ -79,12 +79,12 @@ public class GA_MoveAround : Actions
                     agent.isStopped = false;
                     agent.SetDestination(hit.position);
 
-                    Debug.DrawLine(transform.position, hit.position, Color.green, 5f);
+                    //Debug.DrawLine(transform.position, hit.position, Color.green, 5f);
                     return;
                 }
             }
         }
 
-        Debug.LogWarning("no target found, outside of avoid zones!");
+        //Debug.LogWarning("no target found, outside of avoid zones!");
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 
@@ -43,10 +42,10 @@ public class Building_LightCharge : MonoBehaviour
         {
             navMeshManager.BuildNavMesh();
         }
-        else
+        /*else
         {
             Debug.LogWarning("No NavMeshSurface found in the scene.");
-        }
+        }*/
     }
 
     // ------------- Building Events -------------

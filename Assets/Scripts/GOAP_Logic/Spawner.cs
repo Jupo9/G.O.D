@@ -55,7 +55,7 @@ public class Spawner : MonoBehaviour
             creatureType = Random.Range(1, 4);
         }
 
-        Debug.Log("Number: " + creatureType);
+        //Debug.Log("Number: " + creatureType);
 
         if (creatureType == 1 || creatureType == 3)
         {
@@ -66,7 +66,7 @@ public class Spawner : MonoBehaviour
             createDevil++;
         }
 
-        Debug.Log($"Angel: {createAngel}, Devil: {createDevil}");
+        //Debug.Log($"Angel: {createAngel}, Devil: {createDevil}");
 
         SpawnCreature();
     }

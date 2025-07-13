@@ -17,7 +17,7 @@ public class AA_Believe : Actions
 
         if (angelScript != null && angelScript.believe >= 0.8f)
         {
-            Debug.Log("believe is enough, jump to next action");
+            //Debug.Log("believe is enough, jump to next action");
             FinishAction();
             return false; 
         }
@@ -26,7 +26,7 @@ public class AA_Believe : Actions
 
         if (prayStatue == null)
         {
-            Debug.LogWarning("No valid pray statue found.");
+            //Debug.LogWarning("No valid pray statue found.");
             return false;
         }
 

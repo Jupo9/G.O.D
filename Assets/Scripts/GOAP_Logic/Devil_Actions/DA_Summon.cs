@@ -17,7 +17,7 @@ public class DA_Summon : Actions
 
         if (devilScript != null && devilScript.summon >= 0.8f)
         {
-            Debug.Log("summon is enough, jump to next action");
+            //Debug.Log("summon is enough, jump to next action");
             FinishAction();
             return false;
         }
@@ -26,7 +26,7 @@ public class DA_Summon : Actions
 
         if (pentagram == null)
         {
-            Debug.LogWarning("No valid pentagram found.");
+            //Debug.LogWarning("No valid pentagram found.");
             return false;
         }
 
@@ -112,7 +112,7 @@ public class DA_Summon : Actions
 
         if (devilScript == null)
         {
-            Debug.LogWarning("DA_Summon: agentScriptReference is not an Devil.");
+            //Debug.LogWarning("DA_Summon: agentScriptReference is not an Devil.");
             yield break;
         }
 
@@ -128,7 +128,7 @@ public class DA_Summon : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Finished Action: " + actionName);
+        //Debug.Log("Finished Action: " + actionName);
         return true;
     }
 }

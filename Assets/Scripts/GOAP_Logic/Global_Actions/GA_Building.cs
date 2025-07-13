@@ -52,7 +52,7 @@ public class GA_Building : Actions
                     constructionTarget.transform.rotation);
 
         Destroy(constructionTarget.gameObject);
-        //Debug.Log("Building was succesful placed");
+        Debug.Log("Building was succesful placed");
 
         agent.isStopped = false;
         FinishAction();
@@ -65,12 +65,12 @@ public class GA_Building : Actions
 
     public override bool PostPerform()
     {
-        Debug.Log("Building Done");
+        //Debug.Log("Building Done");
         Agents agentScript = GetComponent<Agents>();
 
         if (agentScript.unitType == Agents.UnitType.Devil)
         {
-            Debug.Log("[GA_Building] Devil finished building and will die.");
+            //Debug.Log("[GA_Building] Devil finished building and will die.");
             agent.GetComponent<Agents>()?.Die();
         }
 

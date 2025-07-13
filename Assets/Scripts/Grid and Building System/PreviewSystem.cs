@@ -78,13 +78,13 @@ public class PreviewSystem : MonoBehaviour
 
         if (previewObject != null)
         {
-            //ResetPreviewMaterial(previewObject);
+            ResetPreviewMaterial(previewObject);
             Destroy(previewObject);
             previewObject = null; 
         }
     }
 
-    /*private void ResetPreviewMaterial(GameObject obj)
+    private void ResetPreviewMaterial(GameObject obj)
     {
         Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in renderers)
@@ -96,7 +96,7 @@ public class PreviewSystem : MonoBehaviour
             }
             renderer.materials = materials;
         }
-    }*/
+    }
 
     public void UpdatePosition(Vector3 position, Vector2Int size, bool validity)
     {
@@ -112,7 +112,7 @@ public class PreviewSystem : MonoBehaviour
 
     public void UpdateRotation(Quaternion rotation)
     {
-        Debug.Log($"UpdateRotation called with rotation: {rotation.eulerAngles}");
+        //Debug.Log($"UpdateRotation called with rotation: {rotation.eulerAngles}");
         previewObject.transform.rotation = rotation;
     }
 

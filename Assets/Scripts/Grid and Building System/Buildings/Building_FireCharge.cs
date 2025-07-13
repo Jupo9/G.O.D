@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Unity.AI.Navigation;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Building_FireCharge : MonoBehaviour
@@ -46,10 +45,10 @@ public class Building_FireCharge : MonoBehaviour
         {
             navMeshManager.BuildNavMesh();
         }
-        else
+        /*else
         {
             Debug.LogWarning("No NavMeshSurface found in the scene.");
-        }
+        }*/
     }
 
     // ------------- Material Setup -------------

@@ -100,13 +100,13 @@ public class Agents : MonoBehaviour
                 goals.Add(repeatedGoal, 5);
             }
 
-            Debug.Log("Goal reached, reset Planner");
+            //Debug.Log("Goal reached, reset Planner");
         }
 
         // task behaviour
         if (queuedTemporaryAction != null)
         {
-            Debug.Log("Executing queued temporary action: " + queuedTemporaryAction.actionName);
+            //Debug.Log("Executing queued temporary action: " + queuedTemporaryAction.actionName);
             ExecuteTemporaryAction(queuedTemporaryAction);
             queuedTemporaryAction = null;
             return;
@@ -160,7 +160,7 @@ public class Agents : MonoBehaviour
         {
             if (currentAction is GA_MoveAround && needBehaviour)
             {
-                Debug.Log("[Agents] needBehaviour ist TRUE -> GA_MoveAround wird vorzeitig beendet.");
+                //Debug.Log("[Agents] needBehaviour ist TRUE -> GA_MoveAround wird vorzeitig beendet.");
                 ((GA_MoveAround)currentAction).FinishAction();
                 needBehaviour = false;
                 return;
@@ -168,7 +168,7 @@ public class Agents : MonoBehaviour
 
             if (currentAction.target == null)
             {
-                Debug.LogWarning("target was destroyed, action is done: " + currentAction.actionName);
+                //Debug.LogWarning("target was destroyed, action is done: " + currentAction.actionName);
                 CompleteAction();
                 return;
             }
@@ -199,13 +199,13 @@ public class Agents : MonoBehaviour
                 }
             }
 
-            Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
+            //Debug.Log("ActionQueue generated: " + (actionQueue != null ? "Yes" : "No"));
         }
 
         if (actionQueue != null && actionQueue.Count > 0)
         {
             currentAction = actionQueue.Dequeue();
-            Debug.Log("Assigned Action: " + currentAction.actionName);
+            //Debug.Log("Assigned Action: " + currentAction.actionName);
 
             currentAction.agentScriptReference = this;
 
@@ -272,7 +272,7 @@ public class Agents : MonoBehaviour
     {
         if (queuedTemporaryAction != null)
         {
-            Debug.LogWarning("Temporary action is already in queued. Ignoring new temporary action");
+            //Debug.LogWarning("Temporary action is already in queued. Ignoring new temporary action");
             return;
         }
 
@@ -280,17 +280,17 @@ public class Agents : MonoBehaviour
 
         if (currentAction == null || !currentAction.running)
         {
-            Debug.Log("Starting temporary action immediately: " + tempAction.actionName);
+            //Debug.Log("Starting temporary action immediately: " + tempAction.actionName);
             ExecuteTemporaryAction(tempAction);
         }
         else
         {
-            Debug.Log("Queuing temporary action for later: " + tempAction.actionName);
+            //Debug.Log("Queuing temporary action for later: " + tempAction.actionName);
             queuedTemporaryAction = tempAction;
 
             if (currentAction is GA_MoveAround)
             {
-                Debug.Log("GA_MoveAround get finished for task");
+                //Debug.Log("GA_MoveAround get finished for task");
                 needBehaviour = true;
             }
         }
@@ -318,15 +318,15 @@ public class Agents : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"ExecuteTemporaryAction: no target was found {currentAction.actionName}");
+                Debug.Log($"ExecuteTemporaryAction: no target was found {currentAction.actionName}");
             }
         }
         else
         {
-            Debug.LogWarning($"ExecuteTemporaryAction: PrePerform failed in {currentAction.actionName}");
+            Debug.Log($"ExecuteTemporaryAction: PrePerform failed in {currentAction.actionName}");
         }
 
-        Debug.Log($"Started temporary action: {currentAction.actionName}");
+        //Debug.Log($"Started temporary action: {currentAction.actionName}");
 
         if (temporaryActionIndicator != null && IsTemporaryAction(currentAction))
         {
@@ -356,14 +356,14 @@ public class Agents : MonoBehaviour
             if (actionQueue != null)
             {
                 currentGoal = sg.Key;
-                Debug.Log("New plan with goal: " + sg.Key.subGoals.Keys.First());
+                //Debug.Log("New plan with goal: " + sg.Key.subGoals.Keys.First());
                 break;
             }
         }
 
         if (actionQueue == null)
         {
-            Debug.LogWarning("new planning failed!");
+            Debug.Log("new planning failed!");
         }
     }
 }

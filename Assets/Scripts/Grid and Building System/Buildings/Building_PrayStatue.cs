@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Building_PrayStatue : MonoBehaviour
@@ -69,12 +67,12 @@ public class Building_PrayStatue : MonoBehaviour
         if (!worldStates.HasState(BuildingPrayKey))
         {
             worldStates.SetState(BuildingPrayKey, 1);
-            Debug.Log($"Building_PrayStatue added. Current count: {worldStates.GetStates()[BuildingPrayKey]}");
+            //Debug.Log($"Building_PrayStatue added. Current count: {worldStates.GetStates()[BuildingPrayKey]}");
         }
         else
         {
             worldStates.ModifyState(BuildingPrayKey, +1);
-            Debug.Log($"Building_PrayStatue added. Current count: {worldStates.GetStates()[BuildingPrayKey]}");
+            //Debug.Log($"Building_PrayStatue added. Current count: {worldStates.GetStates()[BuildingPrayKey]}");
         }
     }
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -106,7 +105,7 @@ public class Angel : Agents, IUnitInterface
                                              spirit < 0.5f ||
                                              believe < 0.5f))
         {
-            Debug.Log("Angel Needs are lower than 50%, starts need behaviour attention");
+            //Debug.Log("Angel Needs are lower than 50%, starts need behaviour attention");
             needBehaviour = true;
             triggeredNeedBelowThreshold = true;
         }
@@ -116,7 +115,7 @@ public class Angel : Agents, IUnitInterface
                                            spirit >= 0.5f &&
                                            believe >= 0.5f)
         {
-            Debug.Log("reset triggeredNeedBelowThreshold");
+           //Debug.Log("reset triggeredNeedBelowThreshold");
             triggeredNeedBelowThreshold = false;
         }
     }
@@ -128,7 +127,10 @@ public class Angel : Agents, IUnitInterface
 
     private void UpdateFeelingVisuals()
     {
-        if (feelingIndicatorRenderer == null) return;
+        if (feelingIndicatorRenderer == null)
+        {
+            return;
+        }
 
         Color newColor;
 

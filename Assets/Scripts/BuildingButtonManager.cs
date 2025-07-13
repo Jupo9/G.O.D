@@ -17,7 +17,7 @@ public class BuildingButtonManager : MonoBehaviour
 
         if (objectData == null)
         {
-            Debug.LogError("objectData not found for objectID: " + objectID);
+            //Debug.LogError("objectData not found for objectID: " + objectID);
             return;
         }
 
@@ -25,7 +25,7 @@ public class BuildingButtonManager : MonoBehaviour
 
         if (previewData == null)
         {
-            Debug.LogError("previewData missing in objectData ID: " + objectID);
+            //Debug.LogError("previewData missing in objectData ID: " + objectID);
             return;
         }
 
@@ -61,7 +61,7 @@ public class BuildingButtonManager : MonoBehaviour
     {
         if (previewData == null || button == null)
         {
-            Debug.LogWarning("CheckAvailability aborted – previewData or button is null");
+            //Debug.LogWarning("CheckAvailability aborted – previewData or button is null");
             return;
         }
 
