@@ -42,10 +42,10 @@ public class Building_LightCharge : MonoBehaviour
         {
             navMeshManager.BuildNavMesh();
         }
-        /*else
+        else
         {
             Debug.LogWarning("No NavMeshSurface found in the scene.");
-        }*/
+        }
     }
 
     // ------------- Building Events -------------

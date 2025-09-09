@@ -17,5 +17,5 @@ MonoBehaviour:
   previewPrefab: {fileID: 8536282171402287530, guid: 3a03033317573f941acaa726e0adf4c0, type: 3}
   buildingPrefab: {fileID: 2887689837918983808, guid: 5d700d61b3244544e9986e5297321754, type: 3}
   buildTime: 30
-  buildFireCosts: 4
-  buildLightCosts: 4
+  buildFireCosts: 5
+  buildLightCosts: 5

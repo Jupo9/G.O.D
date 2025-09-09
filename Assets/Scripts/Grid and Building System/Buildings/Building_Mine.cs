@@ -129,14 +129,12 @@ public class Building_Mine : MonoBehaviour, IResourceManager
         {
             lockedLight--;
             DecreaseLightAmount();
-            Debug.Log("picked up one light.");
         }
 
         if (resourceType == "Fire" && fireAmount > 0 && lockedFire > 0)
         {
             lockedFire--;
             DecreaseFireAmount();
-            Debug.Log("picked up one Fire.");
         }
     }
 

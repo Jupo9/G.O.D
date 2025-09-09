@@ -86,10 +86,10 @@ public class GA_Working : Actions
             agent.SetDestination(target.transform.position);
             StartCoroutine(WorkingRoutine());
         }
-        /*else
+        else
         {
-            Debug.LogWarning("no valid work target found!");
-        }*/
+            Debug.Log("no valid work target found!");
+        }
     }
 
     private GameObject GetWorkingTarget()
@@ -151,10 +151,10 @@ public class GA_Working : Actions
             {
                 mineScript.IncreaseLightAmount();
             }
-            /*else
+            else
             {
-                Debug.LogWarning("Unknown resource type: " + ressourceName);
-            }*/
+                Debug.Log("Unknown resource type: " + ressourceName);
+            }
         }
 
         checkoutTarget = mineScript.GetCheckoutPoint()?.gameObject;
@@ -165,10 +165,10 @@ public class GA_Working : Actions
             StartCoroutine(PerformCheckout());
             yield break;
         }
-        /*else
+        else
         {
-            Debug.LogWarning("No CheckoutPoint assigned to Mine!");
-        }*/
+            Debug.Log("No CheckoutPoint assigned to Mine!");
+        }
     }
 
     private bool GetPreferClosest()

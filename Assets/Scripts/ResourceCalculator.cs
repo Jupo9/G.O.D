@@ -34,27 +34,50 @@ public class ResourceCalculator : MonoBehaviour
             return true;
         }
 
+        string simpleKey = KeyToSimpleName(key);
+
         var usable = allResources
-                     .Where(r => r.key == key && r.resourceType != ResourceType.Locked && r.provider.HasAvailableResource(KeyToSimpleName(key)))
+                     .Where(r => r.key == key && r.resourceType != ResourceType.Locked && r.provider.HasAvailableResource(simpleKey))
                      .OrderBy(r => r.resourceType == ResourceType.Mine ? 1 : 0)
                      .ToList();
+
+
+        foreach (var res in usable)
+        {
+            int availableCount = res.provider.HasAvailableResource(simpleKey) ? 1 : 0;
+        }
 
         int remaining = amount;
 
         foreach (var res in usable)
         {
-            if (res.provider.LockResource(KeyToSimpleName(key)))
+            while (remaining > 0 && res.provider.HasAvailableResource(simpleKey))
             {
-                res.provider.ConsumeLockedRessource(KeyToSimpleName(key));
-                remaining--;
+                bool locked = res.provider.LockResource(simpleKey);
+                if (!locked)
+                {
+                    break;
+                }
 
-                if (remaining <= 0)
-                    return true;
+                res.provider.ConsumeLockedRessource(simpleKey);
+                remaining--;
+            }
+
+            if (remaining <= 0)
+            {
+                break;
             }
         }
 
-        return false;
+        if (remaining > 0)
+        {
+            return false;
+        }
+
+        return true;
     }
+
+
     public int GetTotalAvailable(string key)
     {
         return allResources

@@ -9,6 +9,17 @@ public class CounterNumbers : MonoBehaviour
     public TextMeshProUGUI fireCountText;
     public TextMeshProUGUI lightCountText;
 
+    void Awake()
+    {
+        WorldStates worldStates = Worlds.Instance.GetWorld();
+
+        worldStates.SetState("Res_fire", 0);
+        worldStates.SetState("Res_light", 0);
+        worldStates.SetState("UI_Avail_angel", 0);
+        worldStates.SetState("UI_Avail_devil", 0);
+
+        ResourceWatcher.Notify();
+    }
 
     private void Update()
     {

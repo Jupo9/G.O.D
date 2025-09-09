@@ -29,7 +29,7 @@ public class Building_Waterfall : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No NavMeshSurface found in the scene.");
+            Debug.Log("No NavMeshSurface found in the scene.");
         }
     }
 }
